@@ -85,7 +85,7 @@ public class PerroController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Perro eliminado"),
 			@ApiResponse(code = 204, message = "No existe Perro con ese ID"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response delete(@PathParam("id") int idPerro) {
+	public Response delete(@PathParam("id") long idPerro) {
 
 		try {
 			
@@ -141,7 +141,7 @@ public class PerroController {
 			@ApiResponse(code = 204, message = "No existe perro con ese ID"),
 			@ApiResponse(code = 409, message = "Perro existente, no se puede modificar"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response put(@PathParam("id") int idPerro, @PathParam("nombre") String nombrePerro,
+	public Response put(@PathParam("id") long idPerro, @PathParam("nombre") String nombrePerro,
 			@PathParam("raza") String razaPerro) {
 		try {
 			

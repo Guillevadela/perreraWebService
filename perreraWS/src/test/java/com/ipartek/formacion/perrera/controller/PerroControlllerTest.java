@@ -34,6 +34,9 @@ public class PerroControlllerTest {
 	public void tearDown() throws Exception {
 	}
 
+	/**
+	 * Test para probar metodo getAll(orden, campo) y comprobar que devuelve una lista de perros
+	 */
 	@Test
 	public void testGetAll() {
 		
@@ -74,5 +77,61 @@ public class PerroControlllerTest {
 		}	
 		
 	}
+	
+	
+	/**
+	 * Test para probar metodo getById(id) y comprobar que devuelve Perro con id='id'
+	 */
+	@Test
+	public void testGetById() {
+		
+		PerroController controller = new PerroController();
+		
+		//creamos un nuevo Perro y le asignamos un id
+				
+		Response response = controller.post("manolin", "esquimal");
+		
+		 Perro perro = response.getEntity();
+		
+		
+		
+		//comprobamos que nos devuelve el perro con id=1
+		assertEquals(200, response.getStatus());
+		
+		//comprobamos que devuelve 1 perro
+		//assertTrue("no devuelve perro", response. );
+		
+		// comprobamos que no existe perro con id=-1 
+		response = controller.getById(-1);
+		assertEquals(204, response.getStatus());
+	
+	}
+	
+	
+	/**
+	 * Test para probar metodo delete(id) y comprobar que borra Perro con id='id'
+	 */
+	@Test
+	public void testDelete() {
+		
+		PerroController controller = new PerroController();
+		
+		//creamos un nuevo Perro y le asignamos un id
+		Perro miPerro =  new Perro();
+		miPerro.setId(1);
+		
+		//comprobamos que borra el Perro con id=1
+		Response response = controller.delete(1);
+		assertEquals(200, response.getStatus());
+		
+		// comprobamos que no existe perro con id=-1 
+		response = controller.getById(-1);
+		assertEquals(204, response.getStatus());
+		
+		
+	}
+	
+	
+	
 
 }
