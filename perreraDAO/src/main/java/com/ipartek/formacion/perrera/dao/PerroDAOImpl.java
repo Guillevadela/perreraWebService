@@ -51,7 +51,7 @@ public class PerroDAOImpl implements PerroDAO {
 		this.logger.info("Obteniendo la sesion...");
 		Session s = HibernateUtil.getSession();
 		try {
-			if ("desc".equals(order)) {
+			if (order.equals("desc")) {
 				this.logger.info("Ordenando el array de forma descendente");
 				lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc(campo)).list();
 			} else {

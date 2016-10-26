@@ -64,7 +64,7 @@ public class PerroControllerTest {
 		// comprobar ordenacion descendente por id
 
 		// ordenacion campo inexistente
-		response = controller.getAll("desc", "XXX");
+		response = controller.getAll("XXX", "id");
 		lista = (ArrayList<Perro>) response.getEntity();
 		if (!lista.isEmpty()) {
 			idActual = lista.get(0).getId() + 1;
@@ -107,7 +107,7 @@ public class PerroControllerTest {
 
 		response = controller.put(4, "kit", "san bernardo");
 
-		assertEquals(201, response.getStatus());
+		assertEquals(200, response.getStatus());
 	}
 
 	@Test
@@ -120,6 +120,6 @@ public class PerroControllerTest {
 
 		response = controller.delete(4);
 
-		assertEquals(201, response.getStatus());
+		assertEquals(200, response.getStatus());
 	}
 }
