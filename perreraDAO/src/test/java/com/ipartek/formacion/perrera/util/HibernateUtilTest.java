@@ -10,6 +10,7 @@ public class HibernateUtilTest {
 	public void testGetSession() {
 
 		assertNotNull("Configuracion BBDD incorrecta", HibernateUtil.getSession());
+
 	}
 
 }
