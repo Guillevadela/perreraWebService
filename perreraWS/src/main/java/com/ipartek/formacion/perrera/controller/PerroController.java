@@ -14,6 +14,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.Perro;
 
@@ -27,6 +29,8 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/perro")
 public class PerroController {
 
+	private static Logger LOG = Logger.getLogger(PerroController.class);
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Listado de Perros", notes = "Listado de perros existentes en la perrera, limitado a 1.000", response = Perro.class, responseContainer = "List")
@@ -39,6 +43,7 @@ public class PerroController {
 		try {
 
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			LOG.info("obtenemos la instancia de PerroDaoImpl");
 			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
 			return Response.ok().entity(perros).build();
 
@@ -59,8 +64,11 @@ public class PerroController {
 		try {
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			Perro perro = (Perro) dao.getById(idPerro);
-
-			return Response.ok().entity(perro).build();
+			if (0 == perro.getId()) {
+				return Response.noContent().build();
+			} else {
+				return Response.ok().entity(perro).build();
+			}
 
 		} catch (Exception e) {
 			return Response.serverError().build();
@@ -79,8 +87,11 @@ public class PerroController {
 		try {
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			boolean perroBorrado = dao.delete(idPerro);
-
-			return Response.ok().entity(perroBorrado).build();
+			if (perroBorrado) {
+				return Response.ok().entity(perroBorrado).build();
+			} else {
+				return Response.noContent().build();
+			}
 
 		} catch (Exception e) {
 			return Response.serverError().build();
@@ -99,8 +110,11 @@ public class PerroController {
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			Perro perroNuevo = new Perro(nombrePerro, razaPerro);
 			boolean perroCreado = dao.insert(perroNuevo);
-
-			return Response.ok().entity(perroCreado).build();
+			if (perroCreado) {
+				return Response.status(201).build();
+			} else {
+				return Response.status(409).build();
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -126,10 +140,10 @@ public class PerroController {
 				perro.setNombre(nombrePerro);
 				perro.setRaza(razaPerro);
 				perroModificado = dao.update(perro);
-
+				return Response.status(200).build();
+			} else {
+				return Response.status(204).build();
 			}
-
-			return Response.ok().entity(perroModificado).build();
 
 		} catch (Exception e) {
 			return Response.status(500).build();
