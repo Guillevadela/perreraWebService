@@ -3,6 +3,7 @@ package com.ipartek.formacion.perrera.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.hibernate.QueryException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -12,6 +13,8 @@ import com.ipartek.formacion.perrera.util.HibernateUtil;
 
 public class PerroDAOImpl implements PerroDAO {
 
+	private static final Logger logger = Logger.getLogger(PerroDAOImpl.class);
+	
 	// instancia unica para 'patron Singleton'
 	private static PerroDAOImpl INSTANCE = null;
 
@@ -56,6 +59,7 @@ public class PerroDAOImpl implements PerroDAO {
 				// Si falla por que el campo no existe se ordenara de manera
 				// ascendente por id
 			} catch (final QueryException e) {
+				logger.warn("Campo incorrecto u orden de ordenacion incorrecto DAO", e);
 				lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc("id")).list();
 			}
 
@@ -75,6 +79,7 @@ public class PerroDAOImpl implements PerroDAO {
 		try {
 			resul = (Perro) s.get(Perro.class, idPerro);
 		} catch (final Exception e) {
+			logger.warn("Id inexistente DAO", e);
 			e.printStackTrace();
 		} finally {
 			s.close();

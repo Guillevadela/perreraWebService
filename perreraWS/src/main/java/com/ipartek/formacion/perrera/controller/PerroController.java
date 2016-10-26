@@ -14,6 +14,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.Perro;
 
@@ -33,6 +35,8 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/perro")
 public class PerroController {
 
+	private static final Logger logger = Logger.getLogger(PerroController.class);
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Listado de Perros", notes = "Listado de perros existentes en la perrera, limitado a 1.000", response = Perro.class, responseContainer = "List")
@@ -42,6 +46,7 @@ public class PerroController {
 	public Response getAll(
 			@ApiParam(name = "orderBy", required = false, value = "Filtro para ordenar los perros de forma ascendente o descendente, posibles valores [asc|desc]") @DefaultValue("asc") @QueryParam("orderBy") String orderBy,
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
+		
 		try {
 
 			final PerroDAOImpl dao = PerroDAOImpl.getInstance();
@@ -49,6 +54,7 @@ public class PerroController {
 			return Response.ok().entity(perros).build();
 
 		} catch (final Exception e) {
+			logger.warn("Error",e);
 			return Response.serverError().build();
 		}
 	}
@@ -66,10 +72,12 @@ public class PerroController {
 			final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			final Perro perro = dao.getById(idCreado);
 			if (perro == null) {
+				logger.warn("Id especificada erronea");
 				return Response.noContent().build();
 			}
 			return Response.ok().entity(perro).build();
 		} catch (final Exception e) {
+			logger.warn("Id especificada erronea",e);
 			return Response.serverError().build();
 		}
 	}
