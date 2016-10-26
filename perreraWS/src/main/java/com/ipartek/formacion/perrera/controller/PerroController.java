@@ -14,6 +14,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.Perro;
 
@@ -32,6 +35,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("/perro")
 @Api(value = "/perro")
 public class PerroController {
+	private final Logger logger = LoggerFactory.getLogger(PerroController.class);
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -43,11 +47,15 @@ public class PerroController {
 			@ApiParam(name = "orderBy", required = false, value = "Filtro para ordenar los perros de forma ascendente o descendente, posibles valores [asc|desc]") @DefaultValue("asc") @QueryParam("orderBy") String orderBy,
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		try {
+			this.logger.info("preparando la instancia...");
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			this.logger.info("procesando peticion para listar perros");
 			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
+			this.logger.info("perros listados correctamente");
 			return Response.ok().entity(perros).build();
 
 		} catch (Exception e) {
+			this.logger.error("Error al listar los perros");
 			return Response.serverError().build();
 		}
 	}
@@ -62,14 +70,19 @@ public class PerroController {
 	public Response getById(@PathParam("id") int idPerro) {
 
 		try {
+			this.logger.info("preparando la instancia...");
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			Perro perro = null;
+			this.logger.info("procesando peticion para encontrar al perro con id:" + idPerro);
 			perro = dao.getById(idPerro);
 			if (perro == null) {
+				this.logger.info("El perro con id:" + idPerro + " no existe");
 				return Response.noContent().build();
 			}
+			this.logger.info("El perro con id:" + idPerro + " existe y esta siendo mostrado");
 			return Response.ok().entity(perro).build();
 		} catch (Exception e) {
+			this.logger.error("Error en la busqueda del perro con id:" + idPerro);
 			return Response.serverError().build();
 		}
 	}
@@ -84,15 +97,20 @@ public class PerroController {
 	public Response delete(@PathParam("id") int idPerro) {
 
 		try {
+			this.logger.info("preparando la instancia...");
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			boolean pElimnar = false;
+			this.logger.info("procesando peticion para eliminar al perro con id:" + idPerro);
 			pElimnar = dao.delete(idPerro);
 			if (pElimnar != true) {
+				this.logger.info("No hay ningun perro con id:" + idPerro + ", por lo tanto no se ha eliminado nada");
 				return Response.notModified().build();
 			} else {
+				this.logger.info("El perro con id:" + idPerro + " ha sido correctamente eliminado");
 				return Response.ok().entity(pElimnar).build();
 			}
 		} catch (Exception e) {
+			this.logger.error("Error en la eliminacion del perro con id:" + idPerro);
 			return Response.serverError().build();
 		}
 	}
@@ -106,17 +124,22 @@ public class PerroController {
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
 	public Response post(@PathParam("nombre") String nombrePerro, @PathParam("raza") String razaPerro) {
 		try {
+			this.logger.info("preparando la instancia...");
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			Perro pCreado = new Perro(nombrePerro, razaPerro);
 			boolean idpCreado = false;
+			this.logger.info("procesando peticion para crear un nuevo perro");
 			idpCreado = dao.insert(pCreado);
 			if (idpCreado == true) {
+				this.logger.info("El perro ha sido creado correctamente");
 				return Response.status(201).entity(pCreado).build();
 			} else {
-				return Response.status(409).build();
+				this.logger.info("El perro no ha podido ser dado de alta porque ya existe un perro con esos datos");
+				return Response.status(304).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			this.logger.error("Error en el alta de perro");
 			return Response.serverError().build();
 		}
 	}
@@ -132,17 +155,22 @@ public class PerroController {
 	public Response put(@PathParam("id") long idPerro, @PathParam("nombre") String nombrePerro,
 			@PathParam("raza") String razaPerro) {
 		try {
+			this.logger.info("preparando la instancia...");
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			Perro pModificar = new Perro(idPerro, nombrePerro, razaPerro);
 
 			boolean rModificar = false;
+			this.logger.info("procesando peticion para modificar al perro con id" + idPerro);
 			rModificar = dao.update(pModificar);
 			if (rModificar != true) {
+				this.logger.info("EL perro con id" + idPerro + " no ha podido ser modificado");
 				return Response.notModified().build();
 			} else {
+				this.logger.info("El perro con id" + idPerro + " ha sido modificado correctamente");
 				return Response.ok().entity(pModificar).build();
 			}
 		} catch (Exception e) {
+			this.logger.error("Error al modificar al perro con id" + idPerro);
 			return Response.status(500).build();
 
 		}
