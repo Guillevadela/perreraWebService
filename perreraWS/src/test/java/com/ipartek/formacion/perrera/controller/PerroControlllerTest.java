@@ -123,15 +123,21 @@ public class PerroControlllerTest {
 		/*TEST UPDATE*/
 		
 		//modificamos perro creado 
-		response = controller.put(idPerroTest, NOMBRE_PERRO_UPDATE,RAZA_PERRO_UPDATE);
+		response = controller.put(ID_ERRONEA, NOMBRE_PERRO_UPDATE,RAZA_PERRO_UPDATE);
 		
 		// devuelve un valor distinto a 500 si no ha habido un error en el
 		// servidor
 		assertNotEquals(500, response.getStatus());
 		// devuelve 204 si la id es erronea
-		assertNotEquals(204, response.getStatus());
+		assertEquals(204, response.getStatus());
+		
+		
 		// devuelve 409 si el perro no se puede modificar
 		assertNotEquals(409, response.getStatus());
+		
+		//modificamos perro creado con id correcta
+		response = controller.put(idPerroTest, NOMBRE_PERRO_UPDATE,RAZA_PERRO_UPDATE);
+				
 		// devuelve 200 si la respuesta es correcta
 		assertEquals(200, response.getStatus());
 		
