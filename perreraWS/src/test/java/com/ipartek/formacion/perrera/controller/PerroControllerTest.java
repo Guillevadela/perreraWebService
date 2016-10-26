@@ -76,11 +76,50 @@ public class PerroControllerTest {
 	}
 
 	@Test
+	public void testGetById() {
+		PerroController controller = new PerroController();
+
+		Response response = controller.getById(1);
+
+		assertEquals(200, response.getStatus());
+	}
+
+	@Test
 	public void testInsertar() {
 		PerroController controller = new PerroController();
 
 		Response response = controller.getAll("asc", "id");
 
 		assertEquals(200, response.getStatus());
+
+		response = controller.post("rufo", "perro salchicha");
+
+		assertEquals(201, response.getStatus());
+	}
+
+	@Test
+	public void testModificar() {
+		PerroController controller = new PerroController();
+
+		Response response = controller.getAll("asc", "id");
+
+		assertEquals(200, response.getStatus());
+
+		response = controller.put(4, "kit", "san bernardo");
+
+		assertEquals(201, response.getStatus());
+	}
+
+	@Test
+	public void testEliminar() {
+		PerroController controller = new PerroController();
+
+		Response response = controller.getAll("asc", "id");
+
+		assertEquals(200, response.getStatus());
+
+		response = controller.delete(4);
+
+		assertEquals(201, response.getStatus());
 	}
 }

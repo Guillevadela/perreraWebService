@@ -40,6 +40,13 @@ public class Perro {
 		this.raza = "";
 	}
 
+	public Perro(long id, String nombre, String raza) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.raza = raza;
+	}
+
 	public String getNombre() {
 		return this.nombre;
 	}
@@ -67,7 +74,7 @@ public class Perro {
 	/**
 	 * Si id = 0 es nuevo perro que no se ha persistido en una BBDD, cualquier
 	 * id superior a 0 es perro persistido
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isNew() {

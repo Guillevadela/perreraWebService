@@ -2,9 +2,13 @@ package com.ipartek.formacion.perrera.controller;
 
 import java.util.ArrayList;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -48,4 +52,99 @@ public class PerroController {
 		}
 	}
 
+	@GET
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Busca un perro por su ID", notes = "devuelve un perro mediante el paso de su ID", response = Perro.class, responseContainer = "Perro")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
+			@ApiResponse(code = 204, message = "No existe perro con esa ID"),
+			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	public Response getById(@PathParam("id") int idPerro) {
+
+		try {
+			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			Perro perro = null;
+			perro = dao.getById(idPerro);
+			if (perro == null) {
+				return Response.noContent().build();
+			}
+			return Response.ok().entity(perro).build();
+		} catch (Exception e) {
+			return Response.serverError().build();
+		}
+	}
+
+	@DELETE
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Elimina un perro", notes = "Elimina un perro mediante el paso de su ID", response = Perro.class, responseContainer = "FechaHora")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Perro eliminado"),
+			@ApiResponse(code = 204, message = "No existe Perro con ese ID"),
+			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	public Response delete(@PathParam("id") int idPerro) {
+
+		try {
+			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			boolean pElimnar = false;
+			pElimnar = dao.delete(idPerro);
+			if (pElimnar != true) {
+				return Response.notModified().build();
+			} else {
+				return Response.ok().entity(pElimnar).build();
+			}
+		} catch (Exception e) {
+			return Response.serverError().build();
+		}
+	}
+
+	@POST
+	@Path("/{nombre}/{raza}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Añade un perro", notes = "Crea y persiste un nuevo perro", response = Perro.class, responseContainer = "Perro")
+	@ApiResponses(value = { @ApiResponse(code = 201, message = "Perro Creado con exito"),
+			@ApiResponse(code = 304, message = "No se ha podido modificar al perro"),
+			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	public Response post(@PathParam("nombre") String nombrePerro, @PathParam("raza") String razaPerro) {
+		try {
+			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			Perro pCreado = new Perro(nombrePerro, razaPerro);
+			boolean idpCreado = false;
+			idpCreado = dao.insert(pCreado);
+			if (idpCreado == true) {
+				return Response.status(201).entity(pCreado).build();
+			} else {
+				return Response.status(409).build();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
+	}
+
+	@PUT
+	@Path("/{id}/{nombre}/{raza}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Modifica un perro", notes = "Modifica un perro ya existente mediante su identificador", response = Perro.class, responseContainer = "Perro")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
+			@ApiResponse(code = 204, message = "No existe perro con ese ID"),
+			@ApiResponse(code = 304, message = "No se ha podido modificar al perro"),
+			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	public Response put(@PathParam("id") long idPerro, @PathParam("nombre") String nombrePerro,
+			@PathParam("raza") String razaPerro) {
+		try {
+			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			Perro pModificar = new Perro(idPerro, nombrePerro, razaPerro);
+
+			boolean rModificar = false;
+			rModificar = dao.update(pModificar);
+			if (rModificar != true) {
+				return Response.notModified().build();
+			} else {
+				return Response.ok().entity(pModificar).build();
+			}
+		} catch (Exception e) {
+			return Response.status(500).build();
+
+		}
+	}
 }
