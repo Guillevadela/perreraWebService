@@ -15,8 +15,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.hibernate.Session;
-
 import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.Perro;
 
@@ -35,7 +33,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("/perro")
 @Api(value = "/perro")
 public class PerroController {
-	private Session s;
+//	private final Log logger = LogFactory.getLog(this.getClass());
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
