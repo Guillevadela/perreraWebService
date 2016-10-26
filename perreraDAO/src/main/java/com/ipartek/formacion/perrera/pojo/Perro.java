@@ -13,7 +13,7 @@ public class Perro {
 
 	@Id
 	@GeneratedValue
-	private int Id;// clave y se genera automaticamente
+	private int id;// clave y se genera automaticamente
 
 	/* Persistente, un tipo basico (string) */
 	@Basic
@@ -44,12 +44,13 @@ public class Perro {
 		return this.nombre;
 	}
 
+
 	public int getId() {
-		return this.Id;
+		return this.id;
 	}
 
 	public void setId(int id) {
-		this.Id = id;
+		this.id = id;
 	}
 
 	public void setNombre(String nombre) {
@@ -64,6 +65,15 @@ public class Perro {
 		this.raza = raza;
 	}
 
+	/**
+	 * Si id = 0 es nuevo perro que no se ha persisitido en una BBDD,
+	 * cualquier id superior a 0 es perro persistido
+	 * @return
+	 */
+	public boolean isNew(){
+		return this.id > 0 ? true : false;
+	}
+	
 	@Override
 	public String toString() {
 		return "Perro [nombre=" + this.nombre + ", raza=" + this.raza + "]";

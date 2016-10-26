@@ -8,9 +8,9 @@ public interface PerroDAO {
 
 	List<Perro> getAll(String order, String campo);
 
-	Perro getById(long idPerro);
+	Perro getById(int idPerro);
 
-	boolean delete(long idPerro);
+	boolean delete(int idPerro);
 
 	boolean update(Perro perro);
 
