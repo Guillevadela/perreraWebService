@@ -18,7 +18,7 @@ public class PerroControlllerTest {
 	public final static String RAZA_PERRO = "Doberman";
 	public final static String NOMBRE_PERRO_UPDATE = "JackU";
 	public final static String RAZA_PERRO_UPDATE = "DobermanU";
-	public final static int ID_ERRONEA = -1;
+	public final static long ID_ERRONEA = -1;
 	
 
 	/*
