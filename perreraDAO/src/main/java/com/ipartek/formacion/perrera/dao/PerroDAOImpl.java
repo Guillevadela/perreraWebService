@@ -3,6 +3,7 @@ package com.ipartek.formacion.perrera.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.QueryException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
@@ -46,7 +47,18 @@ public class PerroDAOImpl implements PerroDAO {
 		// obtenemos la sesion
 		final Session s = HibernateUtil.getSession();
 		try {
-			lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc(campo)).list();
+			try {
+				if ("desc".equals(order)) {
+					lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc(campo)).list();
+				} else {
+					lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.asc(campo)).list();
+				}
+				// Si falla por que el campo no existe se ordenara de manera
+				// ascendente por id
+			} catch (final QueryException e) {
+				lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc("id")).list();
+			}
+
 		} catch (final Exception e) {
 			e.printStackTrace();
 		} finally {
