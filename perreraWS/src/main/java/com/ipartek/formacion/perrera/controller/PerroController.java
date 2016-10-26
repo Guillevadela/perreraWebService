@@ -60,11 +60,11 @@ public class PerroController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
 			@ApiResponse(code = 204, message = "No existe perro con esa ID"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response getById(@PathParam("id") int idPerro) {
+	public Response getById(@PathParam("id") long idCreado) {
 
 		try {
 			final PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			final Perro perro = dao.getById(idPerro);
+			final Perro perro = dao.getById(idCreado);
 			if (perro == null) {
 				return Response.noContent().build();
 			}
@@ -107,7 +107,7 @@ public class PerroController {
 			@ApiResponse(code = 204, message = "No existe perro con ese ID"),
 			@ApiResponse(code = 409, message = "Perro existente, no se puede modificar"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response put(@PathParam("id") int idPerro, @PathParam("nombre") String nombrePerro,
+	public Response put(@PathParam("id") long idPerro, @PathParam("nombre") String nombrePerro,
 			@PathParam("raza") String razaPerro) {
 		try {
 			final Perro pModificar = new Perro();
@@ -136,12 +136,12 @@ public class PerroController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Perro eliminado"),
 			@ApiResponse(code = 204, message = "No existe Perro con ese ID"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response delete(@PathParam("id") int idPerro) {
+	public Response delete(@PathParam("id") long idCreado) {
 
 		try {
 			final PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			final Perro pEliminado = dao.getById(idPerro);
-			final boolean resul = dao.delete(idPerro);
+			final Perro pEliminado = dao.getById(idCreado);
+			final boolean resul = dao.delete(idCreado);
 			if (resul == false) {
 				return Response.noContent().build();
 			} else {
