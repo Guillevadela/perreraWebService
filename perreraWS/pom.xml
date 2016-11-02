@@ -15,12 +15,14 @@
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
-
+<!-- dependencia al servicio -->
 		<dependency>
 			<groupId>com.ipartek.formacion</groupId>
-			<artifactId>perreraDAO</artifactId>
-			<version>${project.version}</version>
+			<artifactId>perreraService</artifactId>
+			<version>{parent.version}</version>
 		</dependency>
+		
+		
 
 		<dependency>
 			<groupId>javax.servlet</groupId>

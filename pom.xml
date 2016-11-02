@@ -11,6 +11,7 @@
 	<modules>
 		<module>perreraDAO</module>
 		<module>perreraWS</module>
+		<module>perreraService</module>
 	</modules>
 
 
