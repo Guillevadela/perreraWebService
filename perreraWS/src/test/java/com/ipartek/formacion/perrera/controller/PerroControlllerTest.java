@@ -40,16 +40,19 @@ public class PerroControlllerTest {
 	public void tearDown() throws Exception {
 	}
 
+	// *****************************************************
+	// ******* COMPROBAR EL METODO getAll() ****************
+	// *****************************************************
 	@Test
 	public void testGetAll() {
 
 		PerroController controller = new PerroController();
-
+		// obtenemos la lista de perros
 		Response response = controller.getAll("asc", "id");
-
+		// comprobamos que nos ha devuelto lo que queremos
 		assertEquals(200, response.getStatus());
 
-		// ordenacion ascendente por id
+		// comprobamos la ordenacion ascendente por id
 		lista = (ArrayList<Perro>) response.getEntity();
 		long idActual = -1;
 		for (Perro p : lista) {
@@ -57,7 +60,7 @@ public class PerroControlllerTest {
 			idActual = p.getId();
 		}
 
-		// ordenacion descendente por id
+		// comprobamos la ordenacion descendente por id
 		response = controller.getAll("desc", "id");
 		lista = (ArrayList<Perro>) response.getEntity();
 		if (!lista.isEmpty()) {
@@ -68,7 +71,7 @@ public class PerroControlllerTest {
 			}
 		}
 
-		// ordenacion campo inexistente
+		// comprobamos la ordenacion campo inexistente
 		response = controller.getAll("desc", "XXX");
 		lista = (ArrayList<Perro>) response.getEntity();
 		if (!lista.isEmpty()) {
@@ -81,42 +84,57 @@ public class PerroControlllerTest {
 
 	}
 
+	// *********************************************************
+	// ******* COMPROBAR EL METODO getById(id) *********
+	// *****************************************************
 	@Test
 	public void testGetById() {
 
 		PerroController controller = new PerroController();
-
+		// obtenemos toda la lista
 		Response response = controller.getAll("asc", "id");
 		lista = (ArrayList<Perro>) response.getEntity();
+		// obtenemos el id del ultimo elemento
 		int idExist = (int) (lista.get(lista.size() - 1).getId());
+		// sumando 1 al ultimo id nos aseguramos de que no existe para
+		// comprobarlo
 		int idInexist = idExist + 1;
-
+		// comprobamos que nos ha devuelto lo que queremos con id que existe
 		response = controller.getById(idExist);
 		assertEquals(200, response.getStatus());
-
+		// comprobamos que nos ha devuelto lo que queremos con id que no existe
 		response = controller.getById(idInexist);
 		assertEquals(204, response.getStatus());
 
 	}
 
+	// ******************************************************
+	// ******* COMPROBAR EL METODO delete(id) ****************
+	// *****************************************************
 	@Test
 	public void testDelete() {
 
 		PerroController controller = new PerroController();
-
+		// obtenemos toda la lista
 		Response response = controller.getAll("asc", "id");
 		lista = (ArrayList<Perro>) response.getEntity();
+		// obtenemos el id del ultimo elemento
 		int idExist = (int) (lista.get(lista.size() - 1).getId());
+		// sumando 1 al ultimo id nos aseguramos de que no existe para
+		// comprobarlo
 		int idInexist = idExist + 1;
-
+		// comprobamos que nos ha devuelto lo que queremos con id que existe
 		response = controller.delete(idExist);
 		assertEquals(200, response.getStatus());
-
+		// comprobamos que nos ha devuelto lo que queremos con id que no existe
 		response = controller.delete(idInexist);
 		assertEquals(204, response.getStatus());
 
 	}
 
+	// *********************************************************
+	// ******* COMPROBAR EL METODO insert(Perro perro) *********
+	// *****************************************************
 	@Test
 	public void testInsert() {
 
@@ -127,6 +145,9 @@ public class PerroControlllerTest {
 
 	}
 
+	// *****************************************************
+	// ******* COMPROBAR EL METODO update() ****************
+	// *****************************************************
 	@Test
 	public void testUpdate() {
 

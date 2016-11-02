@@ -14,10 +14,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
-
-import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.Perro;
+import com.ipartek.formacion.perrera.service.PerroServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,8 +26,6 @@ import io.swagger.annotations.ApiResponses;
 @Path("/perro")
 @Api(value = "/perro")
 public class PerroController {
-
-	private static Logger LOG = Logger.getLogger(PerroController.class);
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -42,9 +38,8 @@ public class PerroController {
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		try {
 
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			LOG.info("obtenemos la instancia de PerroDaoImpl");
-			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
+			PerroServiceImpl service = PerroServiceImpl.getInstance();
+			ArrayList<Perro> perros = (ArrayList<Perro>) service.getAll(orderBy, campo);
 			return Response.ok().entity(perros).build();
 
 		} catch (Exception e) {
@@ -62,8 +57,8 @@ public class PerroController {
 	public Response getById(@PathParam("id") int idPerro) {
 
 		try {
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			Perro perro = (Perro) dao.getById(idPerro);
+			PerroServiceImpl service = PerroServiceImpl.getInstance();
+			Perro perro = (Perro) service.getById(idPerro);
 			if (0 == perro.getId()) {
 				return Response.noContent().build();
 			} else {
@@ -85,8 +80,8 @@ public class PerroController {
 	public Response delete(@PathParam("id") int idPerro) {
 
 		try {
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			boolean perroBorrado = dao.delete(idPerro);
+			PerroServiceImpl service = PerroServiceImpl.getInstance();
+			boolean perroBorrado = service.delete(idPerro);
 			if (perroBorrado) {
 				return Response.ok().entity(perroBorrado).build();
 			} else {
@@ -107,9 +102,9 @@ public class PerroController {
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
 	public Response post(@PathParam("nombre") String nombrePerro, @PathParam("raza") String razaPerro) {
 		try {
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			PerroServiceImpl service = PerroServiceImpl.getInstance();
 			Perro perroNuevo = new Perro(nombrePerro, razaPerro);
-			boolean perroCreado = dao.insert(perroNuevo);
+			boolean perroCreado = service.insert(perroNuevo);
 			if (perroCreado) {
 				return Response.status(201).build();
 			} else {
@@ -132,14 +127,13 @@ public class PerroController {
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
 	public Response put(@PathParam("id") int idPerro, @PathParam("nombre") String nombrePerro,
 			@PathParam("raza") String razaPerro) {
-		boolean perroModificado = false;
 		try {
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			Perro perro = (Perro) dao.getById(idPerro);
+			PerroServiceImpl service = PerroServiceImpl.getInstance();
+			Perro perro = (Perro) service.getById(idPerro);
 			if (0 < perro.getId()) {
 				perro.setNombre(nombrePerro);
 				perro.setRaza(razaPerro);
-				perroModificado = dao.update(perro);
+				service.update(perro);
 				return Response.status(200).build();
 			} else {
 				return Response.status(204).build();
