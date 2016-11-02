@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.FechaHora;
 import com.ipartek.formacion.perrera.pojo.Perro;
+import com.ipartek.formacion.perrera.service.PerreraServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,7 +46,7 @@ public class PerroController {
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id")  @QueryParam("campo") String campo) {
 		try {
 			
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			PerreraServiceImpl dao = PerreraServiceImpl.getInstance();
 			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);			
 			return Response.ok().entity(perros).build();
 			
@@ -67,7 +68,7 @@ public class PerroController {
 
 		try {
 
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			PerreraServiceImpl dao = PerreraServiceImpl.getInstance();
 			Perro perro = (Perro) dao.getById(idPerro);
 
 			if (perro == null) {
@@ -90,7 +91,7 @@ public class PerroController {
 
 		try {
 			
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			PerreraServiceImpl dao = PerreraServiceImpl.getInstance();
 			Perro pElimnar = null;
 			
 			pElimnar = (Perro) dao.getById(idPerro);
@@ -117,7 +118,7 @@ public class PerroController {
 	public Response post(@PathParam("nombre") String nombrePerro, @PathParam("raza") String razaPerro) {
 		try {
 
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			PerreraServiceImpl dao = PerreraServiceImpl.getInstance();
 			Perro pCreado = new Perro(nombrePerro, razaPerro);
 			boolean creado = dao.insert(pCreado);
 						
@@ -146,7 +147,7 @@ public class PerroController {
 			@PathParam("raza") String razaPerro) {
 		try {
 			
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			PerreraServiceImpl dao = PerreraServiceImpl.getInstance();
 			Perro pModificar = null;
 			
 			pModificar = (Perro) dao.getById(idPerro);

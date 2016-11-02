@@ -13,7 +13,7 @@ import com.ipartek.formacion.perrera.pojo.Perro;
  */
 
  
-public interface perreraService  {
+public interface PerreraService  {
 	
 	/**
 	 * Retorna listado perros creados
