@@ -11,16 +11,13 @@ import com.ipartek.formacion.perrera.pojo.Perro;
 import com.ipartek.formacion.perrera.util.HibernateUtil;
 
 public class PerroDAOImpl implements PerroDAO {
-
-	// instancia unica para 'patron Singleton'
+	
 	private static PerroDAOImpl INSTANCE = null;
 
-	// constructor privado para que no se pueda instanciar esta clase
 	private PerroDAOImpl() {
 		super();
 	}
 
-	// unico metodo para crear un objeto de esta Clase
 	public synchronized static PerroDAOImpl getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new PerroDAOImpl();

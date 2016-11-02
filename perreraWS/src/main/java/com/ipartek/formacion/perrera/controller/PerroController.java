@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("/perro")
 @Api(value = "/perro")
 public class PerroController {
-
+	/* CONTROLADOR */
 	private static Logger LOG = Logger.getLogger(PerroController.class);
 
 	@GET
