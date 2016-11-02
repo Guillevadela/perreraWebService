@@ -139,8 +139,9 @@ public class PerroControlllerTest {
 	public void testInsert() {
 
 		PerroController controller = new PerroController();
-
+		// insertamos un perro
 		Response response = controller.post("Hola", "Caracola");
+		// comprobamos que nos ha devuelto lo que queremos
 		assertEquals(201, response.getStatus());
 
 	}
