@@ -8,6 +8,7 @@
 	</parent>
 
 	<artifactId>perreraDAO</artifactId>
+	<packaging>jar</packaging>
 	<name>perreraDAO</name>
 	<description>Capa Modelo de Datos con Hibernate y MySql</description>
 

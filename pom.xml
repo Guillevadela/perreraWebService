@@ -8,9 +8,11 @@
 	<packaging>pom</packaging>
 	<name>PerreraWebService</name>
 	<description>WebService RestFull para gestion perrera</description>
+	
 	<modules>
 		<module>perreraDAO</module>
 		<module>perreraWS</module>
+		<module>perreraService</module>
 	</modules>
 
 
