@@ -5,20 +5,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.ipartek.formacion</groupId>
-		<artifactId>perrera</artifactId>
+		<artifactId>perrerafraileWebService</artifactId>
 		<version>${project.version}</version>
 	</parent>
 
-	<artifactId>perreraWS</artifactId>
+	<artifactId>perreraWSfraile</artifactId>
 	<packaging>war</packaging>
-	<name>perreraWS Maven Webapp</name>
+	<name>perreraWS Maven Webapp fraile</name>
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
 
 		<dependency>
 			<groupId>com.ipartek.formacion</groupId>
-			<artifactId>perreraDAO</artifactId>
+			<artifactId>perreraDAOfraile</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
@@ -50,6 +50,6 @@
 	</dependencies>
 
 	<build>
-		<finalName>perreraWS</finalName>
+		<finalName>perreraWSfraile</finalName>
 	</build>
 </project>

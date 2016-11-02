@@ -3,14 +3,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ipartek.formacion</groupId>
-	<artifactId>perrera</artifactId>
+	<artifactId>perrerafraileWebService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>PerreraWebService</name>
+	<name>PerreraWebServiceFraile</name>
 	<description>WebService RestFull para gestion perrera</description>
 	<modules>
-		<module>perreraDAO</module>
-		<module>perreraWS</module>
+		<module>perreraDAOfraile</module>
+		<module>perreraWSfraile</module>
 	</modules>
 
 

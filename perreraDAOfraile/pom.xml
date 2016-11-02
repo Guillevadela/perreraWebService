@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.ipartek.formacion</groupId>
-		<artifactId>perrera</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<artifactId>perrerafraileWebService</artifactId>
+		<version>${project.version}</version>
 	</parent>
 
-	<artifactId>perreraDAO</artifactId>
-	<name>perreraDAO</name>
+	<artifactId>perreraDAOfraile</artifactId>
+	<name>perreraDAOfraile</name>
 	<description>Capa Modelo de Datos con Hibernate y MySql</description>
 
 	<dependencies>

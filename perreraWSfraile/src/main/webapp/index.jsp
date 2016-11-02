@@ -1,5 +1,5 @@
 <%
- final String SWAGGER_JSON_URL = "http://localhost:8080/perreraWS/service/swagger.json";
+ final String SWAGGER_JSON_URL = "http://localhost:8080/perreraWSfraile/service/swagger.json";
  %>
 
 <!DOCTYPE html>
