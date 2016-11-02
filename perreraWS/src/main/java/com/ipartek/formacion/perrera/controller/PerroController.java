@@ -94,7 +94,7 @@ public class PerroController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Perro eliminado"),
 			@ApiResponse(code = 204, message = "No existe Perro con ese ID"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response delete(@PathParam("id") int idPerro) {
+	public Response delete(@PathParam("id") long idPerro) {
 
 		try {
 			this.logger.info("preparando la instancia...");

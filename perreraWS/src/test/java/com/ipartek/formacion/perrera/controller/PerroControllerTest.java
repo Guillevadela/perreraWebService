@@ -32,11 +32,11 @@ public class PerroControllerTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+	
+	PerroController controller = new PerroController();
 
 	@Test
 	public void testGetAll() {
-
-		PerroController controller = new PerroController();
 
 		Response response = controller.getAll("asc", "id");
 
@@ -77,7 +77,6 @@ public class PerroControllerTest {
 
 	@Test
 	public void testGetById() {
-		PerroController controller = new PerroController();
 
 		Response response = controller.getById(1);
 
@@ -86,7 +85,6 @@ public class PerroControllerTest {
 
 	@Test
 	public void testInsertar() {
-		PerroController controller = new PerroController();
 
 		Response response = controller.getAll("asc", "id");
 
@@ -99,26 +97,36 @@ public class PerroControllerTest {
 
 	@Test
 	public void testModificar() {
-		PerroController controller = new PerroController();
 
 		Response response = controller.getAll("asc", "id");
 
 		assertEquals(200, response.getStatus());
+		
+		ArrayList<Perro> lista = (ArrayList<Perro>) response.getEntity();
+		long ultimaId = 0;
+		for (Perro p : lista) {
+			ultimaId = p.getId();
+		}
 
-		response = controller.put(4, "kit", "san bernardo");
+		response = controller.put(ultimaId, "kit", "san bernardo");
 
 		assertEquals(200, response.getStatus());
 	}
 
 	@Test
 	public void testEliminar() {
-		PerroController controller = new PerroController();
 
 		Response response = controller.getAll("asc", "id");
 
 		assertEquals(200, response.getStatus());
+		
+		ArrayList<Perro> lista = (ArrayList<Perro>) response.getEntity();
+		long ultimaId = 0;
+		for (Perro p : lista) {
+			ultimaId = p.getId();
+		}
 
-		response = controller.delete(4);
+		response = controller.delete(ultimaId);
 
 		assertEquals(200, response.getStatus());
 	}
