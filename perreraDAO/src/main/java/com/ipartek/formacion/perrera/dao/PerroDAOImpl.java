@@ -6,12 +6,15 @@ import java.util.List;
 import org.hibernate.QueryException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ipartek.formacion.perrera.pojo.Perro;
 import com.ipartek.formacion.perrera.util.HibernateUtil;
 
 public class PerroDAOImpl implements PerroDAO {
 
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 	// instancia unica para 'patron Singleton'
 	private static PerroDAOImpl INSTANCE = null;
 
@@ -40,6 +43,7 @@ public class PerroDAOImpl implements PerroDAO {
 	 * @return List<Perro>
 	 */
 	public List<Perro> getAll(String order, String campo) {
+		this.log.info("DAO: Obteniendo lista de perros");
 		// inicializamos lista como un ArrayList de objetos Perro
 		ArrayList<Perro> lista = new ArrayList<Perro>();
 		// obtenemos la sesion
@@ -48,27 +52,33 @@ public class PerroDAOImpl implements PerroDAO {
 
 			try {
 				if ("desc".equals(order)) {
+					this.log.info("DAO: Obteniendo lista de perros por orden desc");
 					lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc(campo)).list();
 				} else {
+					this.log.info("DAO: Obteniendo lista de perros por orden asc");
 					lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.asc(campo)).list();
 				}
 				// Si falla porque esta mal la Query, por ejemplo una columna
 				// que no existe
 				// retorno listado perros ordenados por id desc
 			} catch (QueryException e) {
+				this.log.error("QueryException: mostrar lista de perros orden desc por id");
 				lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc("id")).list();
 			}
 
 		} catch (Exception e) {
+			this.log.error("Exception: no se ha podido mostrar lista de perros");
 			e.printStackTrace();
 		} finally {
 			// cerramos la transaccion
 			s.close();
 		}
+		this.log.info("DAO: Devolviendo lista de perros");
 		return lista;
 	}
 
 	public Perro getById(long idPerro) {
+		this.log.info("DAO: Obteniendo perro por id:" + idPerro);
 		Perro resul = null;
 
 		Session s = HibernateUtil.getSession();

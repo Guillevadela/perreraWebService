@@ -3,11 +3,7 @@ package com.ipartek.formacion.perrera.controller;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import javax.ws.rs.core.Response;
 
@@ -153,18 +149,19 @@ public class PerroControlllerTest {
 	public void testUpdate() {
 
 		PerroController controller = new PerroController();
-
+		// obtenemos toda la lista
 		Response response = controller.getAll("asc", "id");
 		lista = (ArrayList<Perro>) response.getEntity();
+		// obtenemos el id del ultimo elemento
 		int idExist = (int) (lista.get(lista.size() - 1).getId());
+		// sumando 1 al ultimo id nos aseguramos de que no existe para
+		// comprobarlo
 		int idInexist = idExist + 1;
-		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		Date today = Calendar.getInstance().getTime();
-		String nomORaza = df.format(today);
-		response = controller.put(idExist, nomORaza, nomORaza);
+		// comprobamos que nos ha devuelto lo que queremos con id que existe
+		response = controller.put(idExist, "txutxillo", "txotxillo");
 		assertEquals(200, response.getStatus());
-
-		response = controller.put(idInexist, nomORaza, nomORaza);
+		// comprobamos que nos ha devuelto lo que queremos con id que no existe
+		response = controller.put(idInexist, "esto no", "funciona");
 		assertEquals(204, response.getStatus());
 
 	}

@@ -15,12 +15,6 @@
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>com.ipartek.formacion</groupId>
-			<artifactId>perreraDAO</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>com.ipartek.formacion</groupId>

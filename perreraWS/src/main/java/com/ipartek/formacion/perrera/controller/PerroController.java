@@ -14,6 +14,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ipartek.formacion.perrera.pojo.Perro;
 import com.ipartek.formacion.perrera.service.PerroServiceImpl;
 
@@ -27,6 +30,8 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/perro")
 public class PerroController {
 
+	protected final Logger log = LoggerFactory.getLogger(getClass());
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Listado de Perros", notes = "Listado de perros existentes en la perrera, limitado a 1.000", response = Perro.class, responseContainer = "List")
@@ -37,12 +42,14 @@ public class PerroController {
 			@ApiParam(name = "orderBy", required = false, value = "Filtro para ordenar los perros de forma ascendente o descendente, posibles valores [asc|desc]") @DefaultValue("asc") @QueryParam("orderBy") String orderBy,
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		try {
-
+			this.log.info("Llamada a servicio: Obteniendo lista de perros");
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
 			ArrayList<Perro> perros = (ArrayList<Perro>) service.getAll(orderBy, campo);
+			this.log.info("Controlador: Devolviendo lista de perros");
 			return Response.ok().entity(perros).build();
 
 		} catch (Exception e) {
+			this.log.error("Error al intentar conectarse al servidor en getAll");
 			return Response.serverError().build();
 		}
 	}
@@ -57,15 +64,18 @@ public class PerroController {
 	public Response getById(@PathParam("id") int idPerro) {
 
 		try {
+			this.log.info("Llamada a servicio: Obteniendo perro con su id");
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
 			Perro perro = (Perro) service.getById(idPerro);
 			if (0 == perro.getId()) {
+				this.log.info("No se ha encontrado perros con id" + idPerro);
 				return Response.noContent().build();
 			} else {
 				return Response.ok().entity(perro).build();
 			}
 
 		} catch (Exception e) {
+			this.log.error("Error al intentar conectarse al servidor en getById");
 			return Response.serverError().build();
 		}
 	}
@@ -80,15 +90,18 @@ public class PerroController {
 	public Response delete(@PathParam("id") int idPerro) {
 
 		try {
+			this.log.info("Llamada a servicio: Eliminando perro con id:" + idPerro);
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
 			boolean perroBorrado = service.delete(idPerro);
 			if (perroBorrado) {
 				return Response.ok().entity(perroBorrado).build();
 			} else {
+				this.log.info("No se ha podido eliminar el perro con id" + idPerro);
 				return Response.noContent().build();
 			}
 
 		} catch (Exception e) {
+			this.log.error("Error al intentar conectarse al servidor en delete");
 			return Response.serverError().build();
 		}
 	}
@@ -102,16 +115,21 @@ public class PerroController {
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
 	public Response post(@PathParam("nombre") String nombrePerro, @PathParam("raza") String razaPerro) {
 		try {
+			this.log.info(
+					"Llamada a servicio: Insertando perro nuevo con nombre:" + nombrePerro + " y raza:" + razaPerro);
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
 			Perro perroNuevo = new Perro(nombrePerro, razaPerro);
 			boolean perroCreado = service.insert(perroNuevo);
 			if (perroCreado) {
 				return Response.status(201).build();
 			} else {
+				this.log.info("No se ha podido insertar en la tabla el perro con nombre:" + nombrePerro + " y raza:"
+						+ razaPerro);
 				return Response.status(409).build();
 			}
 
 		} catch (Exception e) {
+			this.log.error("Error al intentar conectarse al servidor en post");
 			e.printStackTrace();
 			return Response.serverError().build();
 		}
@@ -128,6 +146,7 @@ public class PerroController {
 	public Response put(@PathParam("id") int idPerro, @PathParam("nombre") String nombrePerro,
 			@PathParam("raza") String razaPerro) {
 		try {
+			this.log.info("Llamada a servicio: Modificando perro con id:" + idPerro);
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
 			Perro perro = (Perro) service.getById(idPerro);
 			if (0 < perro.getId()) {
@@ -136,10 +155,13 @@ public class PerroController {
 				service.update(perro);
 				return Response.status(200).build();
 			} else {
+				this.log.info("No se ha podido modificar el perro con id:" + idPerro + " nombre:" + nombrePerro
+						+ " y raza:" + razaPerro);
 				return Response.status(204).build();
 			}
 
 		} catch (Exception e) {
+			this.log.error("Error al intentar conectarse al servidor en put");
 			return Response.status(500).build();
 
 		}
