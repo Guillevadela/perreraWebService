@@ -16,61 +16,45 @@ import org.junit.Test;
 import com.ipartek.formacion.perrera.pojo.Perro;
 
 public class PerroControllerTest {
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
 	
 	PerroController controller = new PerroController();
 
+	ArrayList<Perro> lista = null;
+	
 	@Test
 	public void testGetAll() {
 
 		Response response = controller.getAll("asc", "id");
-
-		assertEquals(200, response.getStatus());
-
-		ArrayList<Perro> lista = (ArrayList<Perro>) response.getEntity();
+		
+		assertEquals( 200, response.getStatus() );
+		
+		//ordenacion ascendente por id	
+		lista = (ArrayList<Perro>) response.getEntity();	
 		long idActual = -1;
-		for (Perro p : lista) {
-			assertTrue("ordenacion ascendente por id", idActual < p.getId());
-			idActual = p.getId();
-		}
-
-		// comprobar ordenacion ascendente por id
-
+		for ( Perro p : lista ){			
+			assertTrue("ordenacion ascendente por id", idActual < p.getId() );
+			idActual = p.getId();						
+		}		
+		
+		//ordenacion descendente por id
 		response = controller.getAll("desc", "id");
 		lista = (ArrayList<Perro>) response.getEntity();
-		if (!lista.isEmpty()) {
-			idActual = lista.get(0).getId() + 1;
-			for (Perro p : lista) {
-				assertTrue("ordenacion descendente por id", idActual > p.getId());
-				idActual = p.getId();
-			}
-		}
-
-		// comprobar ordenacion descendente por id
-
-		// ordenacion campo inexistente
+		if ( !lista.isEmpty() ){
+			idActual = lista.get(0).getId()+1;
+			for ( Perro p : lista ){			
+				assertTrue("ordenacion ascendente por id", idActual > p.getId() );
+				idActual = p.getId();						
+			}	
+		}	
+		
+		//ordenacion campo inexistente		
 		response = controller.getAll("XXX", "id");
 		lista = (ArrayList<Perro>) response.getEntity();
-		if (!lista.isEmpty()) {
-			idActual = lista.get(0).getId() + 1;
-			for (Perro p : lista) {
-				assertTrue("ordenacion campo inexistente, debe ordenar desc por id", idActual > p.getId());
-				idActual = p.getId();
+		if ( !lista.isEmpty() ){
+			idActual = -1;
+			for ( Perro p : lista ){			
+				assertTrue("ordenacion campo inexistente,debe ordernar desc por id", idActual < p.getId() );
+				idActual = p.getId();						
 			}
 		}
 	}
@@ -120,7 +104,7 @@ public class PerroControllerTest {
 
 		assertEquals(200, response.getStatus());
 		
-		ArrayList<Perro> lista = (ArrayList<Perro>) response.getEntity();
+		lista = (ArrayList<Perro>) response.getEntity();
 		long ultimaId = 0;
 		for (Perro p : lista) {
 			ultimaId = p.getId();
