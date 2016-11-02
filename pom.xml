@@ -11,6 +11,7 @@
 	<modules>
 		<module>perreraDAOfraile</module>
 		<module>perreraWSfraile</module>
+		<module>perreraServicefraile</module>
 	</modules>
 
 
