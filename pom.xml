@@ -39,6 +39,7 @@
 			<scope>compile</scope>
 		</dependency>
 
+
 		<dependency>
 			<groupId>javassist</groupId>
 			<artifactId>javassist</artifactId>

@@ -14,6 +14,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.FechaHora;
 import com.ipartek.formacion.perrera.pojo.Perro;
@@ -27,6 +30,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("/perro")
 @Api(value = "/perro")
 public class PerroController {
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -38,12 +42,13 @@ public class PerroController {
 			@ApiParam(name = "orderBy", required = false, value = "Filtro para ordenar los perros de forma ascendente o descendente, posibles valores [asc|desc]") @DefaultValue("asc") @QueryParam("orderBy") String orderBy,
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		try {
-
+			this.log.info("listando todos los perros");
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
 			return Response.ok().entity(perros).build();
 
 		} catch (Exception e) {
+			this.log.error("Error listando todos los perros");
 			return Response.serverError().build();
 		}
 	}
@@ -56,17 +61,21 @@ public class PerroController {
 			@ApiResponse(code = 204, message = "No existe perro con esa ID"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
 	public Response getById(@PathParam("id") long idPerro) {
-
+		this.log.info("Peticion Obtener perro por 'id'" + idPerro);
 		try {
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			Perro perro = null;
 			perro = dao.getById(idPerro);
 
 			if (perro == null) {
+				this.log.info("El perro con id " + idPerro + " no existe en la bd");
 				return Response.noContent().build();
+
 			}
+			this.log.info("Mostrando perro con id " + idPerro);
 			return Response.ok().entity(perro).build();
 		} catch (Exception e) {
+
 			return Response.serverError().build();
 		}
 	}
@@ -83,14 +92,16 @@ public class PerroController {
 		try {
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			boolean pElimnar = dao.delete(idPerro);
-
+			this.log.info("Eliminando perro con id " + idPerro);
 			if (pElimnar == false) {
+				this.log.info("No se puede eliminar el perro con id " + idPerro + " No existe en la bd");
 				return Response.noContent().build();
 			} else {
-
+				this.log.info("Perro con id " + idPerro + " eliminado");
 				return Response.ok().entity(new FechaHora()).build();
 			}
 		} catch (Exception e) {
+			this.log.error("Imposible conectar con la bd");
 			return Response.serverError().build();
 		}
 	}
@@ -109,12 +120,14 @@ public class PerroController {
 			boolean creado = dao.insert(pCreado);
 
 			if (creado) {
+				this.log.info("Perro " + pCreado + " creado");
 				return Response.status(201).entity(pCreado).build();
 			} else {
 				return Response.status(409).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			this.log.error("Imposible conectar con la bd");
 			return Response.serverError().build();
 		}
 	}
@@ -143,6 +156,7 @@ public class PerroController {
 				return Response.ok().entity(pModificar).build();
 			}
 		} catch (Exception e) {
+			this.log.error("Imposible conectar con la bd");
 			return Response.status(500).build();
 		}
 	}
