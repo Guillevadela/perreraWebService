@@ -10,7 +10,11 @@ import org.hibernate.criterion.Order;
 import com.ipartek.formacion.perrera.pojo.Perro;
 import com.ipartek.formacion.perrera.util.HibernateUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class PerroDAOImpl implements PerroDAO {
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	// instancia unica para 'patron Singleton'
 	private static PerroDAOImpl INSTANCE = null;
@@ -48,14 +52,17 @@ public class PerroDAOImpl implements PerroDAO {
 
 			try {
 				if ("desc".equals(order)) {
+					this.log.info("listando todos los perros en orden desdendente");
 					lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc(campo)).list();
 				} else {
+					this.log.info("listando todos los perros en orden ascendente");
 					lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.asc(campo)).list();
 				}
 				// Si falla porque esta mal la Query, por ejemplo una columna
 				// que no existe
 				// retorno listado perros ordenados por id desc
-			} catch (QueryException e) {
+			} catch (QueryException e) {				
+				this.log.info("listando todos los perros en orden descendente por un error en la Query");				
 				lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc("id")).list();
 			}
 
@@ -73,6 +80,7 @@ public class PerroDAOImpl implements PerroDAO {
 		Session s = HibernateUtil.getSession();
 		try {
 			resul = (Perro) s.get(Perro.class, idPerro);
+			this.log.info("Iniciada peticion de perro por 'id'");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -90,6 +98,7 @@ public class PerroDAOImpl implements PerroDAO {
 			pElimnar = (Perro) s.get(Perro.class, idPerro);
 			if (pElimnar != null) {
 				s.delete(pElimnar);
+				this.log.info("Iniciada peticion de eliminar perro");
 				s.beginTransaction().commit();
 				resul = true;
 			}
@@ -107,6 +116,7 @@ public class PerroDAOImpl implements PerroDAO {
 		Session s = HibernateUtil.getSession();
 		try {
 			s.beginTransaction();
+			this.log.info("Iniciada peticion de actualizar perro");
 			s.update(perro);
 			s.beginTransaction().commit();
 			resul = true;
@@ -126,9 +136,11 @@ public class PerroDAOImpl implements PerroDAO {
 			s.beginTransaction();
 			long idCreado = (Long) s.save(perro);
 			if (idCreado > 0) {
+				this.log.info("Guardando un nuevo perro");
 				resul = true;
 				s.beginTransaction().commit();
 			} else {
+				this.log.info("Error al guardar un nuevo perro - rollback-");
 				s.beginTransaction().rollback();
 			}
 		} catch (Exception e) {

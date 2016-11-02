@@ -94,7 +94,6 @@ public class PerroController {
 			boolean pElimnar = dao.delete(idPerro);
 			this.log.info("Eliminando perro con id " + idPerro);
 			if (pElimnar == false) {
-				this.log.info("No se puede eliminar el perro con id " + idPerro + " No existe en la bd");
 				return Response.noContent().build();
 			} else {
 				this.log.info("Perro con id " + idPerro + " eliminado");
