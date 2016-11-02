@@ -11,6 +11,7 @@
 	<modules>
 		<module>perreraDAO</module>
 		<module>perreraWS</module>
+		<module>perreraService</module>
 	</modules>
 
 
@@ -20,6 +21,7 @@
 		<maven.compiler.target>1.6</maven.compiler.target>
 		<jersey.version>1.8</jersey.version>
 		<junit.version>4.12</junit.version>
+		<log4j.version>1.2.17</log4j.version>
 	</properties>
 
 
@@ -44,6 +46,18 @@
 			<artifactId>javassist</artifactId>
 			<version>3.4.GA</version>
 			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.ipartek.formacion</groupId>
+			<artifactId>perreraDAO</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>log4j</groupId>
+		    <artifactId>log4j</artifactId>
+		    <version>${log4j.version}</version>
 		</dependency>
 
 	</dependencies>

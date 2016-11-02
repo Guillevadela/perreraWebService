@@ -131,7 +131,7 @@ public class PerroDAOImpl implements PerroDAO {
 			s.update(perro);
 			s.beginTransaction().commit();
 			resul = true;
-			this.logger.info("El perro de id:" + perro.getId() + " ha sido modificado");
+			this.logger.info("El perro:" + perro.toString() + " ha sido modificado");
 		} catch (final Exception e) {
 			e.printStackTrace();
 			this.logger.error("Error al modificar al perro de id:" + perro.getId());
@@ -155,14 +155,14 @@ public class PerroDAOImpl implements PerroDAO {
 			long idCreado = (Long) s.save(perro);
 			if (idCreado > 0) {
 				resul = true;
-				this.logger.info("El perro:" + perro + ", ha sido dado de alta");
+				this.logger.info("El perro " + perro.toString() + ", ha sido dado de alta");
 				s.beginTransaction().commit();
 			} else {
-				this.logger.info("El perro:" + perro + ", no ha sido dado de alta");
+				this.logger.info("El perro " + perro.toString() + ", no ha sido dado de alta");
 				s.beginTransaction().rollback();
 			}
 		} catch (Exception e) {
-			this.logger.error("Error al dar de alta al perro:" + perro);
+			this.logger.error("Error al dar de alta al perro:" + perro.toString());
 			s.beginTransaction().rollback();
 			e.printStackTrace();
 		} finally {

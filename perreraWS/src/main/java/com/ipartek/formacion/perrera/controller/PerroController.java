@@ -17,8 +17,8 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.Perro;
+import com.ipartek.formacion.perrera.service.PerroServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,7 +48,7 @@ public class PerroController {
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		try {
 			this.logger.info("preparando la instancia...");
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			PerroServiceImpl dao = PerroServiceImpl.getInstance();
 			this.logger.info("procesando peticion para listar perros");
 			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
 			this.logger.info("perros listados correctamente");
@@ -71,7 +71,7 @@ public class PerroController {
 
 		try {
 			this.logger.info("preparando la instancia...");
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			PerroServiceImpl dao = PerroServiceImpl.getInstance();
 			Perro perro = null;
 			this.logger.info("procesando peticion para encontrar al perro con id:" + idPerro);
 			perro = dao.getById(idPerro);
@@ -98,7 +98,7 @@ public class PerroController {
 
 		try {
 			this.logger.info("preparando la instancia...");
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			PerroServiceImpl dao = PerroServiceImpl.getInstance();
 			boolean pElimnar = false;
 			this.logger.info("procesando peticion para eliminar al perro con id:" + idPerro);
 			pElimnar = dao.delete(idPerro);
@@ -125,7 +125,7 @@ public class PerroController {
 	public Response post(@PathParam("nombre") String nombrePerro, @PathParam("raza") String razaPerro) {
 		try {
 			this.logger.info("preparando la instancia...");
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			PerroServiceImpl dao = PerroServiceImpl.getInstance();
 			Perro pCreado = new Perro(nombrePerro, razaPerro);
 			boolean idpCreado = false;
 			this.logger.info("procesando peticion para crear un nuevo perro");
@@ -156,7 +156,7 @@ public class PerroController {
 			@PathParam("raza") String razaPerro) {
 		try {
 			this.logger.info("preparando la instancia...");
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			PerroServiceImpl dao = PerroServiceImpl.getInstance();
 			Perro pModificar = new Perro(idPerro, nombrePerro, razaPerro);
 
 			boolean rModificar = false;
