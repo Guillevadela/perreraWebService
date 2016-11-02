@@ -6,12 +6,16 @@ import java.util.List;
 import org.hibernate.QueryException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ipartek.formacion.perrera.pojo.Perro;
 import com.ipartek.formacion.perrera.util.HibernateUtil;
 
 public class PerroDAOImpl implements PerroDAO {
 
+	
+	 private final Logger logger = LoggerFactory.getLogger(PerroDAOImpl.class);
 	// Instancia unica para 'patron Singleton'
 	private static PerroDAOImpl INSTANCE = null;
 
@@ -37,8 +41,10 @@ public class PerroDAOImpl implements PerroDAO {
 		try {
 			// controlar los QueryParam
 			if("desc".equals(order)){
+				this.logger.debug("Listando todos los perros por "+campo+" en orden DESCENDENTE");
 				perros = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc(campo)).list(); 
 			}else{
+				this.logger.debug("Listando todos los perros por "+campo+" en orden ASCENDENTE");
 				perros = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.asc(campo)).list();				
 			}
 			

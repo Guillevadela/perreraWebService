@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.ipartek.formacion</groupId>
-		<artifactId>perrera</artifactId>
+		<artifactId>perreraBorja</artifactId>
 		<version>${project.version}</version>
 	</parent>
 

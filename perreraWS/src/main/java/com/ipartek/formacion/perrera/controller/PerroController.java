@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiResponses;
 @Path("/perro")
 @Api(value = "/perro")
 public class PerroController {
-//	private final Log logger = LogFactory.getLog(this.getClass());
+	
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
