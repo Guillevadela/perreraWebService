@@ -41,10 +41,10 @@ public class PerroDAOImpl implements PerroDAO {
 		try {
 			// controlar los QueryParam
 			if("desc".equals(order)){
-				this.logger.debug("Listando todos los perros por "+campo+" en orden DESCENDENTE");
+				this.logger.info("Listando todos los perros por "+campo+" en orden DESCENDENTE");
 				perros = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc(campo)).list(); 
 			}else{
-				this.logger.debug("Listando todos los perros por "+campo+" en orden ASCENDENTE");
+				this.logger.info("Listando todos los perros por "+campo+" en orden ASCENDENTE");
 				perros = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.asc(campo)).list();				
 			}
 			
@@ -65,6 +65,7 @@ public class PerroDAOImpl implements PerroDAO {
 		//retorno por orden descendente por id
 
 		} catch (QueryException e) {
+			this.logger.info("Listando todos los perros por ID en orden DESCENDENTE");
 			perros = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc("id")).list();
 		} finally {
 			s.close();
@@ -77,18 +78,13 @@ public class PerroDAOImpl implements PerroDAO {
 		Session s = HibernateUtil.getSession();
 		Perro perro = null;
 		try {
+			this.logger.info("Recogido perro "+idPerro);
 			s = HibernateUtil.getSession();
-			s.beginTransaction();
 			perro = (Perro) s.get(Perro.class, idPerro);
-			s.beginTransaction().commit();
-			if (perro == null) {
-
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			s.close();
-
 		}
 		return perro;
 	}
@@ -105,10 +101,12 @@ public class PerroDAOImpl implements PerroDAO {
 				s.delete(pElimnar);
 				s.beginTransaction().commit();
 				resul = true;
+				this.logger.info("Perro "+idPerro+" eliminado con exito");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			s.beginTransaction().rollback();
+			this.logger.info("Error al eliminar Perro "+idPerro);
 		}finally{
 			s.close();
 		}
@@ -123,10 +121,12 @@ public class PerroDAOImpl implements PerroDAO {
 			s.beginTransaction();
 			s.update(perro);
 			s.beginTransaction().commit();
-			resul = true;			
+			resul = true;	
+			this.logger.info("Modificado Perro "+perro.getId());		
 			
 		} catch (Exception e) {
 			s.beginTransaction().rollback();
+			this.logger.info("Error al modificar Perro "+perro.getId());	
 		} finally {
 			s.close();
 		}
@@ -147,13 +147,16 @@ public class PerroDAOImpl implements PerroDAO {
 			if (idpCreado > 0) {
 				s.beginTransaction().commit();
 				resul = true;
+				this.logger.info("Creado Perro "+perro.getId());	
 			} else {
 				s.beginTransaction().rollback();
+				this.logger.info("Error al crear Perro "+perro.getId());	
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			s.beginTransaction().rollback();
+			this.logger.info("Error al crear Perro "+perro.getId());	
 		} finally {
 			s.close();
 		}

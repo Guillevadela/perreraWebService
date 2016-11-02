@@ -18,7 +18,7 @@
 
 		<dependency>
 			<groupId>com.ipartek.formacion</groupId>
-			<artifactId>perreraDAO</artifactId>
+			<artifactId>perreraService</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
