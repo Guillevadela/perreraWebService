@@ -15,7 +15,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.perrera.pojo.FechaHora;
 import com.ipartek.formacion.perrera.pojo.Perro;
 import com.ipartek.formacion.perrera.service.PerreraServiceImpl;
@@ -31,7 +32,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/perro")
 public class PerroController {
 
-	
+	private static final Logger logger = Logger.getLogger(PerroController.class);
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -51,6 +52,7 @@ public class PerroController {
 			return Response.ok().entity(perros).build();
 			
 		} catch (Exception e) {
+			logger.warn("Error al listar perros",e);
 			return Response.serverError().build();
 		}
 	}
@@ -72,10 +74,13 @@ public class PerroController {
 			Perro perro = (Perro) dao.getById(idPerro);
 
 			if (perro == null) {
+				logger.warn("Perro con id=" + idPerro + "no encontrado");
 				return Response.noContent().build();
 			}
+			logger.info("Perro con id=" + idPerro + " devuelto OK");
 			return Response.ok().entity(perro).build();
 		} catch (Exception e) {
+			logger.warn("Id introducida erronea",e);
 			return Response.serverError().build();
 		}
 	}
@@ -97,12 +102,15 @@ public class PerroController {
 			pElimnar = (Perro) dao.getById(idPerro);
 			
 			if (pElimnar == null) {
+				logger.warn("Error al eliminar perro. Perro no existe");
 				return Response.noContent().build();
 			} else {
 				dao.delete(pElimnar.getId());
+				logger.info("Perro con id=" + pElimnar.getId() + " eliminado OK");
 				return Response.ok().entity(new FechaHora()).build();
 			}
 		} catch (Exception e) {
+			logger.warn("Error al eliminar perro",e);
 			return Response.serverError().build();
 		}
 	}
@@ -124,11 +132,14 @@ public class PerroController {
 						
 			
 			if (creado==true) {
+				logger.info("Perro creado OK");
 				return Response.status(201).entity(pCreado).build();
 			} else {
+				logger.warn("Error al crear perro. Perro ya existente");
 				return Response.status(409).build();
 			}
 		} catch (Exception e) {
+			logger.warn("Error al crear perro",e);
 			e.printStackTrace();
 			return Response.serverError().build();
 		}
@@ -153,16 +164,19 @@ public class PerroController {
 			pModificar = (Perro) dao.getById(idPerro);
 			
 			if (pModificar == null) {
+				logger.warn("Error al modificar perro. Perro no existe");
 				return Response.noContent().build();
 			} else {
 				pModificar.setNombre(nombrePerro);
 				pModificar.setRaza(razaPerro);
 				
 				dao.update(pModificar);
+				logger.info("Perro con id=" + idPerro + " modificado OK");
 				
 				return Response.ok().entity(pModificar).build();
 			}
 		} catch (Exception e) {
+			logger.warn("Error inesperado al modificar perro con id=" + idPerro ,e);
 			return Response.status(500).build();
 
 		}
