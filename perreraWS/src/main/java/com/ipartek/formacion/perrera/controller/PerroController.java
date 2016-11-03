@@ -26,6 +26,12 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+/**
+ * Clase controlador de perreraWebService
+ * 
+ * @author EkaitzAF
+ *
+ */
 @Path("/perro")
 @Api(value = "/perro")
 public class PerroController {
@@ -42,7 +48,7 @@ public class PerroController {
 			@ApiParam(name = "orderBy", required = false, value = "Filtro para ordenar los perros de forma ascendente o descendente, posibles valores [asc|desc]") @DefaultValue("asc") @QueryParam("orderBy") String orderBy,
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		try {
-			this.log.info("Llamada a servicio: Obteniendo lista de perros");
+			this.log.trace("Llamada a servicio: Obteniendo lista de perros");
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
 			ArrayList<Perro> perros = (ArrayList<Perro>) service.getAll(orderBy, campo);
 			this.log.info("Controlador: Devolviendo lista de perros");
@@ -64,13 +70,14 @@ public class PerroController {
 	public Response getById(@PathParam("id") int idPerro) {
 
 		try {
-			this.log.info("Llamada a servicio: Obteniendo perro con su id");
+			this.log.trace("Llamada a servicio: Obteniendo perro con su id");
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
 			Perro perro = (Perro) service.getById(idPerro);
 			if (0 == perro.getId()) {
 				this.log.info("No se ha encontrado perros con id" + idPerro);
 				return Response.noContent().build();
 			} else {
+				this.log.info("Devolviendo perro con id" + idPerro);
 				return Response.ok().entity(perro).build();
 			}
 
@@ -90,13 +97,14 @@ public class PerroController {
 	public Response delete(@PathParam("id") int idPerro) {
 
 		try {
-			this.log.info("Llamada a servicio: Eliminando perro con id:" + idPerro);
+			this.log.trace("Llamada a servicio: Eliminando perro con id:" + idPerro);
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
 			boolean perroBorrado = service.delete(idPerro);
 			if (perroBorrado) {
+				this.log.info("Se ha eliminado el perro con id:" + idPerro);
 				return Response.ok().entity(perroBorrado).build();
 			} else {
-				this.log.info("No se ha podido eliminar el perro con id" + idPerro);
+				this.log.info("No se ha podido eliminar el perro con id:" + idPerro);
 				return Response.noContent().build();
 			}
 
@@ -115,12 +123,14 @@ public class PerroController {
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
 	public Response post(@PathParam("nombre") String nombrePerro, @PathParam("raza") String razaPerro) {
 		try {
-			this.log.info(
+			this.log.trace(
 					"Llamada a servicio: Insertando perro nuevo con nombre:" + nombrePerro + " y raza:" + razaPerro);
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
 			Perro perroNuevo = new Perro(nombrePerro, razaPerro);
 			boolean perroCreado = service.insert(perroNuevo);
 			if (perroCreado) {
+				this.log.info(
+						"Se ha insertado en la tabla el perro con nombre:" + nombrePerro + " y raza:" + razaPerro);
 				return Response.status(201).build();
 			} else {
 				this.log.info("No se ha podido insertar en la tabla el perro con nombre:" + nombrePerro + " y raza:"
@@ -146,13 +156,15 @@ public class PerroController {
 	public Response put(@PathParam("id") int idPerro, @PathParam("nombre") String nombrePerro,
 			@PathParam("raza") String razaPerro) {
 		try {
-			this.log.info("Llamada a servicio: Modificando perro con id:" + idPerro);
+			this.log.trace("Llamada a servicio: Modificando perro con id:" + idPerro);
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
 			Perro perro = (Perro) service.getById(idPerro);
 			if (0 < perro.getId()) {
 				perro.setNombre(nombrePerro);
 				perro.setRaza(razaPerro);
 				service.update(perro);
+				this.log.info("Se ha modificado el perro con id:" + idPerro + " nuevo nombre:" + nombrePerro
+						+ " y nueva raza:" + razaPerro);
 				return Response.status(200).build();
 			} else {
 				this.log.info("No se ha podido modificar el perro con id:" + idPerro + " nombre:" + nombrePerro

@@ -33,9 +33,7 @@ public class PerroDAOImplTest {
 		// ******* COMPROBAR EL METODO insert(Perro perro) *********
 		// *****************************************************
 		// creamos un perro nuevo
-		Perro perro = new Perro();
-		perro.setNombre("Boby");
-		perro.setRaza("Caniche");
+		Perro perro = new Perro("Boby", "Caniche");
 
 		// comprobamos que inserta OK
 		assertTrue("Fallo al insertar", dao.insert(perro));
