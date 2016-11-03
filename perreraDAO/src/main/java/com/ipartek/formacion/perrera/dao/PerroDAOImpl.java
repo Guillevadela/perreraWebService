@@ -14,7 +14,7 @@ import com.ipartek.formacion.perrera.util.HibernateUtil;
 
 public class PerroDAOImpl implements PerroDAO {
 
-	private static final Logger logger = LoggerFactory.getLogger(PerroDAOImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(PerroDAOImpl.class);
 
 	// instancia unica para 'patron Singleton'
 	private static PerroDAOImpl INSTANCE = null;
@@ -41,7 +41,7 @@ public class PerroDAOImpl implements PerroDAO {
 	 * @param campo
 	 *            Campo por el que se va a ordenar. <br>
 	 *            Posibles valores id/nombre/raza
-	 * @return List<Perro>
+	 * @return List$gt;Perro$lt;
 	 */
 	@Override
 	public List<Perro> getAll(String order, String campo) {

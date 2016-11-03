@@ -47,14 +47,29 @@
 			<version>3.4.GA</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>log4j</groupId>
-		    <artifactId>log4j</artifactId>
-		    <version>${log4j.version}</version>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
 		</dependency>
 
 	</dependencies>
 
+	<!-- Genera informe para JavaDoc al realizarse "mvn site" -->
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.8</version>
+			</plugin>
+		</plugins>
+	</reporting>
 
 </project>

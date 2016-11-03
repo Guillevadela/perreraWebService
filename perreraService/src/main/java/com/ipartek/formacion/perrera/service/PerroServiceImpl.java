@@ -11,7 +11,7 @@ import com.ipartek.formacion.perrera.pojo.Perro;
 
 public class PerroServiceImpl implements PerroService {
 
-	private static final Logger logger = LoggerFactory.getLogger(PerroDAOImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(PerroDAOImpl.class);
 
 	// instancia unica para 'patron Singleton'
 	private static PerroServiceImpl INSTANCE = null;
