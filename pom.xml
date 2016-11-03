@@ -49,6 +49,7 @@
 
 	</dependencies>
 
+	<!-- Genera Reporte para JavaDoc al realizar un "mvn site" -->
 	<reporting>
 		<plugins>
 			<plugin>
