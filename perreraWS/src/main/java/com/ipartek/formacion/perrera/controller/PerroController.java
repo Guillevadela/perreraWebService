@@ -15,6 +15,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.Perro;
 import com.ipartek.formacion.perrera.service.PerroServiceImpl;
 
@@ -34,6 +38,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/perro")
 public class PerroController {
 	
+	private final Logger logger = LoggerFactory.getLogger(PerroDAOImpl.class);	
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -49,6 +54,7 @@ public class PerroController {
 			ArrayList<Perro> perros = (ArrayList<Perro>) service.getAll(orderBy, campo);
 			return Response.ok().entity(perros).build();
 		} catch (Exception e) {
+			this.logger.error("Error al listar perros");
 			return Response.serverError().build();
 		}
 	}
@@ -73,6 +79,7 @@ public class PerroController {
 			}
 			return Response.ok().entity(perro).build();
 		} catch (Exception e) {
+			this.logger.error("Error al devolver el perro " + idPerro);
 			return Response.serverError().build();
 		}
 	}
@@ -99,6 +106,7 @@ public class PerroController {
 				return Response.status(409).build();
 			}
 		} catch (Exception e) {
+			this.logger.error("Error al crear el perro " + nombrePerro);
 			e.printStackTrace();
 			return Response.serverError().build();
 		}
@@ -129,6 +137,7 @@ public class PerroController {
 				return Response.ok().entity(pModificar).build();
 			}
 		} catch (Exception e) {
+			this.logger.error("Error al modificar el perro " + idPerro);
 			return Response.status(500).build();
 
 		}
@@ -156,6 +165,7 @@ public class PerroController {
 			}				
 			
 		} catch (Exception e) {
+			this.logger.error("Error al eliminar el perro " + idPerro);
 			return Response.serverError().build();
 		}
 	}
