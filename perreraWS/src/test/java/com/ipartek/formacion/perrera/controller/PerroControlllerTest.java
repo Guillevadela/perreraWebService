@@ -17,36 +17,41 @@ import com.ipartek.formacion.perrera.pojo.Perro;
 
 public class PerroControlllerTest {
 
-	ArrayList<Perro> lista = null;
-	Perro perro = null;
+	private final int SUCCESS00 = 200;
+	private final int SUCCESS01 = 201;
+	private final int FAILURE04 = 204;
+	private final int FAILURE09 = 209;
+	private final int ERROR00 = 50;
+	private ArrayList<Perro> lista = null;
+	private Perro perro = null;
 
-	@BeforeClass
+	@BeforeClass()
 	public static void setUpBeforeClass() throws Exception {
 	}
 
-	@AfterClass
+	@AfterClass()
 	public static void tearDownAfterClass() throws Exception {
 	}
 
-	@Before
+	@Before()
 	public void setUp() throws Exception {
 	}
 
-	@After
+	@After()
 	public void tearDown() throws Exception {
 	}
 
 	// *****************************************************
 	// ******* COMPROBAR EL METODO getAll() ****************
 	// *****************************************************
-	@Test
+	@Test()
 	public void testGetAll() {
 
 		PerroController controller = new PerroController();
 		// obtenemos la lista de perros
 		Response response = controller.getAll("asc", "id");
 		// comprobamos que nos ha devuelto lo que queremos
-		assertEquals(200, response.getStatus());
+		assertEquals(SUCCESS00, response.getStatus());
 
 		// comprobamos la ordenacion ascendente por id
 		lista = (ArrayList<Perro>) response.getEntity();
@@ -83,7 +88,7 @@ public class PerroControlllerTest {
 	// *********************************************************
 	// ******* COMPROBAR EL METODO getById(id) *********
 	// *****************************************************
-	@Test
+	@Test()
 	public void testGetById() {
 
 		PerroController controller = new PerroController();
@@ -97,17 +102,17 @@ public class PerroControlllerTest {
 		int idInexist = idExist + 1;
 		// comprobamos que nos ha devuelto lo que queremos con id que existe
 		response = controller.getById(idExist);
-		assertEquals(200, response.getStatus());
+		assertEquals(SUCCESS00, response.getStatus());
 		// comprobamos que nos ha devuelto lo que queremos con id que no existe
 		response = controller.getById(idInexist);
-		assertEquals(204, response.getStatus());
+		assertEquals(FAILURE04, response.getStatus());
 
 	}
 
 	// ******************************************************
 	// ******* COMPROBAR EL METODO delete(id) ****************
 	// *****************************************************
-	@Test
+	@Test()
 	public void testDelete() {
 
 		PerroController controller = new PerroController();
@@ -121,31 +126,31 @@ public class PerroControlllerTest {
 		int idInexist = idExist + 1;
 		// comprobamos que nos ha devuelto lo que queremos con id que existe
 		response = controller.delete(idExist);
-		assertEquals(200, response.getStatus());
+		assertEquals(SUCCESS00, response.getStatus());
 		// comprobamos que nos ha devuelto lo que queremos con id que no existe
 		response = controller.delete(idInexist);
-		assertEquals(204, response.getStatus());
+		assertEquals(FAILURE04, response.getStatus());
 
 	}
 
 	// *********************************************************
 	// ******* COMPROBAR EL METODO insert(Perro perro) *********
 	// *****************************************************
-	@Test
+	@Test()
 	public void testInsert() {
 
 		PerroController controller = new PerroController();
 		// insertamos un perro
 		Response response = controller.post("Hola", "Caracola");
 		// comprobamos que nos ha devuelto lo que queremos
-		assertEquals(201, response.getStatus());
+		assertEquals(SUCCESS01, response.getStatus());
 
 	}
 
 	// *****************************************************
 	// ******* COMPROBAR EL METODO update() ****************
 	// *****************************************************
-	@Test
+	@Test()
 	public void testUpdate() {
 
 		PerroController controller = new PerroController();
@@ -159,10 +164,10 @@ public class PerroControlllerTest {
 		int idInexist = idExist + 1;
 		// comprobamos que nos ha devuelto lo que queremos con id que existe
 		response = controller.put(idExist, "txutxillo", "txotxillo");
-		assertEquals(200, response.getStatus());
+		assertEquals(SUCCESS00, response.getStatus());
 		// comprobamos que nos ha devuelto lo que queremos con id que no existe
 		response = controller.put(idInexist, "esto no", "funciona");
-		assertEquals(204, response.getStatus());
+		assertEquals(FAILURE04, response.getStatus());
 
 	}
 

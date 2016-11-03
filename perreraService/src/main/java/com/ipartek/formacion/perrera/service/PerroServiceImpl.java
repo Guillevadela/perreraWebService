@@ -15,66 +15,100 @@ import com.ipartek.formacion.perrera.pojo.Perro;
  * @author EkaitzAF
  *
  */
-public class PerroServiceImpl implements PerroService {
+public final class PerroServiceImpl implements PerroService { // NOPMD by Curso
+																// on 3/11/16
+																// 17:23
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
-	// instancia unica para 'patron Singleton'
-	private static PerroServiceImpl INSTANCE = null;
+	/**
+	 * instancia unica para 'patron Singleton'
+	 */
+	private static PerroServiceImpl instance = null;
 
 	// constructor privado para que no se pueda instanciar esta clase
 	private PerroServiceImpl() {
 		super();
 	}
 
-	// unico metodo para crear un objeto de esta Clase
+	/**
+	 * unico metodo para crear un objeto de esta Clase
+	 * 
+	 * @return instancia
+	 */
 	public synchronized static PerroServiceImpl getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new PerroServiceImpl();
+		if (instance == null) {
+			instance = new PerroServiceImpl();
 		}
-		return INSTANCE;
+		return instance;
 	}
 
 	/**
 	 * 
+	 * @param order
+	 *            orden de lista
+	 * @param campo
+	 *            campo por el que ordenar
+	 * @return Array<List> lista de perros
 	 */
-	@Override
-	public List<Perro> getAll(String order, String campo) {
+	@Override()
+	public List<Perro> getAll(final String order, final String campo) {
 		this.log.trace("Llamada a dao: Obteniendo lista de perros");
-		PerroDAOImpl dao = PerroDAOImpl.getInstance();
+		final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return (ArrayList<Perro>) dao.getAll(order, campo);
 	}
 
 	/**
 	 * 
+	 * @param idPerro
+	 *            id de perro a encontrar
+	 * @return Perro buscado por id
 	 */
-	@Override
-	public Perro getById(long idPerro) {
+	@Override()
+	public Perro getById(final long idPerro) {
 		this.log.trace("Llamada a dao: Obteniendo perro con su id");
-		PerroDAOImpl dao = PerroDAOImpl.getInstance();
+		final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return (Perro) dao.getById(idPerro);
 	}
 
-	@Override
-	public boolean delete(long idPerro) {
+	/**
+	 * 
+	 * @param idPerro
+	 *            id de perro a eliminar
+	 * @return boolean true si eliminado false si no
+	 */
+	@Override()
+	public boolean delete(final long idPerro) {
 		this.log.trace("Llamada a dao: Eliminando perro con id:" + idPerro);
-		PerroDAOImpl dao = PerroDAOImpl.getInstance();
+		final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 
 		return dao.delete(idPerro);
 	}
 
-	@Override
-	public boolean insert(Perro perro) {
+	/**
+	 * 
+	 * @param perro
+	 *            a insertar
+	 * @return boolean true si insertado false si no
+	 */
+	@Override()
+	public boolean insert(final Perro perro) {
 		this.log.trace(
 				"Llamada a dao: Insertando perro nuevo con nombre:" + perro.getNombre() + " y raza:" + perro.getRaza());
-		PerroDAOImpl dao = PerroDAOImpl.getInstance();
+		final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return dao.insert(perro);
 	}
 
-	@Override
-	public boolean update(Perro perro) {
+	/**
+	 * 
+	 * @param perro
+	 *            a modificar
+	 * @return boolean true si modificado false si no
+	 */
+	@Override()
+	public boolean update(final Perro perro) {
 		this.log.trace("Llamada a dao: Modificando perro con id:" + perro.getId());
-		PerroDAOImpl dao = PerroDAOImpl.getInstance();
+		final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return dao.update(perro);
 	}
 

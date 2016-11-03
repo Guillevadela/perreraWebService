@@ -36,21 +36,26 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/perro")
 public class PerroController {
 
+	private final int SUCCESS00 = 200;
+	private final int SUCCESS01 = 201;
+	private final int FAILURE04 = 204;
+	private final int FAILURE09 = 209;
+	private final int ERROR00 = 50;
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
-	@GET
+	@GET()
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Listado de Perros", notes = "Listado de perros existentes en la perrera, limitado a 1.000", response = Perro.class, responseContainer = "List")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = SUCCESS00, message = "Todo OK"),
+			@ApiResponse(code = ERROR00, message = "Error inexperado en el servidor") })
 	public Response getAll(
 			@ApiParam(name = "orderBy", required = false, value = "Filtro para ordenar los perros de forma ascendente o descendente, posibles valores [asc|desc]") @DefaultValue("asc") @QueryParam("orderBy") String orderBy,
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		try {
 			this.log.trace("Llamada a servicio: Obteniendo lista de perros");
-			PerroServiceImpl service = PerroServiceImpl.getInstance();
-			ArrayList<Perro> perros = (ArrayList<Perro>) service.getAll(orderBy, campo);
+			final PerroServiceImpl service = PerroServiceImpl.getInstance();
+			final ArrayList<Perro> perros = (ArrayList<Perro>) service.getAll(orderBy, campo);
 			this.log.info("Controlador: Devolviendo lista de perros");
 			return Response.ok().entity(perros).build();
 
@@ -60,13 +65,13 @@ public class PerroController {
 		}
 	}
 
-	@GET
+	@GET()
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Busca un perro por su ID", notes = "devuelve un perro mediante el paso de su ID", response = Perro.class, responseContainer = "Perro")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
-			@ApiResponse(code = 204, message = "No existe perro con esa ID"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = SUCCESS00, message = "Todo OK"),
+			@ApiResponse(code = FAILURE04, message = "No existe perro con esa ID"),
+			@ApiResponse(code = ERROR00, message = "Error inexperado en el servidor") })
 	public Response getById(@PathParam("id") int idPerro) {
 
 		try {
@@ -87,13 +92,13 @@ public class PerroController {
 		}
 	}
 
-	@DELETE
+	@DELETE()
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Elimina un perro", notes = "Elimina un perro mediante el paso de su ID", response = Perro.class, responseContainer = "FechaHora")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Perro eliminado"),
-			@ApiResponse(code = 204, message = "No existe Perro con ese ID"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = SUCCESS00, message = "Perro eliminado"),
+			@ApiResponse(code = FAILURE04, message = "No existe Perro con ese ID"),
+			@ApiResponse(code = ERROR00, message = "Error inexperado en el servidor") })
 	public Response delete(@PathParam("id") int idPerro) {
 
 		try {
@@ -114,13 +119,13 @@ public class PerroController {
 		}
 	}
 
-	@POST
+	@POST()
 	@Path("/{nombre}/{raza}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Añade un perro", notes = "Crea y persiste un nuevo perro", response = Perro.class, responseContainer = "Perro")
-	@ApiResponses(value = { @ApiResponse(code = 201, message = "Perro Creado con exito"),
-			@ApiResponse(code = 409, message = "Perro ya Existente"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = SUCCESS01, message = "Perro Creado con exito"),
+			@ApiResponse(code = FAILURE09, message = "Perro ya Existente"),
+			@ApiResponse(code = ERROR00, message = "Error inexperado en el servidor") })
 	public Response post(@PathParam("nombre") String nombrePerro, @PathParam("raza") String razaPerro) {
 		try {
 			this.log.trace(
@@ -131,11 +136,11 @@ public class PerroController {
 			if (perroCreado) {
 				this.log.info(
 						"Se ha insertado en la tabla el perro con nombre:" + nombrePerro + " y raza:" + razaPerro);
-				return Response.status(201).build();
+				return Response.status(SUCCESS01).build();
 			} else {
 				this.log.info("No se ha podido insertar en la tabla el perro con nombre:" + nombrePerro + " y raza:"
 						+ razaPerro);
-				return Response.status(409).build();
+				return Response.status(FAILURE09).build();
 			}
 
 		} catch (Exception e) {
@@ -145,14 +150,14 @@ public class PerroController {
 		}
 	}
 
-	@PUT
+	@PUT()
 	@Path("/{id}/{nombre}/{raza}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Modifica un perro", notes = "Modifica un perro ya existente mediante su identificador", response = Perro.class, responseContainer = "Perro")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
-			@ApiResponse(code = 204, message = "No existe perro con ese ID"),
-			@ApiResponse(code = 409, message = "Perro existente, no se puede modificar"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = SUCCESS00, message = "Todo OK"),
+			@ApiResponse(code = FAILURE04, message = "No existe perro con ese ID"),
+			@ApiResponse(code = FAILURE09, message = "Perro existente, no se puede modificar"),
+			@ApiResponse(code = ERROR00, message = "Error inexperado en el servidor") })
 	public Response put(@PathParam("id") int idPerro, @PathParam("nombre") String nombrePerro,
 			@PathParam("raza") String razaPerro) {
 		try {
@@ -165,16 +170,16 @@ public class PerroController {
 				service.update(perro);
 				this.log.info("Se ha modificado el perro con id:" + idPerro + " nuevo nombre:" + nombrePerro
 						+ " y nueva raza:" + razaPerro);
-				return Response.status(200).build();
+				return Response.status(SUCCESS00).build();
 			} else {
 				this.log.info("No se ha podido modificar el perro con id:" + idPerro + " nombre:" + nombrePerro
 						+ " y raza:" + razaPerro);
-				return Response.status(204).build();
+				return Response.status(FAILURE04).build();
 			}
 
 		} catch (Exception e) {
 			this.log.error("Error al intentar conectarse al servidor en put");
-			return Response.status(500).build();
+			return Response.status(ERROR00).build();
 
 		}
 	}
