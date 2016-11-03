@@ -53,11 +53,13 @@ public class PerroDAOImpl implements PerroDAO {
 	 * 
 	 * @return Devuelve una lista con todos los elementos
 	 */
+
 	public List<Perro> getAll(String order, String campo) {
 		// inicializamos lista como un ArrayList de objetos Perro
 		ArrayList<Perro> lista = new ArrayList<Perro>();
 		// obtenemos la sesion
 		Session s = HibernateUtil.getSession();
+
 		try {
 
 			try {

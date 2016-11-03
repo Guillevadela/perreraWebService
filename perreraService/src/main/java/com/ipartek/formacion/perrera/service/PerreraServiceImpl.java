@@ -13,15 +13,17 @@ import com.ipartek.formacion.perrera.pojo.Perro;
  * 
  * @author ADassoy
  * 
- *         Capa Service que une PerroController
- *         con PerroDAOImpl         
+ *         Capa Service que une PerroController con PerroDAOImpl
  *
  */
-public class PerreraServiceImpl implements PerreraService {
+public final class PerreraServiceImpl implements PerreraService {
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	// instancia unica para 'patron Singleton'
-	private static PerreraServiceImpl INSTANCE = null;
+	/**
+	 * instancia de PerreraServiceImpl
+	 */
+	private static PerreraServiceImpl instance;
 
 	// constructor privado para que no se pueda instanciar esta clase
 	private PerreraServiceImpl() {
@@ -29,45 +31,78 @@ public class PerreraServiceImpl implements PerreraService {
 	}
 
 	// unico metodo para crear un objeto de esta Clase
+	/**
+	 * Patron singleton
+	 * 
+	 * @return instancia de PerreraServiceImpl
+	 */
 	public synchronized static PerreraServiceImpl getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new PerreraServiceImpl();
+		if (instance == null) {
+			instance = new PerreraServiceImpl();
 		}
-		return INSTANCE;
+		return instance;
 	}
 
-	@Override
-	public List<Perro> getAll(String order, String campo) {
+	/**
+	 * Servicio para realizar el listado completo de perros
+	 * 
+	 * @param order
+	 * @param campo
+	 * 
+	 * @return lista de perros retornada por el dao
+	 */
+	@Override()
+	public List<Perro> getAll(final String order, final String campo) {
 		this.log.info("Peticion del servicio para listar todos los perros");
-		PerroDAOImpl dao = PerroDAOImpl.getInstance();
+		final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return (ArrayList<Perro>) dao.getAll(order, campo);
 	}
 
-	@Override
-	public Perro getById(long idPerro) {
+	/**
+	 * Servicio para botener un perro por id
+	 * 
+	 * @param idPerro
+	 *            - variable de tipo long
+	 * 
+	 * @return objeto de tipo perro obtenido del dao
+	 */
+	@Override()
+	public Perro getById(final long idPerro) {
 		this.log.info("Peticion del servicio para listar un perro por 'id'");
-		PerroDAOImpl dao = PerroDAOImpl.getInstance();
+		final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return (Perro) dao.getById(idPerro);
 	}
 
-	@Override
-	public boolean delete(long idPerro) {
+	/**
+	 * Servicio para eliminar un perro por su id
+	 * 
+	 * @param idPerro
+	 *            - variable de tipo long
+	 */
+	@Override()
+	public boolean delete(final long idPerro) {
 		this.log.info("Peticion del servicio para eliminar un perro por 'id'");
-		PerroDAOImpl dao = PerroDAOImpl.getInstance();
+		final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return dao.delete(idPerro);
 	}
 
-	@Override
-	public boolean insert(Perro perro) {
+	/**
+	 * Servicio para insertar un perro
+	 */
+	@Override()
+	public boolean insert(final Perro perro) {
 		this.log.info("Peticion del servicio para añadir un perro");
-		PerroDAOImpl dao = PerroDAOImpl.getInstance();
+		final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return dao.insert(perro);
 	}
 
-	@Override
-	public boolean update(Perro perro) {
+	/**
+	 * servicio para actualizar un perro
+	 */
+	@Override()
+	public boolean update(final Perro perro) {
 		this.log.info("Peticion del servicio para modificar un perro");
-		PerroDAOImpl dao = PerroDAOImpl.getInstance();
+		final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return dao.update(perro);
 	}
 

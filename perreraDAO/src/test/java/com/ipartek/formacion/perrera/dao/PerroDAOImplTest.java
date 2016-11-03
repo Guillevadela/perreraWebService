@@ -14,7 +14,7 @@ import com.ipartek.formacion.perrera.pojo.Perro;
 
 public class PerroDAOImplTest {
 
-	@Test
+	@Test()
 	public void test() {
 
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
