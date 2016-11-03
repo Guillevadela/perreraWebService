@@ -28,6 +28,7 @@ public class PerroServiceImpl implements PerroService {
 		return INSTANCE;
 	}
 
+	
 	@Override
 	public List<Perro> getAll(String order, String campo) {
 		this.logger.trace("Listando Perros");
