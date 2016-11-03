@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.FechaHora;
 import com.ipartek.formacion.perrera.pojo.Perro;
+import com.ipartek.formacion.perrera.service.PerreraServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,8 +44,9 @@ public class PerroController {
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		try {
 			this.log.info("listando todos los perros");
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
+
+			PerreraServiceImpl service = PerreraServiceImpl.getInstance();
+			ArrayList<Perro> perros = (ArrayList<Perro>) service.getAll(orderBy, campo);
 			return Response.ok().entity(perros).build();
 
 		} catch (Exception e) {
