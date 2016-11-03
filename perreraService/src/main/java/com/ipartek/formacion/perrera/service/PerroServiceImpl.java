@@ -32,35 +32,35 @@ public class PerroServiceImpl implements PerroService {
 	@Override
 	public List<Perro> getAll(String order, String campo) {
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
-		this.logger.info("llamando al DAO para obtener la lista...");
+		this.logger.trace("llamando al DAO para obtener la lista...");
 		return (ArrayList<Perro>) dao.getAll(order, campo);
 	}
 
 	@Override
 	public Perro getById(long idPerro) {
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
-		this.logger.info("llamando al DAO para obtener al Perro con id:"+idPerro);
+		this.logger.trace("llamando al DAO para obtener al Perro con id:"+idPerro);
 		return (Perro) dao.getById(idPerro);
 	}
 
 	@Override
 	public boolean delete(long idPerro) {
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
-		this.logger.info("llamando al DAO para borrar al perro de id:"+idPerro);
+		this.logger.trace("llamando al DAO para borrar al perro de id:"+idPerro);
 		return dao.delete(idPerro);
 	}
 
 	@Override
 	public boolean insert(Perro perro) {
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
-		this.logger.info("llamando al DAO para dar de alta al perro "+perro.toString());
+		this.logger.trace("llamando al DAO para dar de alta al perro "+perro.toString());
 		return dao.insert(perro);
 	}
 
 	@Override
 	public boolean update(Perro perro) {
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
-		this.logger.info("llamando al DAO para modificar al perro "+perro.toString());
+		this.logger.trace("llamando al DAO para modificar al perro "+perro.toString());
 		return dao.update(perro);
 	}
 
