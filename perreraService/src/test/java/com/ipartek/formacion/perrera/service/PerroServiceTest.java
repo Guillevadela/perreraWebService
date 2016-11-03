@@ -21,7 +21,7 @@ public class PerroServiceTest extends TestCase {
 	// *****************************************************
 	// ******* COMPROBAR EL METODO getAll() ****************
 	// *****************************************************
-	@Test
+	@Test()
 	public void testGetAll() {
 		PerroServiceImpl service = PerroServiceImpl.getInstance();
 		// obtenemos la lista de perros
