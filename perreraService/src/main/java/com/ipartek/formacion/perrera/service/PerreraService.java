@@ -17,27 +17,29 @@ public interface PerreraService  {
 	
 	/**
 	 * Retorna listado perros creados
-	 * @return
+	 * @param order		orden por el que se puede ordenar la lista. Posible valores asc/desc
+	 * @param  campo	campo por el que realizar la ordenación
+	 * @return List &gt;Perro&lt; 
 	 */
 	List<Perro> getAll(String order, String campo);
 
 	
 	/**
 	 * Busca perro por su identificador
-	 * @param id
+	 * @param idPerro	id del perro a buscar
 	 * @return Perro si encuentra, null si no existe
 	 */
 	Perro getById(long idPerro);
 
 	/**
 	 * Elimina Perro por su identificador
-	 * @param id
-	 * @return 
+	 * @param idPerro	id del perro a borrar
+	 * @return boolean 'true' si el perro se ha borrado con éxito, 'false' si no se ha borrado
 	 */
 	boolean delete(long idPerro);
 
 	/**
-	 * Modifica un Planeta
+	 * Modifica un Perro
 	 * @param perro
 	 * @return Perro salvado
 	 */

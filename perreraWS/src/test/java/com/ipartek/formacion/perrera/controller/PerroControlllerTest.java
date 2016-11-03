@@ -125,10 +125,10 @@ public class PerroControlllerTest {
 	
 	/**
 	 * Test para probar a la vez los metodos:
-	 * 	insertar  			-->  post(nombre, raza)
-	 * 	buscar por id 		-->  getById(id)
-	 * 	modificar(update)	-->  put(id, nombre, raza)
-	 *  borrar				-->  delete(id)
+	 * 	insertar  			  post(nombre, raza)
+	 * 	buscar por id 		  getById(id)
+	 * 	modificar(update)	  put(id, nombre, raza)
+	 *  borrar				  delete(id)
 	 * 
 	 * 
 	 * nuevo

@@ -40,7 +40,7 @@ public class PerroDAOImpl implements PerroDAO {
 	 * @param campo
 	 *            Campo por el que se va a ordenar. <br>
 	 *            Posibles valores id/nombre/raza
-	 * @return List<Perro>
+	 * @return List &gt;Perro&lt;
 	 */
 	public List<Perro> getAll(String order, String campo) {
 		// inicializamos lista como un ArrayList de objetos Perro
@@ -66,8 +66,8 @@ public class PerroDAOImpl implements PerroDAO {
 			
 			
 		} catch (Exception e) {
-			logger.warn("DAO: Error al obtener la lista de perros");
-			e.printStackTrace();
+			logger.warn("DAO: Error al obtener la lista de perros", e);
+			//e.printStackTrace();
 		} finally {
 			// cerramos la transaccion
 			s.close();

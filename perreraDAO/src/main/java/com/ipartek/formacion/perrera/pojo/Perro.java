@@ -25,9 +25,9 @@ public class Perro {
 	private String raza;
 
 	/**
-	 * @param nombre
-	 * @param raza
-	 */
+	 * @param nombre nombre del perro
+	 * @param raza 	raza del perro
+	 */ 
 	public Perro(String nombre, String raza) {
 		super();
 		this.nombre = nombre;
@@ -67,7 +67,9 @@ public class Perro {
 	/**
 	 * Si id = 0 es nuevo perro que no se ha persistido en una BBDD,
 	 * cualquier id superior a 0 es perro persistido
-	 * @return
+	 * @return 
+	 * 		true si id &gt; 0
+	 * 		false si id &lt; 0
 	 */
 	public boolean isNew(){
 		return this.id > 0 ? true : false;
