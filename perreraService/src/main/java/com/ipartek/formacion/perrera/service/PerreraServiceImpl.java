@@ -13,7 +13,8 @@ import com.ipartek.formacion.perrera.pojo.Perro;
  * 
  * @author ADassoy
  * 
- *         Capa Service que une PerroController con PerroDAOImpl
+ *         Capa Service que une PerroController
+ *         con PerroDAOImpl         
  *
  */
 public class PerreraServiceImpl implements PerreraService {
