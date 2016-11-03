@@ -12,6 +12,7 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class HibernateUtil {
 
+	
 	private static final SessionFactory sessionFactory;
 
 	static {

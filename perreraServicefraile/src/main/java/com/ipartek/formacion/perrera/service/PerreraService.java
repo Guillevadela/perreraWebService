@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.ipartek.formacion.perrera.pojo.Perro;
 
-public interface PerroManager extends Serializable {
+public interface PerreraService extends Serializable {
 	
 	List<Perro> getAll(String order, String campo);
 

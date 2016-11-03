@@ -26,9 +26,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * El poryecto hace refencia al proyecto skalada
+ * Perro Controller
  *
- * @author Curso
+ * @author Jon fraile
  *
  */
 @Path("/perro")
@@ -36,7 +36,19 @@ import io.swagger.annotations.ApiResponses;
 public class PerroController {
 
 	private static final Logger logger = Logger.getLogger(PerroController.class);
-	
+
+	/**
+	 * Devuelve lista de perros limitado a 1000 y codigo 200 si ha ido todo
+	 * correcto <br>
+	 * codigo 500 si ha existido un eror en el servidor
+	 * 
+	 * @param orderBy
+	 *            asc or desc
+	 * @param campo
+	 *            id or nombre or raza
+	 * @return <b>perros</b> ArrayList &lt;Perro&gt;
+	 * @throws Exception
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Listado de Perros", notes = "Listado de perros existentes en la perrera, limitado a 1.000", response = Perro.class, responseContainer = "List")
@@ -46,7 +58,7 @@ public class PerroController {
 	public Response getAll(
 			@ApiParam(name = "orderBy", required = false, value = "Filtro para ordenar los perros de forma ascendente o descendente, posibles valores [asc|desc]") @DefaultValue("asc") @QueryParam("orderBy") String orderBy,
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
-		
+
 		try {
 
 			final PerroDAOImpl dao = PerroDAOImpl.getInstance();
@@ -54,11 +66,21 @@ public class PerroController {
 			return Response.ok().entity(perros).build();
 
 		} catch (final Exception e) {
-			logger.warn("Error",e);
+			logger.warn("Error al listar perros", e);
 			return Response.serverError().build();
 		}
 	}
 
+	/**
+	 * Devuelve perro y codigo 200 si ha ido todo correcto <br>
+	 * codigo 204 si el parametro id no es el correcto <br>
+	 * codigo 500 si ha existido un eror en el servidor
+	 * 
+	 * @param idCreado
+	 *            &lt;long&gt;
+	 * @return <b>perro</b> &lt;Perro&gt;
+	 * @throws Exception
+	 */
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -77,11 +99,23 @@ public class PerroController {
 			}
 			return Response.ok().entity(perro).build();
 		} catch (final Exception e) {
-			logger.warn("Id especificada erronea",e);
+			logger.warn("Id especificada erronea", e);
 			return Response.serverError().build();
 		}
 	}
 
+	/**
+	 * Crea un perro, devuelve true y codigo 201 si ha ido todo correcto <br>
+	 * codigo 409 si el perro ya existe <br>
+	 * codigo 500 si ha existido un eror en el servidor
+	 * 
+	 * @param nombrePerro
+	 *            &lt;String&gt;
+	 * @param razaPerro
+	 *            &lt;String&gt;
+	 * @return <b>resul</b> &lt;boolean&gt;
+	 * @throws Exception
+	 */
 	@POST
 	@Path("/{nombre}/{raza}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -102,11 +136,23 @@ public class PerroController {
 				return Response.status(409).build();
 			}
 		} catch (final Exception e) {
-			e.printStackTrace();
+			logger.warn("Error al crear un perro", e);
 			return Response.serverError().build();
 		}
 	}
 
+	/**
+	 * Modifica un perro ya existente y codigo 200 si ha ido todo correcto <br>
+	 * codigo 204 si no existe perro con ese id<br>
+	 * codigo 409 si el perro ya existe, no se puede modificar <br>
+	 * codigo 500 si ha existido un eror en el servidor
+	 * 
+	 * @param idPerro
+	 * @param nombrePerro
+	 * @param razaPerro
+	 * @return <b>resul</b> &lt;boolean&gt;
+	 * @throws Exception
+	 */
 	@PUT
 	@Path("/{id}/{nombre}/{raza}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -128,15 +174,24 @@ public class PerroController {
 			if (resul == false) {
 				return Response.noContent().build();
 			} else {
-
 				return Response.ok().entity(pModificar).build();
 			}
 		} catch (final Exception e) {
+			logger.warn("Error al modificar un perro", e);
 			return Response.status(500).build();
 
 		}
 	}
 
+	/**
+	 * Elimina un perro y codigo 200 si ha ido todo correcto <br>
+	 * codigo 204 si no existe perro con ese id<br>
+	 * codigo 500 si ha existido un eror en el servidor
+	 * 
+	 * @param idCreado
+	 * @return <b>resul</b> &lt;boolean&gt;
+	 * @throws Exception
+	 */
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -156,6 +211,7 @@ public class PerroController {
 				return Response.ok().entity(pEliminado).build();
 			}
 		} catch (final Exception e) {
+			logger.warn("Error al eliminar un perro", e);
 			return Response.serverError().build();
 		}
 	}

@@ -11,19 +11,33 @@ import org.hibernate.criterion.Order;
 import com.ipartek.formacion.perrera.pojo.Perro;
 import com.ipartek.formacion.perrera.util.HibernateUtil;
 
+/**
+ * Implementacion de PerroDAO
+ * 
+ * @author Jon fraile
+ *
+ */
 public class PerroDAOImpl implements PerroDAO {
 
 	private static final Logger logger = Logger.getLogger(PerroDAOImpl.class);
-	
-	// instancia unica para 'patron Singleton'
+
+	/**
+	 * Instancia unica para 'patron Singleton'
+	 */
 	private static PerroDAOImpl INSTANCE = null;
 
-	// constructor privado para que no se pueda instanciar esta clase
+	/**
+	 * Constructor privado para que no se pueda instanciar esta clase
+	 */
 	private PerroDAOImpl() {
 		super();
 	}
 
-	// unico metodo para crear un objeto de esta Clase
+	/**
+	 * Unico metodo para crear un objeto de esta Clase
+	 * 
+	 * @return INSTANCE &lt;PerroDAOImpl&gt;
+	 */
 	public synchronized static PerroDAOImpl getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new PerroDAOImpl();
@@ -32,15 +46,17 @@ public class PerroDAOImpl implements PerroDAO {
 	}
 
 	/**
-	 * Función que devuelve una lista de perros
+	 * Metodo que devuelve una lista de perros
 	 * 
 	 * @param order
 	 *            Modo de ordenacion de la lista.<br>
-	 *            Posibles valores asc/desc
+	 *            Posibles valores asc/desc.
 	 * @param campo
 	 *            Campo por el que se va a ordenar. <br>
-	 *            Posibles valores id/nombre/raza
-	 * @return List<Perro>
+	 *            Posibles valores id/nombre/raza.
+	 * @return List &lt;Perro&gt; Retorna Lista con los perros.
+	 * 
+	 * @throws QueryException
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -72,6 +88,17 @@ public class PerroDAOImpl implements PerroDAO {
 		return lista;
 	}
 
+	/**
+	 * Metodo que devuelve un perro por Id
+	 * 
+	 * @param idPerro
+	 *            &lt;long&gt;
+	 * 
+	 * @return resul &lt;boolean&gt; Retorna "True" si la accion <br>
+	 *         ha sido realiaza correctamente.
+	 * 
+	 * @throws Exception
+	 */
 	@Override
 	public Perro getById(long idPerro) {
 		Perro resul = null;
@@ -87,6 +114,17 @@ public class PerroDAOImpl implements PerroDAO {
 		return resul;
 	}
 
+	/**
+	 * Metodo que elimina un perro por id
+	 * 
+	 * @param idPerro
+	 *            &lt;long&gt;
+	 * 
+	 * @return resul &lt;boolean&gt; Retorna "True" si la accion <br>
+	 *         ha sido realiaza correctamente.
+	 * 
+	 * @throws Exception
+	 */
 	@Override
 	public boolean delete(long idPerro) {
 		Perro pElimnar = null;
@@ -101,6 +139,7 @@ public class PerroDAOImpl implements PerroDAO {
 				resul = true;
 			}
 		} catch (final Exception e) {
+			logger.warn("Perro no se puede eliminar DAO", e);
 			e.printStackTrace();
 			s.beginTransaction().rollback();
 		} finally {
@@ -109,6 +148,16 @@ public class PerroDAOImpl implements PerroDAO {
 		return resul;
 	}
 
+	/**
+	 * Metodo que modifica un perro
+	 * 
+	 * @param perro
+	 *            &lt;Perro&gt;
+	 * @return resul &lt;boolean&gt; Retorna "True" si la accion <br>
+	 *         ha sido realiaza correctamente.
+	 * 
+	 * @throws Exception
+	 */
 	@Override
 	public boolean update(Perro perro) {
 		boolean resul = false;
@@ -119,6 +168,7 @@ public class PerroDAOImpl implements PerroDAO {
 			s.beginTransaction().commit();
 			resul = true;
 		} catch (final Exception e) {
+			logger.warn("Perro no se puede modificar en DAO", e);
 			e.printStackTrace();
 			s.beginTransaction().rollback();
 		} finally {
@@ -127,6 +177,16 @@ public class PerroDAOImpl implements PerroDAO {
 		return resul;
 	}
 
+	/**
+	 * Metodo que modifica un perro
+	 * 
+	 * @param perro
+	 *            &lt;Perro&gt;
+	 * @return resul &lt;boolean&gt; Retorna "True" si la accion <br>
+	 *         ha sido realiaza correctamente.
+	 * 
+	 * @throws Exception
+	 */
 	@Override
 	public boolean insert(Perro perro) {
 		boolean resul = false;
@@ -141,8 +201,9 @@ public class PerroDAOImpl implements PerroDAO {
 				s.beginTransaction().rollback();
 			}
 		} catch (final Exception e) {
-			s.beginTransaction().rollback();
+			logger.warn("Perro no se puede insertar en DAO", e);
 			e.printStackTrace();
+			s.beginTransaction().rollback();
 		} finally {
 			s.close();
 		}
