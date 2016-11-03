@@ -9,6 +9,13 @@ import org.slf4j.LoggerFactory;
 import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.Perro;
 
+/**
+ * 
+ * @author ADassoy
+ * 
+ *         Capa Service que une PerroController con PerroDAOImpl
+ *
+ */
 public class PerreraServiceImpl implements PerreraService {
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -44,18 +51,21 @@ public class PerreraServiceImpl implements PerreraService {
 
 	@Override
 	public boolean delete(long idPerro) {
+		this.log.info("Peticion del servicio para eliminar un perro por 'id'");
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return dao.delete(idPerro);
 	}
 
 	@Override
 	public boolean insert(Perro perro) {
+		this.log.info("Peticion del servicio para añadir un perro");
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return dao.insert(perro);
 	}
 
 	@Override
 	public boolean update(Perro perro) {
+		this.log.info("Peticion del servicio para modificar un perro");
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		return dao.update(perro);
 	}

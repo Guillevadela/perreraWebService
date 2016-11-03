@@ -30,6 +30,13 @@ import io.swagger.annotations.ApiResponses;
 
 @Path("/perro")
 @Api(value = "/perro")
+/**
+ * Controlador para operaciones CRUD de perrera
+ * 
+ * @author ADassoy
+ * 
+ *
+ */
 public class PerroController {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 

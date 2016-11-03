@@ -6,13 +6,18 @@ import java.util.List;
 import org.hibernate.QueryException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ipartek.formacion.perrera.pojo.Perro;
 import com.ipartek.formacion.perrera.util.HibernateUtil;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+/**
+ * Esta clase se encarga de conectar con la bd para realizar tareas de CRUD
+ * 
+ * @author Adassoy
+ *
+ */
 public class PerroDAOImpl implements PerroDAO {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -33,15 +38,20 @@ public class PerroDAOImpl implements PerroDAO {
 	}
 
 	/**
-	 * Función que devuelve una lista de perros
+	 * Se encarga de listar todos los perros de la bd.
+	 * 
+	 * Si al solicitar el listado se ponen mal los parametros por defecto el
+	 * orden es en orden descendiente por id.
 	 * 
 	 * @param order
-	 *            Modo de ordenacion de la lista.<br>
-	 *            Posibles valores asc/desc
+	 *            Filtro para ordenar los perros de forma ascendente o
+	 *            descendente, posibles valores [asc|desc]
 	 * @param campo
-	 *            Campo por el que se va a ordenar. <br>
-	 *            Posibles valores id/nombre/raza
-	 * @return List<Perro>
+	 *            Filtro para ordenar por 'campo' los perros, posibles valores
+	 *            [id|nombre|raza]
+	 * 
+	 * 
+	 * @return Devuelve una lista con todos los elementos
 	 */
 	public List<Perro> getAll(String order, String campo) {
 		// inicializamos lista como un ArrayList de objetos Perro
@@ -52,43 +62,64 @@ public class PerroDAOImpl implements PerroDAO {
 
 			try {
 				if ("desc".equals(order)) {
-					this.log.info("listando todos los perros en orden desdendente");
+					this.log.trace("listando todos los perros en orden desdendente");
 					lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc(campo)).list();
 				} else {
-					this.log.info("listando todos los perros en orden ascendente");
+					this.log.trace("listando todos los perros en orden ascendente");
 					lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.asc(campo)).list();
 				}
 				// Si falla porque esta mal la Query, por ejemplo una columna
 				// que no existe
 				// retorno listado perros ordenados por id desc
-			} catch (QueryException e) {				
-				this.log.info("listando todos los perros en orden descendente por un error en la Query");				
+			} catch (QueryException e) {
+				this.log.error("listando todos los perros en orden descendente por un error en la Query");
 				lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc("id")).list();
 			}
 
 		} catch (Exception e) {
+			this.log.error("Error al intentar obtener el listado");
 			e.printStackTrace();
 		} finally {
 			// cerramos la transaccion
 			s.close();
+			this.log.trace("cerrando sesion, finaliza getAll");
 		}
 		return lista;
 	}
 
+	/**
+	 * Se encarga de obtener un elemento de la bd por su id.
+	 * 
+	 * @param idPerro
+	 *            - id del perro a obtener
+	 * 
+	 * @return - Objeto de tipo Perro
+	 */
 	public Perro getById(long idPerro) {
 		Perro resul = null;
 		Session s = HibernateUtil.getSession();
 		try {
 			resul = (Perro) s.get(Perro.class, idPerro);
-			this.log.info("Iniciada peticion de perro por 'id'");
+			this.log.trace("Iniciada peticion de perro por 'id'");
 		} catch (Exception e) {
+			this.log.error("Error al intentar obtener perro por id");
 			e.printStackTrace();
 		} finally {
 			s.close();
+			this.log.trace("cerrando sesion, finaliza getById");
 		}
 		return resul;
 	}
 
+	/**
+	 * Se encarga de eliminar un elemento de la bd por su id.
+	 * 
+	 * @param idPerro
+	 *            - id del perro a eliminar
+	 * 
+	 * @return - Devuelve un booleano (true, para eliminado - false - para NO
+	 *         eliminado)
+	 */
 	public boolean delete(long idPerro) {
 		Perro pElimnar = null;
 		boolean resul = false;
@@ -98,37 +129,57 @@ public class PerroDAOImpl implements PerroDAO {
 			pElimnar = (Perro) s.get(Perro.class, idPerro);
 			if (pElimnar != null) {
 				s.delete(pElimnar);
-				this.log.info("Iniciada peticion de eliminar perro");
+				this.log.info("Eliminando un perro");
 				s.beginTransaction().commit();
 				resul = true;
 			}
 		} catch (final Exception e) {
+			this.log.error("No se ha podido realizar borrado de perro, se hace rollback");
 			e.printStackTrace();
 			s.beginTransaction().rollback();
 		} finally {
 			s.close();
+			this.log.trace("cerrando sesion, finaliza delete");
 		}
 		return resul;
 	}
 
+	/**
+	 * Actualiza un perro
+	 * 
+	 * @param perro
+	 *            - objeto de tipo Perro
+	 * 
+	 * @return Booleano 'resul' true/false - Actualizado/NO actualizado
+	 */
 	public boolean update(Perro perro) {
 		boolean resul = false;
 		Session s = HibernateUtil.getSession();
 		try {
 			s.beginTransaction();
-			this.log.info("Iniciada peticion de actualizar perro");
+			this.log.info("Modificando un perro");
 			s.update(perro);
 			s.beginTransaction().commit();
 			resul = true;
 		} catch (final Exception e) {
+			this.log.error("No se ha podido modificar, se inicia rollback");
 			e.printStackTrace();
 			s.beginTransaction().rollback();
 		} finally {
+			this.log.trace("cerrando sesion, finaliza update");
 			s.close();
 		}
 		return resul;
 	}
 
+	/**
+	 * Añade un nuevo elemento a la bd
+	 * 
+	 * @param perro
+	 *            de tipo Perro
+	 * 
+	 * @return Booleano 'resul' true/false - Insertado/NO Insertado
+	 */
 	public boolean insert(Perro perro) {
 		boolean resul = false;
 		Session s = HibernateUtil.getSession();
@@ -144,10 +195,12 @@ public class PerroDAOImpl implements PerroDAO {
 				s.beginTransaction().rollback();
 			}
 		} catch (Exception e) {
+			this.log.error("Error al intentar Insertar un nuevo elemento, se hace rollback");
 			s.beginTransaction().rollback();
 			e.printStackTrace();
 		} finally {
 			s.close();
+			this.log.trace("cerrando sesion, finaliza insert");
 		}
 		return resul;
 	}
