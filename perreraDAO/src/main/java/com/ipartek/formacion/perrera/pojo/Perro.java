@@ -9,58 +9,109 @@ import javax.persistence.Table;
 
 @Entity()
 @Table(name = "perro")
+/**
+ * POJO de la clase Perro de perreraWebService
+ * 
+ * @author EkaitzAF
+ *
+ */
 public class Perro {
 
 	@Id()
 	@GeneratedValue()
-	private long id;// clave y se genera automaticamente
+	/**
+	 * clave y se genera automaticamente
+	 */
+	private long id;
 
-	/* Persistente, un tipo basico (string) */
+	/**
+	 * Persistente, un tipo basico (string)
+	 */
 	@Basic()
 	@Column(name = "nombre")
 	private String nombre;
 
+	/**
+	 * Persistente, un tipo basico (string)
+	 */
 	@Basic()
 	@Column(name = "raza")
 	private String raza;
 
 	/**
+	 * constructor usando parametros
+	 * 
 	 * @param nombre
+	 *            nombre del perro
 	 * @param raza
+	 *            raza del perro
 	 */
-	public Perro(String nombre, String raza) {
+	public Perro(final String nombre, final String raza) {
 		super();
 		this.nombre = nombre;
 		this.raza = raza;
 	}
 
+	/**
+	 * constructor por defecto
+	 */
 	public Perro() {
 		super();
 		this.nombre = "";
 		this.raza = "";
 	}
 
-	public String getNombre() {
-		return this.nombre;
-	}
-
+	/**
+	 * devuelve el id del perro
+	 * 
+	 * @return id
+	 */
 	public long getId() {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	/**
+	 * introduce un id
+	 * 
+	 * @param id
+	 */
+	public void setId(final long id) {
 		this.id = id;
 	}
 
-	public void setNombre(String nombre) {
+	/**
+	 * devuelve el nombre del perro
+	 * 
+	 * @return nombre
+	 */
+	public String getNombre() {
+		return this.nombre;
+	}
+
+	/**
+	 * introduce un nombre
+	 * 
+	 * @param nombre
+	 */
+	public void setNombre(final String nombre) {
 		this.nombre = nombre;
 	}
 
+	/**
+	 * devuelve la raza del perro
+	 * 
+	 * @return raza
+	 */
 	public String getRaza() {
 		return this.raza;
 	}
 
-	public void setRaza(String raza) {
+	/**
+	 * introduce una raza
+	 * 
+	 * @param raza
+	 */
+	public void setRaza(final String raza) {
 		this.raza = raza;
 	}
 
@@ -75,6 +126,9 @@ public class Perro {
 	}
 
 	@Override()
+	/**
+	 * funcion toString con los campos
+	 */
 	public String toString() {
 		return "Perro [nombre=" + this.nombre + ", raza=" + this.raza + "]";
 	}
