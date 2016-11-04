@@ -20,6 +20,10 @@ import com.ipartek.formacion.perrera.util.HibernateUtil;
  */
 public final class PerroDAOImpl implements PerroDAO {
 	/**
+	 * mensaje repetido de raza
+	 */
+	private static final String MENSAJE_RAZA = " y raza:";
+	/**
 	 * log para trazas
 	 */
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -38,7 +42,7 @@ public final class PerroDAOImpl implements PerroDAO {
 	 * 
 	 * @return instancia de PerroDAOImpl
 	 */
-	public synchronized static PerroDAOImpl getInstance() {
+	public static synchronized PerroDAOImpl getInstance() {
 		if (instance == null) {
 			instance = new PerroDAOImpl();
 		}
@@ -76,12 +80,12 @@ public final class PerroDAOImpl implements PerroDAO {
 				// que no existe
 				// retorno listado perros ordenados por id desc
 			} catch (QueryException e) {
-				this.log.error("QueryException: mostrar lista de perros orden desc por id");
+				this.log.error("QueryException: mostrar lista de perros orden desc por id", e);
 				lista = (ArrayList<Perro>) session.createCriteria(Perro.class).addOrder(Order.desc("id")).list();
 			}
 
 		} catch (Exception e) {
-			this.log.error("Exception: no se ha podido mostrar lista de perros");
+			this.log.error("Exception: no se ha podido mostrar lista de perros", e);
 		} finally {
 			// cerramos la transaccion
 			session.close();
@@ -111,11 +115,11 @@ public final class PerroDAOImpl implements PerroDAO {
 				resul = new Perro();
 			}
 		} catch (Exception e) {
-			this.log.error("Exception: no se ha podido encontrar perro con id" + idPerro);
+			this.log.error("Exception: no se ha podido encontrar perro con id" + idPerro, e);
 		} finally {
 			session.close();
 		}
-		this.log.info("DAO: Perro obtenido id:" + idPerro);
+		this.log.info("DAO: Perro obtenido id:" + resul.getId());
 		return resul;
 	}
 
@@ -145,7 +149,7 @@ public final class PerroDAOImpl implements PerroDAO {
 				resul = true;
 			}
 		} catch (final Exception e) {
-			this.log.error("Exception: no se ha podido eliminar perro con id" + idPerro);
+			this.log.error("Exception: no se ha podido eliminar perro con id" + idPerro, e);
 			session.beginTransaction().rollback();
 		} finally {
 			session.close();
@@ -174,7 +178,7 @@ public final class PerroDAOImpl implements PerroDAO {
 			session.beginTransaction().commit();
 			resul = true;
 		} catch (final Exception e) {
-			this.log.error("Exception: no se ha podido modificar perro con id" + perro.getId());
+			this.log.error("Exception: no se ha podido modificar perro con id" + perro.getId(), e);
 			session.beginTransaction().rollback();
 		} finally {
 			session.close();
@@ -194,7 +198,7 @@ public final class PerroDAOImpl implements PerroDAO {
 	 * 
 	 */
 	public boolean insert(final Perro perro) {
-		this.log.trace("DAO: Insertando perro con nombre:" + perro.getNombre() + " y raza:" + perro.getRaza());
+		this.log.trace("DAO: Insertando perro con nombre:" + perro.getNombre() + MENSAJE_RAZA + perro.getRaza());
 		boolean resul = false;
 		final Session session = HibernateUtil.getSession();
 		try {
@@ -210,13 +214,13 @@ public final class PerroDAOImpl implements PerroDAO {
 			}
 
 		} catch (Exception e) {
-			this.log.error("Exception: no se ha podido insertar perro con nombre:" + perro.getNombre() + " y raza:"
-					+ perro.getRaza());
+			this.log.error("Exception: no se ha podido insertar perro con nombre:" + perro.getNombre() + MENSAJE_RAZA
+					+ perro.getRaza(), e);
 			session.beginTransaction().rollback();
 		} finally {
 			session.close();
 		}
-		this.log.info("DAO: Resultado de perro insertar perro con nombre:" + perro.getNombre() + " y raza:"
+		this.log.info("DAO: Resultado de perro insertar perro con nombre:" + perro.getNombre() + MENSAJE_RAZA
 				+ perro.getRaza() + " insertado: " + resul);
 		return resul;
 	}

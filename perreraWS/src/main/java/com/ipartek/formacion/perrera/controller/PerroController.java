@@ -60,6 +60,10 @@ public class PerroController {
 	 */
 	private static final String MENSAJE_ERROR = "Error inexperado en el servidor";
 	/**
+	 * mensaje repetido de raza
+	 */
+	private static final String MENSAJE_RAZA = " y raza:";
+	/**
 	 * log para las trazas
 	 */
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -91,7 +95,7 @@ public class PerroController {
 			response = Response.ok().entity(perros).build();
 
 		} catch (Exception e) {
-			this.log.error("Error al intentar conectarse al servidor en getAll");
+			this.log.error("Error al intentar conectarse al servidor en getAll", e);
 			response = Response.serverError().build();
 		}
 		return response;
@@ -126,7 +130,7 @@ public class PerroController {
 			}
 
 		} catch (Exception e) {
-			this.log.error("Error al intentar conectarse al servidor en getById");
+			this.log.error("Error al intentar conectarse al servidor en getById", e);
 			response = Response.serverError().build();
 		}
 		return response;
@@ -161,7 +165,7 @@ public class PerroController {
 			}
 
 		} catch (Exception e) {
-			this.log.error("Error al intentar conectarse al servidor en delete");
+			this.log.error("Error al intentar conectarse al servidor en delete", e);
 			response = Response.serverError().build();
 		}
 		return response;
@@ -187,23 +191,22 @@ public class PerroController {
 		Response response = null;
 		try {
 			this.log.trace(
-					"Llamada a servicio: Insertando perro nuevo con nombre:" + nombrePerro + " y raza:" + razaPerro);
+					"Llamada a servicio: Insertando perro nuevo con nombre:" + nombrePerro + MENSAJE_RAZA + razaPerro);
 			final PerroServiceImpl service = PerroServiceImpl.getInstance();
 			final Perro perroNuevo = new Perro(nombrePerro, razaPerro);
 			final boolean perroCreado = service.insert(perroNuevo);
 			if (perroCreado) {
 				this.log.info(
-						"Se ha insertado en la tabla el perro con nombre:" + nombrePerro + " y raza:" + razaPerro);
+						"Se ha insertado en la tabla el perro con nombre:" + nombrePerro + MENSAJE_RAZA + razaPerro);
 				response = Response.status(SUCCESS01).build();
 			} else {
-				this.log.info("No se ha podido insertar en la tabla el perro con nombre:" + nombrePerro + " y raza:"
+				this.log.info("No se ha podido insertar en la tabla el perro con nombre:" + nombrePerro + MENSAJE_RAZA
 						+ razaPerro);
 				response = Response.status(FAILURE09).build();
 			}
 
 		} catch (Exception e) {
-			this.log.error("Error al intentar conectarse al servidor en post");
-			// e.printStackTrace();
+			this.log.error("Error al intentar conectarse al servidor en post", e);
 			response = Response.serverError().build();
 		}
 		return response;
@@ -244,12 +247,12 @@ public class PerroController {
 				response = Response.status(SUCCESS00).build();
 			} else {
 				this.log.info("No se ha podido modificar el perro con id:" + idPerro + " nombre:" + nombrePerro
-						+ " y raza:" + razaPerro);
+						+ MENSAJE_RAZA + razaPerro);
 				response = Response.status(FAILURE04).build();
 			}
 
 		} catch (Exception e) {
-			this.log.error("Error al intentar conectarse al servidor en put");
+			this.log.error("Error al intentar conectarse al servidor en put", e);
 			response = Response.status(ERROR00).build();
 
 		}
