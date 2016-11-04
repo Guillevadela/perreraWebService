@@ -31,7 +31,7 @@ public class HibernateUtil {
 			config.configure();
 			// Use this if config files are in a subfolder of src, such as
 			// "resources"
-			// config.configure("/resources/hibernate.cfg.xml");
+			// config.configure("/resources/hibernate.cfg.xml")
 
 			sessionFactory = config.buildSessionFactory();
 

@@ -13,7 +13,7 @@ public class PerroServiceImpl implements PerroService {
 	private final Logger logger = LoggerFactory.getLogger(PerroDAOImpl.class);
 
 	// instancia unica para 'patron Singleton'
-	private static PerroServiceImpl INSTANCE = null;
+	private static PerroServiceImpl instance = null;
 
 	// constructor privado para que no se pueda instanciar esta clase
 	private PerroServiceImpl() {
@@ -21,11 +21,11 @@ public class PerroServiceImpl implements PerroService {
 	}
 
 	// unico metodo para crear un objeto de esta Clase
-	public synchronized static PerroServiceImpl getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new PerroServiceImpl();
+	public static synchronized PerroServiceImpl getInstance() {
+		if (instance == null) {
+			instance = new PerroServiceImpl();
 		}
-		return INSTANCE;
+		return instance;
 	}
 
 	

@@ -54,7 +54,7 @@ public class PerroController {
 			ArrayList<Perro> perros = (ArrayList<Perro>) service.getAll(orderBy, campo);
 			return Response.ok().entity(perros).build();
 		} catch (Exception e) {
-			this.logger.error("Error al listar perros");
+			this.logger.error("Error al listar perros", e);
 			return Response.serverError().build();
 		}
 	}
@@ -71,15 +71,14 @@ public class PerroController {
 	public Response getById(@PathParam("id") int idPerro) {
 
 		try {
-			Perro perro = null;
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
-			perro = service.getById(idPerro);
+			Perro perro = service.getById(idPerro);
 			if (perro == null) {
 				return Response.noContent().build();
 			}
 			return Response.ok().entity(perro).build();
 		} catch (Exception e) {
-			this.logger.error("Error al devolver el perro " + idPerro);
+			this.logger.error("Error al devolver el perro " + idPerro, e);
 			return Response.serverError().build();
 		}
 	}
@@ -106,8 +105,7 @@ public class PerroController {
 				return Response.status(409).build();
 			}
 		} catch (Exception e) {
-			this.logger.error("Error al crear el perro " + nombrePerro);
-			e.printStackTrace();
+			this.logger.error("Error al crear el perro " + nombrePerro, e);
 			return Response.serverError().build();
 		}
 	}
@@ -137,7 +135,7 @@ public class PerroController {
 				return Response.ok().entity(pModificar).build();
 			}
 		} catch (Exception e) {
-			this.logger.error("Error al modificar el perro " + idPerro);
+			this.logger.error("Error al modificar el perro " + idPerro, e);
 			return Response.status(500).build();
 
 		}
@@ -155,9 +153,8 @@ public class PerroController {
 
 		try {
 			Date date = new Date();
-			boolean resul = false;
 			PerroServiceImpl service = PerroServiceImpl.getInstance();
-			resul = service.delete(idPerro);
+			boolean resul = service.delete(idPerro);
 			if (resul){
 				return Response.ok().entity(date).build();
 			}else{
@@ -165,7 +162,7 @@ public class PerroController {
 			}				
 			
 		} catch (Exception e) {
-			this.logger.error("Error al eliminar el perro " + idPerro);
+			this.logger.error("Error al eliminar el perro " + idPerro, e);
 			return Response.serverError().build();
 		}
 	}
