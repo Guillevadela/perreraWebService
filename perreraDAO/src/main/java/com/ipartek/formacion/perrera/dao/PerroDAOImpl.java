@@ -51,7 +51,7 @@ public class PerroDAOImpl implements PerroDAO {
 		this.logger.info("Obteniendo la sesion...");
 		Session s = HibernateUtil.getSession();
 		try {
-			if (order.equals("desc")) {
+			if ("desc".equals(order)) {
 				this.logger.info("Ordenando el array de forma descendente");
 				lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc(campo)).list();
 			} else {
@@ -59,11 +59,10 @@ public class PerroDAOImpl implements PerroDAO {
 				lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.asc(campo)).list();
 			}
 		} catch (QueryException e) {
-			this.logger.error("Error al obtener la lista");
+			this.logger.error("Error al obtener la lista<br>Traza:"+e);
 			lista = (ArrayList<Perro>) s.createCriteria(Perro.class).addOrder(Order.desc(campo)).list();
 		} catch (Exception e) {
-			this.logger.error("No se ha podido obtener la lista ordenada");
-			e.printStackTrace();
+			this.logger.error("No se ha podido obtener la lista ordenada<br>Traza"+e);
 		} finally {
 			// cerramos la transaccion
 			this.logger.info("Cerrando la transaccion...");
@@ -90,8 +89,7 @@ public class PerroDAOImpl implements PerroDAO {
 			this.logger.info("Buscando al perro cuya id es:" + idPerro);
 			resul = (Perro) s.get(Perro.class, idPerro);
 		} catch (Exception e) {
-			this.logger.error("Error al buscar al perro cuya id es:" + idPerro);
-			e.printStackTrace();
+			this.logger.error("Error al buscar al perro cuya id es:" + idPerro+"<br>Traza:"+e);
 		} finally {
 			this.logger.info("Cerrando la transaccion...");
 			s.close();
@@ -126,8 +124,7 @@ public class PerroDAOImpl implements PerroDAO {
 				resul = true;
 			}
 		} catch (final Exception e) {
-			e.printStackTrace();
-			this.logger.error("Error al eliminar al perro de id:" + idPerro);
+			this.logger.error("Error al eliminar al perro de id:" + idPerro+"<br>Traza:"+e);
 			s.beginTransaction().rollback();
 		} finally {
 			this.logger.info("Cerrando la transaccion...");
@@ -158,8 +155,7 @@ public class PerroDAOImpl implements PerroDAO {
 			resul = true;
 			this.logger.info("El perro:" + perro.toString() + " ha sido modificado");
 		} catch (final Exception e) {
-			e.printStackTrace();
-			this.logger.error("Error al modificar al perro de id:" + perro.getId());
+			this.logger.error("Error al modificar al perro de id:" + perro.getId()+"<br>Traza:"+e);
 			s.beginTransaction().rollback();
 		} finally {
 			this.logger.info("Cerrando la transaccion...");
@@ -195,9 +191,8 @@ public class PerroDAOImpl implements PerroDAO {
 				s.beginTransaction().rollback();
 			}
 		} catch (Exception e) {
-			this.logger.error("Error al dar de alta al perro:" + perro.toString());
+			this.logger.error("Error al dar de alta al perro:" + perro.toString()+"<br>Traza:"+e);
 			s.beginTransaction().rollback();
-			e.printStackTrace();
 		} finally {
 			this.logger.info("Cerrando la transaccion...");
 			s.close();

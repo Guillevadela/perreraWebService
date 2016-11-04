@@ -55,7 +55,7 @@ public class PerroController {
 			return Response.ok().entity(perros).build();
 
 		} catch (Exception e) {
-			this.logger.error("Error al listar los perros");
+			this.logger.error("Error al listar los perros<br>Traza:"+e);
 			return Response.serverError().build();
 		}
 	}
@@ -72,9 +72,8 @@ public class PerroController {
 		try {
 			this.logger.info("preparando la instancia...");
 			PerroServiceImpl dao = PerroServiceImpl.getInstance();
-			Perro perro = null;
 			this.logger.info("procesando peticion para encontrar al perro con id:" + idPerro);
-			perro = dao.getById(idPerro);
+			Perro perro = dao.getById(idPerro);
 			if (perro == null) {
 				this.logger.info("El perro con id:" + idPerro + " no existe");
 				return Response.noContent().build();
@@ -82,7 +81,7 @@ public class PerroController {
 			this.logger.info("El perro con id:" + idPerro + " existe y esta siendo mostrado");
 			return Response.ok().entity(perro).build();
 		} catch (Exception e) {
-			this.logger.error("Error en la busqueda del perro con id:" + idPerro);
+			this.logger.error("Error en la busqueda del perro con id:" + idPerro+"<br>Traza:"+e);
 			return Response.serverError().build();
 		}
 	}
@@ -99,9 +98,8 @@ public class PerroController {
 		try {
 			this.logger.info("preparando la instancia...");
 			PerroServiceImpl dao = PerroServiceImpl.getInstance();
-			boolean pElimnar = false;
 			this.logger.info("procesando peticion para eliminar al perro con id:" + idPerro);
-			pElimnar = dao.delete(idPerro);
+			boolean pElimnar = dao.delete(idPerro);
 			if (pElimnar != true) {
 				this.logger.info("No hay ningun perro con id:" + idPerro + ", por lo tanto no se ha eliminado nada");
 				return Response.notModified().build();
@@ -110,7 +108,7 @@ public class PerroController {
 				return Response.ok().entity(pElimnar).build();
 			}
 		} catch (Exception e) {
-			this.logger.error("Error en la eliminacion del perro con id:" + idPerro);
+			this.logger.error("Error en la eliminacion del perro con id:" + idPerro+"<br>Traza:"+e);
 			return Response.serverError().build();
 		}
 	}
@@ -127,9 +125,8 @@ public class PerroController {
 			this.logger.info("preparando la instancia...");
 			PerroServiceImpl dao = PerroServiceImpl.getInstance();
 			Perro pCreado = new Perro(nombrePerro, razaPerro);
-			boolean idpCreado = false;
 			this.logger.info("procesando peticion para crear un nuevo perro");
-			idpCreado = dao.insert(pCreado);
+			boolean idpCreado = dao.insert(pCreado);
 			if (idpCreado == true) {
 				this.logger.info("El perro ha sido creado correctamente");
 				return Response.status(201).entity(pCreado).build();
@@ -138,8 +135,7 @@ public class PerroController {
 				return Response.status(304).build();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			this.logger.error("Error en el alta de perro");
+			this.logger.error("Error en el alta de perro<br>Traza:"+e);
 			return Response.serverError().build();
 		}
 	}
@@ -159,9 +155,8 @@ public class PerroController {
 			PerroServiceImpl dao = PerroServiceImpl.getInstance();
 			Perro pModificar = new Perro(idPerro, nombrePerro, razaPerro);
 
-			boolean rModificar = false;
 			this.logger.info("procesando peticion para modificar al perro con id" + idPerro);
-			rModificar = dao.update(pModificar);
+			boolean rModificar = dao.update(pModificar);
 			if (rModificar != true) {
 				this.logger.info("EL perro con id" + idPerro + " no ha podido ser modificado");
 				return Response.notModified().build();
@@ -170,7 +165,7 @@ public class PerroController {
 				return Response.ok().entity(pModificar).build();
 			}
 		} catch (Exception e) {
-			this.logger.error("Error al modificar al perro con id" + idPerro);
+			this.logger.error("Error al modificar al perro con id" + idPerro+"<br>Traza:"+e);
 			return Response.status(500).build();
 
 		}

@@ -35,9 +35,9 @@ public class HibernateUtil {
 
 			sessionFactory = config.buildSessionFactory();
 
-		} catch (Throwable ex) {
+		} catch (RuntimeException e) {
 			// Log exception!
-			throw new ExceptionInInitializerError(ex);
+			throw new ExceptionInInitializerError(e);
 		}
 	}
 
