@@ -90,7 +90,7 @@ public class PerroController {
 			if (perroBorrado) {
 				return Response.ok().entity(perroBorrado).build();
 			} else {
-				return Response.noContent().build();
+			return Response.noContent().build();
 			}
 
 		} catch (Exception e) {

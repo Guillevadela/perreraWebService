@@ -2,40 +2,32 @@ package com.ipartek.formacion.perrera.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.QueryException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
-
 import com.ipartek.formacion.perrera.pojo.Perro;
 import com.ipartek.formacion.perrera.util.HibernateUtil;
 
 public class PerroDAOImpl implements PerroDAO {
-	
+
 	private static PerroDAOImpl INSTANCE = null;
 
 	private PerroDAOImpl() {
 		super();
 	}
 
-	public synchronized static PerroDAOImpl getInstance() {
+	public static synchronized PerroDAOImpl getInstance() {
 		if (INSTANCE == null) {
 			INSTANCE = new PerroDAOImpl();
 		}
 		return INSTANCE;
 	}
-
-	/**
-	 * Función que devuelve una lista de perros
-	 * 
-	 * @param order
-	 *            Modo de ordenacion de la lista.<br>
-	 *            Posibles valores asc/desc
-	 * @param campo
+	
+	/*@param campo
 	 *            Campo por el que se va a ordenar. <br>
-	 *            Posibles valores id/nombre/raza
-	 * @return List<Perro>
+	 * @return List$gt;Perro$lt;
 	 */
+	
 	public List<Perro> getAll(String order, String campo) {
 		// inicializamos lista como un ArrayList de objetos Perro
 		ArrayList<Perro> lista = new ArrayList<Perro>();
