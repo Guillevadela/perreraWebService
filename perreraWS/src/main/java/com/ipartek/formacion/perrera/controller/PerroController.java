@@ -1,6 +1,5 @@
 package com.ipartek.formacion.perrera.controller;
 
-
 import java.util.ArrayList;
 
 import javax.ws.rs.DELETE;
@@ -27,39 +26,39 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-
+/**
+ * Clase Controller que gestiona
+ * 
+ * @author JHM
+ *
+ */
 @Path("/perro")
 @Api(value = "/perro")
 public class PerroController {
 
-	private static final Logger logger = Logger.getLogger(PerroController.class);
-	
-	@GET
+	private static final Logger lOGGER = Logger.getLogger(PerroController.class);
+
+	@GET()
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Listado de Perros", notes = "Listado de perros existentes en la perrera, limitado a 1.000", response = Perro.class, responseContainer = "List")
-
-	@ApiResponses(value = { 
-							@ApiResponse(code = 200, message = "Todo OK"),
-			                @ApiResponse(code = 500, message = "Error inexperado en el servidor") 
-							})
-	public Response getAll(
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
+			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	public final Response getAll(
 			@ApiParam(name = "orderBy", required = false, value = "Filtro para ordenar los perros de forma ascendente o descendente, posibles valores [asc|desc]") @DefaultValue("asc") @QueryParam("orderBy") String orderBy,
-			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id")  @QueryParam("campo") String campo) {
+			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		try {
-			
+
 			PerreraServiceImpl dao = PerreraServiceImpl.getInstance();
-			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);			
+			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
 			return Response.ok().entity(perros).build();
-			
+
 		} catch (Exception e) {
-			logger.warn("Error al listar perros",e);
+			lOGGER.warn("Error al listar perros", e);
 			return Response.serverError().build();
 		}
 	}
-	
-	
-	
-	@GET
+
+	@GET()
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Busca un perro por su ID", notes = "devuelve un perro mediante el paso de su ID", response = Perro.class, responseContainer = "Perro")
@@ -74,18 +73,18 @@ public class PerroController {
 			Perro perro = (Perro) dao.getById(idPerro);
 
 			if (perro == null) {
-				logger.warn("Perro con id=" + idPerro + "no encontrado");
+				lOGGER.warn("Perro con id=" + idPerro + "no encontrado");
 				return Response.noContent().build();
 			}
-			logger.info("Perro con id=" + idPerro + " devuelto OK");
+			lOGGER.info("Perro con id=" + idPerro + " devuelto OK");
 			return Response.ok().entity(perro).build();
 		} catch (Exception e) {
-			logger.warn("Id introducida erronea",e);
+			lOGGER.warn("Id introducida erronea", e);
 			return Response.serverError().build();
 		}
 	}
-	
-	@DELETE
+
+	@DELETE()
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Elimina un perro", notes = "Elimina un perro mediante el paso de su ID", response = Perro.class, responseContainer = "FechaHora")
@@ -95,28 +94,27 @@ public class PerroController {
 	public Response delete(@PathParam("id") long idPerro) {
 
 		try {
-			
+
 			PerreraServiceImpl dao = PerreraServiceImpl.getInstance();
 			Perro pElimnar = null;
-			
+
 			pElimnar = (Perro) dao.getById(idPerro);
-			
+
 			if (pElimnar == null) {
-				logger.warn("Error al eliminar perro. Perro no existe");
+				lOGGER.warn("Error al eliminar perro. Perro no existe");
 				return Response.noContent().build();
 			} else {
 				dao.delete(pElimnar.getId());
-				logger.info("Perro con id=" + pElimnar.getId() + " eliminado OK");
+				lOGGER.info("Perro con id=" + pElimnar.getId() + " eliminado OK");
 				return Response.ok().entity(new FechaHora()).build();
 			}
 		} catch (Exception e) {
-			logger.warn("Error al eliminar perro",e);
+			lOGGER.warn("Error al eliminar perro", e);
 			return Response.serverError().build();
 		}
 	}
-	
-	
-	@POST
+
+	@POST()
 	@Path("/{nombre}/{raza}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Añade un perro", notes = "Crea y persiste un nuevo perro", response = Perro.class, responseContainer = "Perro")
@@ -129,24 +127,22 @@ public class PerroController {
 			PerreraServiceImpl dao = PerreraServiceImpl.getInstance();
 			Perro pCreado = new Perro(nombrePerro, razaPerro);
 			boolean creado = dao.insert(pCreado);
-						
-			
-			if (creado==true) {
-				logger.info("Perro creado OK");
+
+			if (creado == true) {
+				lOGGER.info("Perro creado OK");
 				return Response.status(201).entity(pCreado).build();
 			} else {
-				logger.warn("Error al crear perro. Perro ya existente");
+				lOGGER.warn("Error al crear perro. Perro ya existente");
 				return Response.status(409).build();
 			}
 		} catch (Exception e) {
-			logger.warn("Error al crear perro",e);
+			lOGGER.warn("Error al crear perro", e);
 			e.printStackTrace();
 			return Response.serverError().build();
 		}
 	}
-	
-	
-	@PUT
+
+	@PUT()
 	@Path("/{id}/{nombre}/{raza}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Modifica un perro", notes = "Modifica un perro ya existente mediante su identificador", response = Perro.class, responseContainer = "Perro")
@@ -157,29 +153,29 @@ public class PerroController {
 	public Response put(@PathParam("id") long idPerro, @PathParam("nombre") String nombrePerro,
 			@PathParam("raza") String razaPerro) {
 		try {
-			
+
 			PerreraServiceImpl dao = PerreraServiceImpl.getInstance();
 			Perro pModificar = null;
-			
+
 			pModificar = (Perro) dao.getById(idPerro);
-			
+
 			if (pModificar == null) {
-				logger.warn("Error al modificar perro. Perro no existe");
+				lOGGER.warn("Error al modificar perro. Perro no existe");
 				return Response.noContent().build();
 			} else {
 				pModificar.setNombre(nombrePerro);
 				pModificar.setRaza(razaPerro);
-				
+
 				dao.update(pModificar);
-				logger.info("Perro con id=" + idPerro + " modificado OK");
-				
+				lOGGER.info("Perro con id=" + idPerro + " modificado OK");
+
 				return Response.ok().entity(pModificar).build();
 			}
 		} catch (Exception e) {
-			logger.warn("Error inesperado al modificar perro con id=" + idPerro ,e);
+			lOGGER.warn("Error inesperado al modificar perro con id=" + idPerro, e);
 			return Response.status(500).build();
 
 		}
 	}
-	
+
 }

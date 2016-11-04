@@ -41,6 +41,12 @@ public class HibernateUtil {
 		}
 	}
 
+	/**
+	 * Método que obtiene la sesión abierta
+	 * 
+	 * @return sessionFactory.openSession() Devuelve la sesión abierta
+	 * @throws HibernateException
+	 */
 	public static Session getSession() throws HibernateException {
 		return sessionFactory.openSession();
 	}

@@ -1,61 +1,38 @@
 package com.ipartek.formacion.perrera.controller;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import javax.ws.rs.core.Response;
+
 import org.junit.Test;
 
 import com.ipartek.formacion.perrera.pojo.Perro;
 
-import javax.ws.rs.core.Response;
-
+/**
+ * Test para comprobar funcionamiento del Controlador
+ * 
+ * @author JHM
+ *
+ */
 public class PerroControlllerTest {
 
-	public final static String NOMBRE_PERRO = "Bernardo";
+	final static String NOMBRE_PERRO = "Bernardo";
 	public final static String RAZA_PERRO = "San Berardo";
 	public final static String NOMBRE_PERRO_UPDATE = "Bernardino";
 	public final static String RAZA_PERRO_UPDATE = "Esquimal";
 	public final static long ID_ERRONEA = -1;
 
-	ArrayList<Perro> lista = null;
-
-	// Perro perroMock = null;
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-
-		// una forma de hacer el test es creando un perro antes de cada metodo
-		// creamos perro
-		// perroMock = new Perro();
-		// perroMock.setNombre(NOMBRE_PERRO);
-		// perroMock.setRaza(RAZA_PERRO);
-
-		// insertar perroMock
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		// elimina perroMock despues de cada metodo
-	}
+	private ArrayList<Perro> lista = null;
 
 	/**
 	 * Test para probar metodo getAll(orden, campo) y comprobar que devuelve una
 	 * lista de perros
 	 */
-	@Test
+	@Test()
 	public void testGetAll() {
 
 		PerroController controller = new PerroController();
@@ -100,7 +77,7 @@ public class PerroControlllerTest {
 	 * Test para probar metodo post(nombre, raza) y comprobar que crea un perro
 	 * nuevo
 	 */
-	@Test
+	@Test()
 	public void testPost() {
 
 		long idPerroTest = 0;
@@ -122,23 +99,20 @@ public class PerroControlllerTest {
 
 	}
 
-	
 	/**
-	 * Test para probar a la vez los metodos:
-	 * 	insertar  			  post(nombre, raza)
-	 * 	buscar por id 		  getById(id)
-	 * 	modificar(update)	  put(id, nombre, raza)
-	 *  borrar				  delete(id)
+	 * Test para probar a la vez los metodos: insertar post(nombre, raza) buscar
+	 * por id getById(id) modificar(update) put(id, nombre, raza) borrar
+	 * delete(id)
 	 * 
 	 * 
 	 * nuevo
 	 */
-	@Test
+	@Test()
 	public void test() {
 
-		/* -----------------------
-		 *    TEST INSERTAR 
-		 * ------------------------   */
+		/*
+		 * ----------------------- TEST INSERTAR ------------------------
+		 */
 
 		long idPerroTest = 0;
 
@@ -158,9 +132,9 @@ public class PerroControlllerTest {
 		assertEquals(RAZA_PERRO, perro.getRaza());
 		assertNotEquals(0, idPerroTest);
 
-		/* -----------------------
-		 *  TEST BUSQUEDA POR ID 
-		 *  ----------------------*/
+		/*
+		 * ----------------------- TEST BUSQUEDA POR ID ----------------------
+		 */
 
 		// buscamos por id erronea
 		response = controller.getById(ID_ERRONEA);
@@ -183,9 +157,9 @@ public class PerroControlllerTest {
 		// tiene que devolver la misma id
 		assertEquals(idPerroTest, perro.getId());
 
-		/* ------------------------
-		 *		 TEST UPDATE 
-		 * ------------------------*/
+		/*
+		 * ------------------------ TEST UPDATE ------------------------
+		 */
 
 		// modificamos perro creado
 		response = controller.put(ID_ERRONEA, NOMBRE_PERRO_UPDATE, RAZA_PERRO_UPDATE);
@@ -217,9 +191,9 @@ public class PerroControlllerTest {
 		// tiene que devolver el nombre modificado
 		assertEquals(RAZA_PERRO_UPDATE, perro.getRaza());
 
-		/* ---------------------
-		 * 		TEST DELETE 
-		 * ---------------------*/
+		/*
+		 * --------------------- TEST DELETE ---------------------
+		 */
 
 		// eliminamos por id erronea
 		response = controller.delete(ID_ERRONEA);

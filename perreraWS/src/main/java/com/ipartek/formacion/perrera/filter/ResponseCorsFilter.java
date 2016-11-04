@@ -9,9 +9,8 @@ import com.sun.jersey.spi.container.ContainerResponseFilter;
 
 public class ResponseCorsFilter implements ContainerResponseFilter {
 
-	@Override
-	public ContainerResponse filter(ContainerRequest req,
-			ContainerResponse contResp) {
+	@Override()
+	public ContainerResponse filter(ContainerRequest req, ContainerResponse contResp) {
 
 		ResponseBuilder resp = Response.fromResponse(contResp.getResponse());
 		resp.header("Access-Control-Allow-Origin", "*");

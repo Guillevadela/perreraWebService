@@ -4,9 +4,18 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+/**
+ * Test para comprobar funcionamiento de Hibernate
+ * 
+ * @author JHM
+ *
+ */
 public class HibernateUtilTest {
 
-	@Test
+	/**
+	 * Implementación para comprobar la obtención de la sesión
+	 */
+	@Test()
 	public void testGetSession() {
 
 		assertNotNull("Configuracion BBDD incorrecta", HibernateUtil.getSession());

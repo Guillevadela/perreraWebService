@@ -12,9 +12,18 @@ import org.junit.Test;
 
 import com.ipartek.formacion.perrera.pojo.Perro;
 
+/**
+ * Test para comprobar el funcionamiento de la Implementación del DAO
+ * 
+ * @author JHM
+ *
+ */
 public class PerroDAOImplTest {
 
-	@Test
+	/**
+	 * Implementación del test
+	 */
+	@Test()
 	public void test() {
 
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
@@ -41,11 +50,10 @@ public class PerroDAOImplTest {
 
 		// comprobamos que inserta OK
 		assertTrue("Fallo al insertar", dao.insert(perro));
-		
-		//comprobar que tenga id generado
-		assertTrue("Se nos olvido settear id en perro", perro.getId() > 0 );
-		
-		
+
+		// comprobar que tenga id generado
+		assertTrue("Se nos olvido settear id en perro", perro.getId() > 0);
+
 		// obtenemos la lista despues de haber insertado un nuevo perro
 		ArrayList<Perro> listaDespuesInsertar = (ArrayList<Perro>) dao.getAll("asc", "id");
 		numPerrosTrasInsertarUnoNuevo = listaDespuesInsertar.size();
@@ -82,11 +90,9 @@ public class PerroDAOImplTest {
 		assertNotNull("No puede ser Null", numPerrosTrasBorrar);
 		assertEquals(numPerrosTrasInsertarUnoNuevo - 1, numPerrosTrasBorrar);
 
-		
-		assertFalse("No se puede eliminar algo que no existe",dao.delete(0));
+		assertFalse("No se puede eliminar algo que no existe", dao.delete(0));
 		assertNull("No se puede recuperar algo que no existe", dao.getById(0));
-		
-		
+
 	}
 
 }
