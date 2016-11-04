@@ -13,7 +13,8 @@ public class Perro {
 
 	@Id()
 	@GeneratedValue()
-	private long id;// clave y se genera automaticamente
+	// clave y se genera automaticamente
+	private long id;
 
 	/* Persistente, un tipo basico (string) */
 	@Basic()
@@ -30,7 +31,7 @@ public class Perro {
 	 * @param raza
 	 *            - raza del perro
 	 */
-	public Perro(String nombre, String raza) {
+	public Perro(final String nombre, final String raza) {
 		super();
 		this.nombre = nombre;
 		this.raza = raza;
@@ -50,11 +51,11 @@ public class Perro {
 		return this.id;
 	}
 
-	public void setId(long id) {
+	public void setId(final long id) {
 		this.id = id;
 	}
 
-	public void setNombre(String nombre) {
+	public void setNombre(final String nombre) {
 		this.nombre = nombre;
 	}
 
@@ -62,7 +63,7 @@ public class Perro {
 		return this.raza;
 	}
 
-	public void setRaza(String raza) {
+	public void setRaza(final String raza) {
 		this.raza = raza;
 	}
 

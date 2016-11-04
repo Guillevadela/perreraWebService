@@ -42,13 +42,18 @@ public class PerroController {
 	 * Logger log
 	 */
 	protected final Logger log = LoggerFactory.getLogger(getClass());
+	private static final int OK = 200;
+	private static final int CREATED = 201;
+	private static final int NO_CONTENT = 204;
+	private static final int CONFLICT = 409;
+	private static final int INTERNAL_SERVER_ERROR = 500;
 
-	@GET
+	@GET()
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Listado de Perros", notes = "Listado de perros existentes en la perrera, limitado a 1.000", response = Perro.class, responseContainer = "List")
 
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = OK, message = "Todo OK"),
+			@ApiResponse(code = INTERNAL_SERVER_ERROR, message = "Error inexperado en el servidor") })
 	/**
 	 * 
 	 * @param orderBy
@@ -75,13 +80,13 @@ public class PerroController {
 		return response;
 	}
 
-	@GET
+	@GET()
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Busca un perro por su ID", notes = "devuelve un perro mediante el paso de su ID", response = Perro.class, responseContainer = "Perro")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
-			@ApiResponse(code = 204, message = "No existe perro con esa ID"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = OK, message = "Todo OK"),
+			@ApiResponse(code = NO_CONTENT, message = "No existe perro con esa ID"),
+			@ApiResponse(code = INTERNAL_SERVER_ERROR, message = "Error inexperado en el servidor") })
 	/**
 	 * 
 	 * @param idPerro
@@ -110,13 +115,13 @@ public class PerroController {
 		return response;
 	}
 
-	@DELETE
+	@DELETE()
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Elimina un perro", notes = "Elimina un perro mediante el paso de su ID", response = Perro.class, responseContainer = "FechaHora")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Perro eliminado"),
-			@ApiResponse(code = 204, message = "No existe Perro con ese ID"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = OK, message = "Perro eliminado"),
+			@ApiResponse(code = NO_CONTENT, message = "No existe Perro con ese ID"),
+			@ApiResponse(code = INTERNAL_SERVER_ERROR, message = "Error inexperado en el servidor") })
 	/**
 	 * 
 	 * @param idPerro
@@ -142,13 +147,13 @@ public class PerroController {
 		return response;
 	}
 
-	@POST
+	@POST()
 	@Path("/{nombre}/{raza}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Añade un perro", notes = "Crea y persiste un nuevo perro", response = Perro.class, responseContainer = "Perro")
-	@ApiResponses(value = { @ApiResponse(code = 201, message = "Perro Creado con exito"),
-			@ApiResponse(code = 409, message = "Perro ya Existente"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = CREATED, message = "Perro Creado con exito"),
+			@ApiResponse(code = CONFLICT, message = "Perro ya Existente"),
+			@ApiResponse(code = INTERNAL_SERVER_ERROR, message = "Error inexperado en el servidor") })
 	/**
 	 * 
 	 * @param nombrePerro
@@ -166,9 +171,9 @@ public class PerroController {
 
 			if (creado) {
 				this.log.info("Perro " + pCreado + " creado");
-				response = Response.status(201).entity(pCreado).build();
+				response = Response.status(CREATED).entity(pCreado).build();
 			} else {
-				response = Response.status(409).build();
+				response = Response.status(CONFLICT).build();
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -178,14 +183,14 @@ public class PerroController {
 		return response;
 	}
 
-	@PUT
+	@PUT()
 	@Path("/{id}/{nombre}/{raza}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Modifica un perro", notes = "Modifica un perro ya existente mediante su identificador", response = Perro.class, responseContainer = "Perro")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
-			@ApiResponse(code = 204, message = "No existe perro con ese ID"),
-			@ApiResponse(code = 409, message = "Perro existente, no se puede modificar"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = OK, message = "Todo OK"),
+			@ApiResponse(code = NO_CONTENT, message = "No existe perro con ese ID"),
+			@ApiResponse(code = CONFLICT, message = "Perro existente, no se puede modificar"),
+			@ApiResponse(code = INTERNAL_SERVER_ERROR, message = "Error inexperado en el servidor") })
 	/**
 	 * 
 	 * @param idPerro
@@ -214,7 +219,7 @@ public class PerroController {
 			}
 		} catch (Exception e) {
 			this.log.error("Imposible conectar con la bd");
-			response = Response.status(500).build();
+			response = Response.status(INTERNAL_SERVER_ERROR).build();
 		}
 		return response;
 	}

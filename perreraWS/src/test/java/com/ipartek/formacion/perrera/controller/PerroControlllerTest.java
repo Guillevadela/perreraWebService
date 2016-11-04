@@ -18,7 +18,7 @@ public class PerroControlllerTest {
 
 	ArrayList<Perro> lista = null;
 
-	@Test
+	@Test()
 	public void testGetAll() {
 
 		final PerroController controller = new PerroController();
@@ -59,7 +59,7 @@ public class PerroControlllerTest {
 
 	}
 
-	@Test
+	@Test()
 	public void testGetById() {
 		final PerroController controller = new PerroController();
 		Response response = controller.getAll("asc", "id");
@@ -75,7 +75,7 @@ public class PerroControlllerTest {
 
 	}
 
-	@Test
+	@Test()
 	public void testDelete() {
 		final PerroController controller = new PerroController();
 		final Response response = controller.getAll("asc", "id");
@@ -90,7 +90,7 @@ public class PerroControlllerTest {
 		assertEquals(NO_CONTENT, response204.getStatus());
 	}
 
-	@Test
+	@Test()
 	public void testInsert() {
 		final PerroController controller = new PerroController();
 		final Response response201 = controller.post("nombrePerro2", "razaPerro2");
@@ -98,7 +98,7 @@ public class PerroControlllerTest {
 		assertEquals(CREATED, response201.getStatus());
 	}
 
-	@Test
+	@Test()
 	public void testUpdate() {
 		final PerroController controller = new PerroController();
 

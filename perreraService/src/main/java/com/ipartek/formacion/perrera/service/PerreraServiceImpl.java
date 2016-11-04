@@ -17,6 +17,9 @@ import com.ipartek.formacion.perrera.pojo.Perro;
  *
  */
 public final class PerreraServiceImpl implements PerreraService {
+	/**
+	 * Logger log
+	 */
 
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	// instancia unica para 'patron Singleton'

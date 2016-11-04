@@ -14,7 +14,7 @@ import com.sun.jersey.spi.container.ContainerResponseFilter;
  */
 public class ResponseCorsFilter implements ContainerResponseFilter {
 
-	@Override
+	@Override()
 	/**
 	 * Filtro ResponseCors
 	 */
