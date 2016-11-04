@@ -12,7 +12,7 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class HibernateUtil {
 
-	private static final SessionFactory sessionFactory;
+	public static final SessionFactory sessionFactory;
 
 	static {
 		try {
@@ -46,6 +46,7 @@ public class HibernateUtil {
 	 * 
 	 * @return sessionFactory.openSession() Devuelve la sesión abierta
 	 * @throws HibernateException
+	 *             Lanza excepcion para Hibernate
 	 */
 	public static Session getSession() throws HibernateException {
 		return sessionFactory.openSession();

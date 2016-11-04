@@ -38,11 +38,31 @@ public class PerroController {
 
 	private static final Logger lOGGER = Logger.getLogger(PerroController.class);
 
+	private static final int CODE200 = 200;
+	private static final int CODE201 = 201;
+	private static final int CODE204 = 204;
+	private static final int CODE409 = 409;
+	private static final int CODE500 = 500;
+
+	/**
+	 * Método GET que llama al servicio para obtener listado de Perros
+	 * 
+	 * @param orderBy
+	 *            Filtro para ordenar los perros de forma ascendente o
+	 *            descendente, posibles valores [asc|desc]. Valor por defecto
+	 *            "asc"
+	 * @param campo
+	 *            Filtro para ordenar por 'campo' los perros, posibles valores
+	 *            [id|nombre|raza]. Valor por defecto "id"
+	 * @return Response Devuelve un listado de perros con los códigos:<br>
+	 *         200 - Listado devuelto con exito; <br>
+	 *         500 - Error inexperado en el servidor
+	 */
 	@GET()
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Listado de Perros", notes = "Listado de perros existentes en la perrera, limitado a 1.000", response = Perro.class, responseContainer = "List")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = CODE200, message = "Todo OK"),
+			@ApiResponse(code = CODE500, message = "Error inexperado en el servidor") })
 	public final Response getAll(
 			@ApiParam(name = "orderBy", required = false, value = "Filtro para ordenar los perros de forma ascendente o descendente, posibles valores [asc|desc]") @DefaultValue("asc") @QueryParam("orderBy") String orderBy,
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
@@ -58,13 +78,25 @@ public class PerroController {
 		}
 	}
 
+	/**
+	 * Método GET que llama al servicio para buscar un Perro por su 'id'
+	 * 
+	 * @param idPerro
+	 *            ID del perro a buscar
+	 * @return Response Devuelve un Perro o un error en caso de no encontrarlo.
+	 *         <br>
+	 *         200 - Perro devuelto con exito; <br>
+	 *         204 - No existe Perro con ese ID; <br>
+	 *         500 - Error inexperado en el servidor
+	 * 
+	 */
 	@GET()
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Busca un perro por su ID", notes = "devuelve un perro mediante el paso de su ID", response = Perro.class, responseContainer = "Perro")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
-			@ApiResponse(code = 204, message = "No existe perro con esa ID"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = CODE200, message = "Todo OK"),
+			@ApiResponse(code = CODE204, message = "No existe perro con esa ID"),
+			@ApiResponse(code = CODE500, message = "Error inexperado en el servidor") })
 	public Response getById(@PathParam("id") long idPerro) {
 
 		try {
@@ -84,13 +116,24 @@ public class PerroController {
 		}
 	}
 
+	/**
+	 * Metodo DELETE que llama al servicio para eliminar un perro de la BBDD
+	 * 
+	 * @param idPerro
+	 *            ID del perro a eliminar
+	 * @return Response Devuelve la fecha y hora de eliminacion del perro o un
+	 *         error en caso de no poder eliminarlo. <br>
+	 *         200 - Perro eliminado con exito; <br>
+	 *         204 - No existe Perro con ese ID; <br>
+	 *         500 - Error inexperado en el servidor
+	 */
 	@DELETE()
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Elimina un perro", notes = "Elimina un perro mediante el paso de su ID", response = Perro.class, responseContainer = "FechaHora")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Perro eliminado"),
-			@ApiResponse(code = 204, message = "No existe Perro con ese ID"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = CODE200, message = "Perro eliminado"),
+			@ApiResponse(code = CODE204, message = "No existe Perro con ese ID"),
+			@ApiResponse(code = CODE500, message = "Error inexperado en el servidor") })
 	public Response delete(@PathParam("id") long idPerro) {
 
 		try {
@@ -114,13 +157,25 @@ public class PerroController {
 		}
 	}
 
+	/**
+	 * Método POST que llama al servicio para crear un Perro nuevo en la BBDD
+	 * 
+	 * @param nombrePerro
+	 *            Nombre del perro
+	 * @param razaPerro
+	 *            Raza del perro
+	 * @return Response Devuelve los códigos: <br>
+	 *         201 - Perro Creado con exito; <br>
+	 *         409 - Perro ya Existente; <br>
+	 *         500 - Error inexperado en el servidor
+	 */
 	@POST()
 	@Path("/{nombre}/{raza}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Añade un perro", notes = "Crea y persiste un nuevo perro", response = Perro.class, responseContainer = "Perro")
-	@ApiResponses(value = { @ApiResponse(code = 201, message = "Perro Creado con exito"),
-			@ApiResponse(code = 409, message = "Perro ya Existente"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = CODE201, message = "Perro Creado con exito"),
+			@ApiResponse(code = CODE409, message = "Perro ya Existente"),
+			@ApiResponse(code = CODE500, message = "Error inexperado en el servidor") })
 	public Response post(@PathParam("nombre") String nombrePerro, @PathParam("raza") String razaPerro) {
 		try {
 
@@ -128,12 +183,12 @@ public class PerroController {
 			Perro pCreado = new Perro(nombrePerro, razaPerro);
 			boolean creado = dao.insert(pCreado);
 
-			if (creado == true) {
+			if (creado) { // si creado==true
 				lOGGER.info("Perro creado OK");
-				return Response.status(201).entity(pCreado).build();
+				return Response.status(CODE201).entity(pCreado).build();
 			} else {
 				lOGGER.warn("Error al crear perro. Perro ya existente");
-				return Response.status(409).build();
+				return Response.status(CODE409).build();
 			}
 		} catch (Exception e) {
 			lOGGER.warn("Error al crear perro", e);
@@ -142,14 +197,30 @@ public class PerroController {
 		}
 	}
 
+	/**
+	 * Método PUT que llama al servicio para modificar un perro ya existente
+	 * mediante su identificador
+	 * 
+	 * @param idPerro
+	 *            ID del perro a modificar
+	 * @param nombrePerro
+	 *            Nombre del perro modificado
+	 * @param razaPerro
+	 *            Raza del perro modificado
+	 * @return Response Devuelve los códigos: <br>
+	 *         200 - Perro modificado OK <br>
+	 *         204 - No existe perro con ese ID; <br>
+	 *         409 - Perro ya Existente; <br>
+	 *         500 - Error inexperado en el servidor
+	 */
 	@PUT()
 	@Path("/{id}/{nombre}/{raza}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Modifica un perro", notes = "Modifica un perro ya existente mediante su identificador", response = Perro.class, responseContainer = "Perro")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
-			@ApiResponse(code = 204, message = "No existe perro con ese ID"),
-			@ApiResponse(code = 409, message = "Perro existente, no se puede modificar"),
-			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	@ApiResponses(value = { @ApiResponse(code = CODE200, message = "Todo OK"),
+			@ApiResponse(code = CODE204, message = "No existe perro con ese ID"),
+			@ApiResponse(code = CODE409, message = "Perro existente, no se puede modificar"),
+			@ApiResponse(code = CODE500, message = "Error inexperado en el servidor") })
 	public Response put(@PathParam("id") long idPerro, @PathParam("nombre") String nombrePerro,
 			@PathParam("raza") String razaPerro) {
 		try {
@@ -173,7 +244,7 @@ public class PerroController {
 			}
 		} catch (Exception e) {
 			lOGGER.warn("Error inesperado al modificar perro con id=" + idPerro, e);
-			return Response.status(500).build();
+			return Response.status(CODE500).build();
 
 		}
 	}

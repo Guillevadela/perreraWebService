@@ -26,6 +26,12 @@ public class PerroControlllerTest {
 	public final static String RAZA_PERRO_UPDATE = "Esquimal";
 	public final static long ID_ERRONEA = -1;
 
+	private static final int CODE200 = 200;
+	private static final int CODE201 = 201;
+	private static final int CODE204 = 204;
+	private static final int CODE409 = 409;
+	private static final int CODE500 = 500;
+
 	private ArrayList<Perro> lista = null;
 
 	/**
@@ -39,7 +45,7 @@ public class PerroControlllerTest {
 
 		Response response = controller.getAll("asc", "id");
 
-		assertEquals(200, response.getStatus());
+		assertEquals(CODE200, response.getStatus());
 
 		// ordenacion ascendente por id
 		lista = (ArrayList<Perro>) response.getEntity();
@@ -87,7 +93,7 @@ public class PerroControlllerTest {
 		Response response = controller.post(NOMBRE_PERRO, RAZA_PERRO);
 
 		// Comprobamos respuesta 201 al crear el perro correctamente
-		assertEquals(201, response.getStatus());
+		assertEquals(CODE201, response.getStatus());
 
 		// Obtenemos datos del perro creado y comprobamos que son los correctos
 		Perro perro = (Perro) response.getEntity();
@@ -122,7 +128,7 @@ public class PerroControlllerTest {
 		Response response = controller.post(NOMBRE_PERRO, RAZA_PERRO);
 
 		// respuesta 201 al crear correctamente el perro
-		assertEquals(201, response.getStatus());
+		assertEquals(CODE201, response.getStatus());
 
 		// recogido perro creado
 		Perro perro = (Perro) response.getEntity();
@@ -141,15 +147,15 @@ public class PerroControlllerTest {
 
 		// devuelve un valor distinto a 500 si no ha habido un error en el
 		// servidor
-		assertNotEquals(500, response.getStatus());
+		assertNotEquals(CODE500, response.getStatus());
 		// devuelve 204 si la id es erronea
-		assertEquals(204, response.getStatus());
+		assertEquals(CODE204, response.getStatus());
 
 		// buscamos por id creada anteriormente en el test insert
 		response = controller.getById(idPerroTest);
 
 		// devuelve 200 si la respuesta es correcta
-		assertEquals(200, response.getStatus());
+		assertEquals(CODE200, response.getStatus());
 
 		// recogemos perro de la respuesta anterior
 		perro = (Perro) response.getEntity();
@@ -166,18 +172,18 @@ public class PerroControlllerTest {
 
 		// devuelve un valor distinto a 500 si no ha habido un error en el
 		// servidor
-		assertNotEquals(500, response.getStatus());
+		assertNotEquals(CODE500, response.getStatus());
 		// devuelve 204 si la id es erronea
-		assertEquals(204, response.getStatus());
+		assertEquals(CODE204, response.getStatus());
 
 		// devuelve 409 si el perro no se puede modificar
-		assertNotEquals(409, response.getStatus());
+		assertNotEquals(CODE409, response.getStatus());
 
 		// modificamos perro creado con id correcta
 		response = controller.put(idPerroTest, NOMBRE_PERRO_UPDATE, RAZA_PERRO_UPDATE);
 
 		// devuelve 200 si la respuesta es correcta
-		assertEquals(200, response.getStatus());
+		assertEquals(CODE200, response.getStatus());
 
 		// recogemos perro de la respuesta anterior
 		perro = (Perro) response.getEntity();
@@ -200,22 +206,22 @@ public class PerroControlllerTest {
 
 		// devuelve un valor distinto a 500 si no ha habido un error en el
 		// servidor
-		assertNotEquals(500, response.getStatus());
+		assertNotEquals(CODE500, response.getStatus());
 
 		// devuelve 204 ya que la id es erronea
-		assertEquals(204, response.getStatus());
+		assertEquals(CODE204, response.getStatus());
 
 		// buscamos por id creada anteriormente en el test insert para eliminar
 		response = controller.delete(idPerroTest);
 
 		// devuelve 200 si la respuesta es correcta
-		assertEquals(200, response.getStatus());
+		assertEquals(CODE200, response.getStatus());
 
 		// buscamos por id eliminada anteriormente
 		response = controller.getById(idPerroTest);
 
 		// devuelve 204 ya que la id ya no existe
-		assertEquals(204, response.getStatus());
+		assertEquals(CODE204, response.getStatus());
 
 	}
 
