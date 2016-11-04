@@ -73,6 +73,14 @@ public class PerroDAOImpl implements PerroDAO {
 		return lista;
 	}
 
+	/**
+	 * Función que devuelve un objeto Perro buscado por el parametro id de este
+	 *
+	 * @param idPerro
+	 *            Variable para localizar al perro.
+	 *            Valores numericos
+	 * @return Perro;
+	 */
 	@Override
 	public Perro getById(long idPerro) {
 		Perro resul = null;
@@ -92,6 +100,15 @@ public class PerroDAOImpl implements PerroDAO {
 		return resul;
 	}
 
+	/**
+	 * Función que elimina un objeto Perro buscado por el parametro id de este.
+	 * Al finalizar devolvera una variable booleana informando del resultado
+	 *
+	 * @param idPerro
+	 *            Variable para localizar al perro.
+	 *            Valores numericos
+	 * @return resul;
+	 */
 	@Override
 	public boolean delete(long idPerro) {
 		Perro pElimnar = null;
@@ -120,6 +137,14 @@ public class PerroDAOImpl implements PerroDAO {
 		return resul;
 	}
 
+	/**
+	 * Función que recibe un objeto Perro y modifica su nombre y raza.
+	 * Al finalizar devolvera una variable booleana informando del resultado
+	 *
+	 * @param perro
+	 *            Objeto Perro que contiene los datos nuevos del Perro existente.
+	 * @return resul;
+	 */
 	@Override
 	public boolean update(Perro perro) {
 		boolean resul = false;
@@ -144,6 +169,14 @@ public class PerroDAOImpl implements PerroDAO {
 		return resul;
 	}
 
+	/**
+	 * Función que inserta un objeto Perro en la BBDD.
+	 * Al finalizar devolvera una variable booleana informando del resultado
+	 *
+	 * @param perro
+	 *            Objeto Perro que contiene los datos del Perro.
+	 * @return resul;
+	 */
 	@Override
 	public boolean insert(Perro perro) {
 		boolean resul = false;

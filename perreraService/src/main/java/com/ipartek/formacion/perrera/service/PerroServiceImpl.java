@@ -28,14 +28,35 @@ public class PerroServiceImpl implements PerroService {
 		}
 		return INSTANCE;
 	}
-
+	
+	/**
+	 * Función que devuelve una lista de perros
+	 *
+	 * @param order
+	 *            Modo de ordenacion de la lista.<br>
+	 *            Posibles valores asc/desc
+	 * @param campo
+	 *            Campo por el que se va a ordenar. <br>
+	 *            Posibles valores id/nombre/raza
+	 * @return List$gt;Perro$lt;
+	 */
+	
 	@Override
 	public List<Perro> getAll(String order, String campo) {
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
 		this.logger.trace("llamando al DAO para obtener la lista...");
 		return (ArrayList<Perro>) dao.getAll(order, campo);
 	}
-
+	
+	/**
+	 * Función que devuelve un objeto Perro buscado por el parametro id de este
+	 *
+	 * @param idPerro
+	 *            Variable para localizar al perro.
+	 *            Valores numericos
+	 * @return Perro;
+	 */
+	
 	@Override
 	public Perro getById(long idPerro) {
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
@@ -43,6 +64,16 @@ public class PerroServiceImpl implements PerroService {
 		return (Perro) dao.getById(idPerro);
 	}
 
+	/**
+	 * Función que elimina un objeto Perro buscado por el parametro id de este.
+	 * Al finalizar devolvera una variable booleana informando del resultado
+	 *
+	 * @param idPerro
+	 *            Variable para localizar al perro.
+	 *            Valores numericos
+	 * @return resul;
+	 */
+	
 	@Override
 	public boolean delete(long idPerro) {
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
@@ -50,6 +81,15 @@ public class PerroServiceImpl implements PerroService {
 		return dao.delete(idPerro);
 	}
 
+	/**
+	 * Función que inserta un objeto Perro en la BBDD.
+	 * Al finalizar devolvera una variable booleana informando del resultado
+	 *
+	 * @param perro
+	 *            Objeto Perro que contiene los datos del Perro.
+	 * @return resul;
+	 */
+	
 	@Override
 	public boolean insert(Perro perro) {
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
@@ -57,6 +97,15 @@ public class PerroServiceImpl implements PerroService {
 		return dao.insert(perro);
 	}
 
+	/**
+	 * Función que recibe un objeto Perro y modifica su nombre y raza.
+	 * Al finalizar devolvera una variable booleana informando del resultado
+	 *
+	 * @param perro
+	 *            Objeto Perro que contiene los datos nuevos del Perro existente.
+	 * @return resul;
+	 */
+	
 	@Override
 	public boolean update(Perro perro) {
 		PerroDAOImpl dao = PerroDAOImpl.getInstance();
