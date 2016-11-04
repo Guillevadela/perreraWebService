@@ -81,12 +81,12 @@ public final class PerroDAOImpl implements PerroDAO {
 				// que no existe
 				// retorno listado perros ordenados por id desc
 			} catch (QueryException e) {
-				this.log.error("listando todos los perros en orden descendente por un error en la Query");
+				this.log.error("listando todos los perros en orden descendente por un error en la Query", e);
 				lista = (ArrayList<Perro>) session.createCriteria(Perro.class).addOrder(Order.desc("id")).list();
 			}
 
 		} catch (Exception e) {
-			this.log.error("Error al intentar obtener el listado");
+			this.log.error("Error al intentar obtener el listado", e);
 			// e.printStackTrace();
 		} finally {
 			// cerramos la transaccion
@@ -111,7 +111,7 @@ public final class PerroDAOImpl implements PerroDAO {
 			resul = (Perro) session.get(Perro.class, idPerro);
 			this.log.trace("Iniciada peticion de perro por 'id'");
 		} catch (Exception e) {
-			this.log.error("Error al intentar obtener perro por id");
+			this.log.error("Error al intentar obtener perro por id", e);
 			// e.printStackTrace();
 		} finally {
 			session.close();
@@ -142,7 +142,7 @@ public final class PerroDAOImpl implements PerroDAO {
 				resul = true;
 			}
 		} catch (final Exception e) {
-			this.log.error("No se ha podido realizar borrado de perro, se hace rollback");
+			this.log.error("No se ha podido realizar borrado de perro, se hace rollback", e);
 			// e.printStackTrace();
 			session.beginTransaction().rollback();
 		} finally {
@@ -170,7 +170,7 @@ public final class PerroDAOImpl implements PerroDAO {
 			session.beginTransaction().commit();
 			resul = true;
 		} catch (final Exception e) {
-			this.log.error("No se ha podido modificar, se inicia rollback");
+			this.log.error("No se ha podido modificar, se inicia rollback", e);
 			// e.printStackTrace();
 			session.beginTransaction().rollback();
 		} finally {
@@ -203,7 +203,7 @@ public final class PerroDAOImpl implements PerroDAO {
 				session.beginTransaction().rollback();
 			}
 		} catch (Exception e) {
-			this.log.error("Error al intentar Insertar un nuevo elemento, se hace rollback");
+			this.log.error("Error al intentar Insertar un nuevo elemento, se hace rollback", e);
 			session.beginTransaction().rollback();
 			// e.printStackTrace();
 		} finally {

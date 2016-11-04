@@ -74,7 +74,7 @@ public class PerroController {
 			response = Response.ok().entity(perros).build();
 
 		} catch (Exception e) {
-			this.log.error("Error listando todos los perros");
+			this.log.error("Error listando todos los perros", e);
 			response = Response.serverError().build();
 		}
 		return response;
@@ -109,7 +109,7 @@ public class PerroController {
 			this.log.info("Mostrando perro con id " + idPerro);
 			response = Response.ok().entity(perro).build();
 		} catch (Exception e) {
-
+			this.log.error("eror producido", e);
 			response = Response.serverError().build();
 		}
 		return response;
@@ -141,7 +141,7 @@ public class PerroController {
 				response = Response.ok().entity(new FechaHora()).build();
 			}
 		} catch (Exception e) {
-			this.log.error("Imposible conectar con la bd");
+			this.log.error("Imposible conectar con la bd", e);
 			response = Response.serverError().build();
 		}
 		return response;
@@ -177,7 +177,7 @@ public class PerroController {
 			}
 		} catch (Exception e) {
 			// e.printStackTrace();
-			this.log.error("Imposible conectar con la bd");
+			this.log.error("Imposible conectar con la bd", e);
 			response = Response.serverError().build();
 		}
 		return response;
@@ -218,7 +218,7 @@ public class PerroController {
 				response = Response.ok().entity(pModificar).build();
 			}
 		} catch (Exception e) {
-			this.log.error("Imposible conectar con la bd");
+			this.log.error("Imposible conectar con la bd", e);
 			response = Response.status(INTERNAL_SERVER_ERROR).build();
 		}
 		return response;

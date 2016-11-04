@@ -15,14 +15,14 @@
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
-<!-- dependencia al servicio -->
+		<!-- dependencia al servicio -->
 		<dependency>
 			<groupId>com.ipartek.formacion</groupId>
 			<artifactId>perreraService</artifactId>
 			<version>{parent.version}</version>
 		</dependency>
-		
-		
+
+
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -36,21 +36,18 @@
 			<artifactId>jersey-server</artifactId>
 			<version>1.8</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
 			<version>1.8</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-jersey-jaxrs</artifactId>
 			<version>1.5.0</version>
 		</dependency>
-		
-		
-
 
 	</dependencies>
 
