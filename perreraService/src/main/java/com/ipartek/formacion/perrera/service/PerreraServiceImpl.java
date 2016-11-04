@@ -35,7 +35,7 @@ public class PerreraServiceImpl implements PerreraService {
 	}
 
 	/**
-	 * 
+	 * Crea una instancia
 	 */
 	private synchronized static void createInstance() {
 		if (INSTANCE == null) {

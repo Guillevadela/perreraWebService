@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/perro")
 public class PerroController {
 
-	private static final Logger lOGGER = Logger.getLogger(PerroController.class);
+	private static final Logger LOGGER = Logger.getLogger(PerroController.class);
 
 	private static final int CODE200 = 200;
 	private static final int CODE201 = 201;
@@ -73,7 +73,7 @@ public class PerroController {
 			return Response.ok().entity(perros).build();
 
 		} catch (Exception e) {
-			lOGGER.warn("Error al listar perros", e);
+			LOGGER.warn("Error al listar perros", e);
 			return Response.serverError().build();
 		}
 	}
@@ -105,13 +105,13 @@ public class PerroController {
 			Perro perro = (Perro) dao.getById(idPerro);
 
 			if (perro == null) {
-				lOGGER.warn("Perro con id=" + idPerro + "no encontrado");
+				LOGGER.warn("Perro con id=" + idPerro + "no encontrado");
 				return Response.noContent().build();
 			}
-			lOGGER.info("Perro con id=" + idPerro + " devuelto OK");
+			LOGGER.info("Perro con id=" + idPerro + " devuelto OK");
 			return Response.ok().entity(perro).build();
 		} catch (Exception e) {
-			lOGGER.warn("Id introducida erronea", e);
+			LOGGER.warn("Id introducida erronea", e);
 			return Response.serverError().build();
 		}
 	}
@@ -139,20 +139,19 @@ public class PerroController {
 		try {
 
 			PerreraServiceImpl dao = PerreraServiceImpl.getInstance();
-			Perro pElimnar = null;
 
-			pElimnar = (Perro) dao.getById(idPerro);
+			Perro pElimnar = (Perro) dao.getById(idPerro);
 
 			if (pElimnar == null) {
-				lOGGER.warn("Error al eliminar perro. Perro no existe");
+				LOGGER.warn("Error al eliminar perro. Perro no existe");
 				return Response.noContent().build();
 			} else {
 				dao.delete(pElimnar.getId());
-				lOGGER.info("Perro con id=" + pElimnar.getId() + " eliminado OK");
+				LOGGER.info("Perro con id=" + pElimnar.getId() + " eliminado OK");
 				return Response.ok().entity(new FechaHora()).build();
 			}
 		} catch (Exception e) {
-			lOGGER.warn("Error al eliminar perro", e);
+			LOGGER.warn("Error al eliminar perro", e);
 			return Response.serverError().build();
 		}
 	}
@@ -184,15 +183,15 @@ public class PerroController {
 			boolean creado = dao.insert(pCreado);
 
 			if (creado) { // si creado==true
-				lOGGER.info("Perro creado OK");
+				LOGGER.info("Perro creado OK");
 				return Response.status(CODE201).entity(pCreado).build();
 			} else {
-				lOGGER.warn("Error al crear perro. Perro ya existente");
+				LOGGER.warn("Error al crear perro. Perro ya existente");
 				return Response.status(CODE409).build();
 			}
 		} catch (Exception e) {
-			lOGGER.warn("Error al crear perro", e);
-			e.printStackTrace();
+			LOGGER.warn("Error al crear perro", e);
+			// e.printStackTrace();
 			return Response.serverError().build();
 		}
 	}
@@ -226,24 +225,23 @@ public class PerroController {
 		try {
 
 			PerreraServiceImpl dao = PerreraServiceImpl.getInstance();
-			Perro pModificar = null;
 
-			pModificar = (Perro) dao.getById(idPerro);
+			Perro pModificar = (Perro) dao.getById(idPerro);
 
 			if (pModificar == null) {
-				lOGGER.warn("Error al modificar perro. Perro no existe");
+				LOGGER.warn("Error al modificar perro. Perro no existe");
 				return Response.noContent().build();
 			} else {
 				pModificar.setNombre(nombrePerro);
 				pModificar.setRaza(razaPerro);
 
 				dao.update(pModificar);
-				lOGGER.info("Perro con id=" + idPerro + " modificado OK");
+				LOGGER.info("Perro con id=" + idPerro + " modificado OK");
 
 				return Response.ok().entity(pModificar).build();
 			}
 		} catch (Exception e) {
-			lOGGER.warn("Error inesperado al modificar perro con id=" + idPerro, e);
+			LOGGER.warn("Error inesperado al modificar perro con id=" + idPerro, e);
 			return Response.status(CODE500).build();
 
 		}

@@ -12,9 +12,10 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class HibernateUtil {
 
-	public static final SessionFactory sessionFactory;
+	private static final SessionFactory sessionFactory;
 
 	static {
+
 		try {
 
 			AnnotationConfiguration config = new AnnotationConfiguration();
