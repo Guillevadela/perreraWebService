@@ -18,7 +18,9 @@ import com.ipartek.formacion.perrera.pojo.Perro;
 public final class PerroServiceImpl implements PerroService { // NOPMD by Curso
 																// on 3/11/16
 																// 17:23
-
+	/**
+	 * log para las trazas
+	 */
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
@@ -44,6 +46,7 @@ public final class PerroServiceImpl implements PerroService { // NOPMD by Curso
 	}
 
 	/**
+	 * Función que devuelve una lista de perros
 	 * 
 	 * @param order
 	 *            orden de lista
@@ -59,6 +62,7 @@ public final class PerroServiceImpl implements PerroService { // NOPMD by Curso
 	}
 
 	/**
+	 * Función que devuelve una perro mediante busqueda por id
 	 * 
 	 * @param idPerro
 	 *            id de perro a encontrar
@@ -72,6 +76,7 @@ public final class PerroServiceImpl implements PerroService { // NOPMD by Curso
 	}
 
 	/**
+	 * Función que elimina un perro mediante busqueda por id
 	 * 
 	 * @param idPerro
 	 *            id de perro a eliminar
@@ -86,6 +91,7 @@ public final class PerroServiceImpl implements PerroService { // NOPMD by Curso
 	}
 
 	/**
+	 * Función que inserta un perro
 	 * 
 	 * @param perro
 	 *            a insertar
@@ -100,6 +106,7 @@ public final class PerroServiceImpl implements PerroService { // NOPMD by Curso
 	}
 
 	/**
+	 * Función que actualiza un perro
 	 * 
 	 * @param perro
 	 *            a modificar

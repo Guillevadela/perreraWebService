@@ -7,20 +7,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
+@Entity()
 @Table(name = "perro")
 public class Perro {
 
-	@Id
-	@GeneratedValue
+	@Id()
+	@GeneratedValue()
 	private long id;// clave y se genera automaticamente
 
 	/* Persistente, un tipo basico (string) */
-	@Basic
+	@Basic()
 	@Column(name = "nombre")
 	private String nombre;
 
-	@Basic
+	@Basic()
 	@Column(name = "raza")
 	private String raza;
 
@@ -74,7 +74,7 @@ public class Perro {
 		return this.id > 0 ? true : false;
 	}
 
-	@Override
+	@Override()
 	public String toString() {
 		return "Perro [nombre=" + this.nombre + ", raza=" + this.raza + "]";
 	}

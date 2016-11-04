@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class HibernateUtilTest {
 
-	@Test
+	@Test()
 	public void testGetSession() {
 
 		assertNotNull("Configuracion BBDD incorrecta", HibernateUtil.getSession());

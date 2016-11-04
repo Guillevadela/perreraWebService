@@ -12,7 +12,7 @@ import org.hibernate.cfg.AnnotationConfiguration;
  */
 public class HibernateUtil {
 
-	private static final SessionFactory sessionFactory;
+	private static final SessionFactory SESSIONFACTORY;
 
 	static {
 		try {
@@ -33,7 +33,7 @@ public class HibernateUtil {
 			// "resources"
 			// config.configure("/resources/hibernate.cfg.xml");
 
-			sessionFactory = config.buildSessionFactory();
+			SESSIONFACTORY = config.buildSessionFactory();
 
 		} catch (Throwable ex) {
 			// Log exception!
@@ -42,6 +42,6 @@ public class HibernateUtil {
 	}
 
 	public static Session getSession() throws HibernateException {
-		return sessionFactory.openSession();
+		return SESSIONFACTORY.openSession();
 	}
 }
