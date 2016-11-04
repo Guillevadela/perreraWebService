@@ -193,7 +193,7 @@ public class PerroDAOImpl implements PerroDAO {
 		} catch (Exception e) {
 			this.logger.error("Error al dar de alta al perro:" + perro.toString()+"<br>Traza:"+e);
 			s.beginTransaction().rollback();
-		} finally {
+		} finally { 
 			this.logger.info("Cerrando la transaccion...");
 			s.close();
 		}
