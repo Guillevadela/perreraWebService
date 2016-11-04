@@ -11,6 +11,7 @@
 	<modules>
 		<module>perreraDAO</module>
 		<module>perreraWS</module>
+		<module>PerreraService</module>
 	</modules>
 
 
@@ -45,6 +46,9 @@
 			<version>3.4.GA</version>
 			<scope>compile</scope>
 		</dependency>
+
+
+
 
 	</dependencies>
 

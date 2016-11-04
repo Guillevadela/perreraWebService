@@ -13,9 +13,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-//
-import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
+
 import com.ipartek.formacion.perrera.pojo.Perro;
+import com.ipartek.formacion.service.PerreraService;
+import com.ipartek.formacion.service.PerreraServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,8 +39,13 @@ public class PerroController {
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		try {
 
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
+			// PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			// ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy,
+			// campo);
+
+			PerreraService service = PerreraServiceImpl.getInstance();
+			ArrayList<Perro> perros = (ArrayList<Perro>) service.getAll(orderBy, campo);
+
 			return Response.ok().entity(perros).build();
 
 		} catch (Exception e) {
@@ -57,9 +63,13 @@ public class PerroController {
 	public Response getById(@PathParam("id") int idPerro) {
 
 		try {
-			Perro perros = null;
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			perros = dao.getById(idPerro);
+			// Perro perros = null;
+			// PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			// perros = dao.getById(idPerro);
+
+			PerreraService service = PerreraServiceImpl.getInstance();
+			Perro perros = service.getById(idPerro);
+
 			if (perros == null) {
 				return Response.noContent().build();
 			} else
@@ -80,10 +90,13 @@ public class PerroController {
 	public Response delete(@PathParam("id") int idPerro) {
 
 		try {
-			boolean prueba;
+			boolean prueba = false;
 			// Perro perros = null;
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			prueba = (boolean) dao.delete(idPerro);
+			// PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			// prueba = (boolean) dao.delete(idPerro);
+			PerreraService service = PerreraServiceImpl.getInstance();
+			boolean perros = service.delete(idPerro);
+
 			if (prueba == false) {
 				return Response.serverError().build();
 			} else
@@ -107,9 +120,12 @@ public class PerroController {
 		try {
 
 			Perro pCreado = new Perro(nombrePerro, razaPerro);
-			boolean idpCreado;
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			idpCreado = (boolean) dao.insert(pCreado);
+			boolean idpCreado = false;
+			// PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			// idpCreado = (boolean) dao.insert(pCreado);
+
+			PerreraService service = PerreraServiceImpl.getInstance();
+			boolean perros = service.insert(pCreado);
 
 			if (idpCreado != false) {
 
@@ -135,15 +151,20 @@ public class PerroController {
 	public Response put(@PathParam("id") int idPerro, @PathParam("nombre") String nombrePerro,
 			@PathParam("raza") String razaPerro) {
 		try {
-			Perro perros = null;
+			// Perro perros = null;
 			boolean pIdAModificar;
 			Perro perroNuevo = new Perro(nombrePerro, razaPerro);
 
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			// PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			// obtengo por getById un objeto perro llamado perros
-			perros = dao.getById(idPerro);
+			// perros = dao.getById(idPerro);
 			// obtengo por update un boolean
-			pIdAModificar = dao.update(perros);      
+
+			PerreraService service = PerreraServiceImpl.getInstance();
+			Perro perros = service.getById(idPerro);
+			pIdAModificar = service.update(perros);
+
+			// pIdAModificar = dao.update(perros);
 			if (pIdAModificar == false) {
 				return Response.noContent().build();
 			} else {
