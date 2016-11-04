@@ -38,6 +38,9 @@ import io.swagger.annotations.ApiResponses;
  *
  */
 public class PerroController {
+	/**
+	 * Logger log
+	 */
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	@GET
@@ -46,20 +49,30 @@ public class PerroController {
 
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
+	/**
+	 * 
+	 * @param orderBy
+	 *            [asc,desc]
+	 * @param campo
+	 *            [id|nombre|raza]
+	 * @return Response
+	 */
 	public Response getAll(
-			@ApiParam(name = "orderBy", required = false, value = "Filtro para ordenar los perros de forma ascendente o descendente, posibles valores [asc|desc]") @DefaultValue("asc") @QueryParam("orderBy") String orderBy,
-			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
+			@ApiParam(name = "orderBy", required = false, value = "Filtro para ordenar los perros de forma ascendente o descendente, posibles valores [asc|desc]") @DefaultValue("asc") @QueryParam("orderBy") final String orderBy,
+			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") final String campo) {
+		Response response = null;
 		try {
 			this.log.info("listando todos los perros");
 
-			PerreraServiceImpl service = PerreraServiceImpl.getInstance();
-			ArrayList<Perro> perros = (ArrayList<Perro>) service.getAll(orderBy, campo);
-			return Response.ok().entity(perros).build();
+			final PerreraServiceImpl service = PerreraServiceImpl.getInstance();
+			final ArrayList<Perro> perros = (ArrayList<Perro>) service.getAll(orderBy, campo);
+			response = Response.ok().entity(perros).build();
 
 		} catch (Exception e) {
 			this.log.error("Error listando todos los perros");
-			return Response.serverError().build();
+			response = Response.serverError().build();
 		}
+		return response;
 	}
 
 	@GET
@@ -69,24 +82,32 @@ public class PerroController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Todo OK"),
 			@ApiResponse(code = 204, message = "No existe perro con esa ID"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response getById(@PathParam("id") long idPerro) {
+	/**
+	 * 
+	 * @param idPerro
+	 *            Variable de tipo long
+	 * @return Response
+	 */
+	public Response getById(@PathParam("id") final long idPerro) {
 		this.log.info("Peticion Obtener perro por 'id'" + idPerro);
+		Response response = null;
 		try {
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			Perro perro = null;
 			perro = dao.getById(idPerro);
 
 			if (perro == null) {
 				this.log.info("El perro con id " + idPerro + " no existe en la bd");
-				return Response.noContent().build();
+				response = Response.noContent().build();
 
 			}
 			this.log.info("Mostrando perro con id " + idPerro);
-			return Response.ok().entity(perro).build();
+			response = Response.ok().entity(perro).build();
 		} catch (Exception e) {
 
-			return Response.serverError().build();
+			response = Response.serverError().build();
 		}
+		return response;
 	}
 
 	@DELETE
@@ -96,22 +117,29 @@ public class PerroController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Perro eliminado"),
 			@ApiResponse(code = 204, message = "No existe Perro con ese ID"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response delete(@PathParam("id") long idPerro) {
-
+	/**
+	 * 
+	 * @param idPerro
+	 *            variable de tipo long
+	 * @return Response
+	 */
+	public Response delete(@PathParam("id") final long idPerro) {
+		Response response = null;
 		try {
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			boolean pElimnar = dao.delete(idPerro);
+			final PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			final boolean pElimnar = dao.delete(idPerro);
 			this.log.info("Eliminando perro con id " + idPerro);
-			if (pElimnar == false) {
-				return Response.noContent().build();
+			if (!pElimnar) {
+				response = Response.noContent().build();
 			} else {
 				this.log.info("Perro con id " + idPerro + " eliminado");
-				return Response.ok().entity(new FechaHora()).build();
+				response = Response.ok().entity(new FechaHora()).build();
 			}
 		} catch (Exception e) {
 			this.log.error("Imposible conectar con la bd");
-			return Response.serverError().build();
+			response = Response.serverError().build();
 		}
+		return response;
 	}
 
 	@POST
@@ -121,23 +149,33 @@ public class PerroController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Perro Creado con exito"),
 			@ApiResponse(code = 409, message = "Perro ya Existente"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response post(@PathParam("nombre") String nombrePerro, @PathParam("raza") String razaPerro) {
+	/**
+	 * 
+	 * @param nombrePerro
+	 *            String
+	 * @param razaPerro
+	 *            String
+	 * @return Response
+	 */
+	public Response post(@PathParam("nombre") final String nombrePerro, @PathParam("raza") final String razaPerro) {
+		Response response = null;
 		try {
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			Perro pCreado = new Perro(nombrePerro, razaPerro);
-			boolean creado = dao.insert(pCreado);
+			final PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			final Perro pCreado = new Perro(nombrePerro, razaPerro);
+			final boolean creado = dao.insert(pCreado);
 
 			if (creado) {
 				this.log.info("Perro " + pCreado + " creado");
-				return Response.status(201).entity(pCreado).build();
+				response = Response.status(201).entity(pCreado).build();
 			} else {
-				return Response.status(409).build();
+				response = Response.status(409).build();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			this.log.error("Imposible conectar con la bd");
-			return Response.serverError().build();
+			response = Response.serverError().build();
 		}
+		return response;
 	}
 
 	@PUT
@@ -148,25 +186,37 @@ public class PerroController {
 			@ApiResponse(code = 204, message = "No existe perro con ese ID"),
 			@ApiResponse(code = 409, message = "Perro existente, no se puede modificar"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response put(@PathParam("id") long idPerro, @PathParam("nombre") String nombrePerro,
-			@PathParam("raza") String razaPerro) {
+	/**
+	 * 
+	 * @param idPerro
+	 *            tipo long
+	 * @param nombrePerro
+	 *            String
+	 * @param razaPerro
+	 *            String
+	 * @return Response
+	 */
+	public Response put(@PathParam("id") final long idPerro, @PathParam("nombre") final String nombrePerro,
+			@PathParam("raza") final String razaPerro) {
+		Response response = null;
 		try {
-			PerroDAOImpl dao = PerroDAOImpl.getInstance();
+			final PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			Perro pModificar = null;
 			pModificar = dao.getById(idPerro);
 
 			if (pModificar == null) {
-				return Response.noContent().build();
+				response = Response.noContent().build();
 			} else {
 				pModificar.setNombre(nombrePerro);
 				pModificar.setRaza(razaPerro);
 				dao.update(pModificar);
-				return Response.ok().entity(pModificar).build();
+				response = Response.ok().entity(pModificar).build();
 			}
 		} catch (Exception e) {
 			this.log.error("Imposible conectar con la bd");
-			return Response.status(500).build();
+			response = Response.status(500).build();
 		}
+		return response;
 	}
 
 }
