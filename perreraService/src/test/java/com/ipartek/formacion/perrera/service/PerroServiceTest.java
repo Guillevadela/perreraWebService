@@ -50,7 +50,7 @@ public class PerroServiceTest extends TestCase {
 		/**
 		 * comprobamos que nos ha devuelto lo que queremos con id que no existe
 		 */
-		assertSame(0, perroNoExist.getId());
+		assertTrue(0 == perroNoExist.getId());
 	}
 
 	/**

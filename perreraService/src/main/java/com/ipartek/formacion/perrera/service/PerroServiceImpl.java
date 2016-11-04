@@ -38,7 +38,7 @@ public final class PerroServiceImpl implements PerroService { // NOPMD by Curso
 	 * 
 	 * @return instancia
 	 */
-	public synchronized static PerroServiceImpl getInstance() {
+	public static synchronized PerroServiceImpl getInstance() {
 		if (instance == null) {
 			instance = new PerroServiceImpl();
 		}

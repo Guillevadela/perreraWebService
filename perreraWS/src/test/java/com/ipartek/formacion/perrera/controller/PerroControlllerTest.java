@@ -34,7 +34,7 @@ public class PerroControlllerTest {
 	/**
 	 * lista perros para los tests
 	 */
-	private static ArrayList<Perro> lista = null;
+	private ArrayList<Perro> lista = null;
 	/**
 	 * lista perros para los tests
 	 */
@@ -43,6 +43,7 @@ public class PerroControlllerTest {
 	/**
 	 * ******* COMPROBAR EL METODO getAll() ****************
 	 */
+	@SuppressWarnings("unchecked")
 	@Test()
 	public void testGetAll() {
 

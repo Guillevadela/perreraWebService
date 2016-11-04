@@ -11,13 +11,15 @@ import org.hibernate.cfg.AnnotationConfiguration;
  * @author documentacion hibernate
  */
 public class HibernateUtil {
-
+	/**
+	 * Implementacion de HibernateUtil
+	 */
 	private static final SessionFactory SESSIONFACTORY;
 
 	static {
 		try {
 
-			AnnotationConfiguration config = new AnnotationConfiguration();
+			final AnnotationConfiguration config = new AnnotationConfiguration();
 			config.addAnnotatedClass(HibernateUtil.class);
 
 			/*
@@ -35,13 +37,25 @@ public class HibernateUtil {
 
 			SESSIONFACTORY = config.buildSessionFactory();
 
-		} catch (Throwable ex) {
+		} catch (Exception ex) {
 			// Log exception!
 			throw new ExceptionInInitializerError(ex);
 		}
 	}
 
+	/**
+	 * obtener sesion
+	 * 
+	 * @return session
+	 * @throws HibernateException
+	 */
 	public static Session getSession() throws HibernateException {
 		return SESSIONFACTORY.openSession();
 	}
+
+	private HibernateUtil() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 }
