@@ -3,6 +3,7 @@ package com.ipartek.formacion.perrera.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
@@ -13,6 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -92,10 +94,8 @@ public class PerroController {
 			}
 
 		} catch (Exception e) {
-
+			LOG.error("Error inesperado", e);
 			response = Response.serverError().build();
-			e.printStackTrace();
-
 		} 
 		return response;
 		
@@ -109,22 +109,21 @@ public class PerroController {
 	@ApiResponses(value = { @ApiResponse(code = 201, message = "Creado correctamente"),
 			@ApiResponse(code = 202, message = "Los parametros proporcionados son incorrectos"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response insertar(Perro perro) {
+	public Response insertar(Perro perro, @Context HttpServletRequest request) {
 
 		Response response = Response.status(Response.Status.ACCEPTED).build();
 
 		try {
-
+			logUser(request);
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			if (dao.insert(perro)) {
 				response = Response.status(Response.Status.CREATED).entity(perro).build();
+				
 			}
 
 		} catch (Exception e) {
-
-			response = Response.serverError().build();
-			e.printStackTrace();
-
+			LOG.error("Error inesperado", e);
+			response = Response.serverError().build();			
 		} 
 		
 		return response;
@@ -141,22 +140,21 @@ public class PerroController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Modificado correctamente"),
 			@ApiResponse(code = 204, message = "No existe perro con esa ID"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response modificar(Perro perro) {
+	public Response modificar(Perro perro, @Context HttpServletRequest request) {
 
 		Response response = Response.noContent().build();
 
 		try {
 
+			logUser(request);
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			if (dao.update(perro)) {
 				response = Response.ok().entity(perro).build();
 			}
 
 		} catch (Exception e) {
-
+			LOG.error("Error inesperado", e);
 			response = Response.serverError().build();
-			e.printStackTrace();
-
 		} 
 
 		return response;
@@ -171,22 +169,23 @@ public class PerroController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Eliminado correctamente"),
 			@ApiResponse(code = 204, message = "No existe perro con esa ID"),
 			@ApiResponse(code = 500, message = "Error inexperado en el servidor") })
-	public Response eliminar(@PathParam("id") long idPerro) {
+	public Response eliminar(@PathParam("id") long idPerro, @Context HttpServletRequest request) {
 
 		Response response = Response.noContent().build();
 
 		try {
 
+			logUser(request);
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
 			if (dao.delete(idPerro)) {
 				response = Response.ok().entity(idPerro).build();
+				LOG.warn("Eliminado perro " + idPerro );
 			}
 
 		} catch (Exception e) {
-
+			LOG.error("Error inesperado", e);
 			response = Response.serverError().build();
-			e.printStackTrace();
-
+			
 		}
 		
 		return response;
@@ -195,7 +194,12 @@ public class PerroController {
 	}
 
 	
-	
+	private void logUser( HttpServletRequest request ) {
+		
+		LOG.info("USer-Agent: " + request.getHeader("User-Agent"));
+		LOG.info("Ip v6: " + request.getRemoteAddr() );
+		
+	}
 	
 	
 }
