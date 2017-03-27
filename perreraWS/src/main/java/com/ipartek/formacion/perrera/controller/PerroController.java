@@ -16,6 +16,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.ipartek.formacion.perrera.dao.PerroDAOImpl;
 import com.ipartek.formacion.perrera.pojo.Perro;
 
@@ -30,6 +32,8 @@ import io.swagger.annotations.ApiResponses;
 @Api(value = "/perro")
 public class PerroController {
 
+	private final static Logger LOG = Logger.getLogger(PerroController.class);
+	
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -57,6 +61,7 @@ public class PerroController {
 
 		} catch (Exception e) {
 			response = Response.serverError().build();
+			LOG.error("error insesperado", e);
 			e.printStackTrace();
 		}
 		
