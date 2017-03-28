@@ -51,17 +51,18 @@ public class PerroController {
 			@ApiParam(name = "campo", required = false, value = "Filtro para ordenar por 'campo' los perros, posibles valores [id|nombre|raza]") @DefaultValue("id") @QueryParam("campo") String campo) {
 		
 		Response response = Response.noContent().build();
-		
+		ArrayList<Perro> perros = new ArrayList<Perro>();
 		try {
 
 			PerroDAOImpl dao = PerroDAOImpl.getInstance();
-			ArrayList<Perro> perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
+			perros = (ArrayList<Perro>) dao.getAll(orderBy, campo);
 			
 			if ( perros != null && perros.size() > 0 ){
 				response = Response.ok().entity(perros).build();
-			}	
-
+			}
+			
 		} catch (Exception e) {
+			
 			response = Response.serverError().build();
 			LOG.error("error insesperado", e);
 			e.printStackTrace();

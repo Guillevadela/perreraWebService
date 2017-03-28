@@ -41,37 +41,43 @@ public class PerroControlllerTest {
 		
 		Response response = controller.getAll("asc", "id");
 		
-		assertEquals( 200, response.getStatus() );
+		int status = response.getStatus();
+		assertTrue("Tiene que retornar 200 o 204",  status == 200 || status == 204  );
+		
 		
 		//ordenacion ascendente por id	
-		lista = (ArrayList<Perro>) response.getEntity();	
-		long idActual = -1;
-		for ( Perro p : lista ){			
-			assertTrue("ordenacion ascendente por id", idActual < p.getId() );
-			idActual = p.getId();						
-		}		
-		
-		//ordenacion descendente por id
-		response = controller.getAll("desc", "id");
 		lista = (ArrayList<Perro>) response.getEntity();
-		if ( !lista.isEmpty() ){
-			idActual = lista.get(0).getId()+1;
+		
+		if ( lista != null && !lista.isEmpty() ){
+			
+			long idActual = -1;
 			for ( Perro p : lista ){			
-				assertTrue("ordenacion ascendente por id", idActual > p.getId() );
+				assertTrue("ordenacion ascendente por id", idActual < p.getId() );
 				idActual = p.getId();						
+			}		
+			
+			//ordenacion descendente por id
+			response = controller.getAll("desc", "id");
+			lista = (ArrayList<Perro>) response.getEntity();
+			if ( !lista.isEmpty() ){
+				idActual = lista.get(0).getId()+1;
+				for ( Perro p : lista ){			
+					assertTrue("ordenacion ascendente por id", idActual > p.getId() );
+					idActual = p.getId();						
+				}	
 			}	
-		}	
-		
-		//ordenacion campo inexistente		
-		response = controller.getAll("desc", "XXX");
-		lista = (ArrayList<Perro>) response.getEntity();
-		if ( !lista.isEmpty() ){
-			idActual = lista.get(0).getId()+1;
-			for ( Perro p : lista ){			
-				assertTrue("ordenacion campo inexistente,debe ordernar desc por id", idActual > p.getId() );
-				idActual = p.getId();						
-			}
-		}	
+			
+			//ordenacion campo inexistente		
+			response = controller.getAll("desc", "XXX");
+			lista = (ArrayList<Perro>) response.getEntity();
+			if ( !lista.isEmpty() ){
+				idActual = lista.get(0).getId()+1;
+				for ( Perro p : lista ){			
+					assertTrue("ordenacion campo inexistente,debe ordernar desc por id", idActual > p.getId() );
+					idActual = p.getId();						
+				}
+			}	
+		}//lista is empty	
 		
 	}
 

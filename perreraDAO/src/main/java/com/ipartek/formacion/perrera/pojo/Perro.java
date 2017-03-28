@@ -23,21 +23,31 @@ public class Perro {
 	@Basic
 	@Column(name = "raza")
 	private String raza;
+	
+	@Basic
+	@Column(	
+				name = "imagen",
+				columnDefinition="varchar(255) default 'https://raw.githubusercontent.com/ipartek/perreraClient/master/images/perro_default_avatar.jpg'"
+			)
+	private String imagen;
 
 	/**
 	 * @param nombre
 	 * @param raza
 	 */
 	public Perro(String nombre, String raza) {
-		super();
+		this();
 		this.nombre = nombre;
-		this.raza = raza;
+		this.raza = raza;		
 	}
+
+	
 
 	public Perro() {
 		super();
 		this.nombre = "";
 		this.raza = "";
+		this.imagen = "https://raw.githubusercontent.com/ipartek/perreraClient/master/images/perro_default_avatar.jpg";
 	}
 
 	public String getNombre() {
@@ -73,9 +83,21 @@ public class Perro {
 		return this.id > 0 ? true : false;
 	}
 
-	@Override
-	public String toString() {
-		return "Perro [nombre=" + this.nombre + ", raza=" + this.raza + "]";
+	public String getImagen() {
+		return imagen;
 	}
 
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Perro [id=" + id + ", nombre=" + nombre + ", raza=" + raza + ", imagen=" + imagen + "]";
+	}
+	
+	
+	
 }
