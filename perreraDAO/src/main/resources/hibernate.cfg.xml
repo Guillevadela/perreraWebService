@@ -8,7 +8,7 @@
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="connection.url">jdbc:mysql://localhost/can</property><!-- Nombre de la BBDD -->
 		<property name="connection.username">root</property>
-		<property name="connection.password"/>
+		<property name="connection.password">Curso14102000</property>
 		<!-- JDBC connection pool (use the built-in) -->
 		<property name="connection.pool_size">1</property>
 		<!-- SQL dialect -->
